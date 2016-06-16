@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.roleControl.edit")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/input.js"></script>
+<style type="text/css">
+.brands label {
+	width: 150px;
+	display: block;
+	float: left;
+	padding-right: 6px;
+}
+</style>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $inputForm = $("#inputForm");
+	
+	[@flash_message /]
+
+	// 表单验证
+	$inputForm.validate({
+		rules: {
+			name: "required",
+			order: "digits"
+		}
+	});
+	
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="admin/common/index.jhtml">${message("admin.path.index")}</a> &raquo; ${message("admin.roleControl.edit")}
+	</div>
+	<form id="inputForm" action="update.jhtml" method="post">
+		<input type="hidden" name="id" value="${roleControl.id}" />
+		<table class="input">
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("RoleControl.name")}:
+				</th>
+				<td>
+					<input type="text" id="name" name="name" class="text" value="${roleControl.name}" maxlength="200" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					${message("RoleControl.parent")}:
+				</th>
+				<td>
+					<select name="menuId" class="text">
+						<option value="">选择菜单</option>
+						[#list menuTree as menu]
+							<option value="${menu.id}" [#if roleControl.menu==menu] selected="selected" [/#if]>
+								[#if menu.grade != 0]
+									[#list 1..menu.grade as i]
+										&nbsp;&nbsp;
+									[/#list]
+								[/#if]
+								${menu.name}
+							</option>
+						[/#list]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("RoleControl.method")}:
+				</th>
+				<td>
+					<input type="text" id="method" name="method" class="text" maxlength="200" value="${roleControl.method}" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					显示:
+				</th>
+				<td>
+					<label>
+						<input type="checkbox" name="isEnabled" value="true" [#if roleControl.isEnabled] checked="checked"[/#if]  />是
+						<input type="hidden" name="_isEnabled" value="false" />
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					${message("admin.common.order")}:
+				</th>
+				<td>
+					<input type="text" name="order" class="text" value="${roleControl.order}" maxlength="9" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<td>
+					<input type="submit" class="button" value="${message("admin.common.submit")}" />
+					<input type="button" class="button" value="${message("admin.common.back")}" onclick="location.href='list.jhtml'" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

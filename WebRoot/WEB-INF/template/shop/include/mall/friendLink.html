@@ -1,0 +1,19 @@
+<div class="full_module wrapper">
+	<h2>
+		<b>友情链接</b>
+	</h2>
+	[@friend_link_list count = 9]
+	<div class="piclink">
+		[#list friendLinks as friendLink]
+		[#if friendLink.type=="image"]
+			<span>
+				<a href="${friendLink.url}" target="_blank">
+					<img src="${friendLink.logo}" alt="${friendLink.name}" title="${friendLink.name}" width="88" height="31" />
+				</a>
+			</span> 
+		[/#if]
+		[/#list]
+		<div class="clear"></div>
+	</div>
+	[/@friend_link_list]
+</div>

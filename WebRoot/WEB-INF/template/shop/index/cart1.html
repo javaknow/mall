@@ -1,0 +1,93 @@
+<script>
+$(".addcart-goods-num").text(${(cart.cartItems.size())!"0"});
+var $delete = $("a.deleteCartItem");
+var $price = $("#price");
+var $total = $("#cart_goods_price_top");
+var $st_count = $("#st_count");
+// 删除
+$delete.click(function() {
+	var $this = $(this);
+	var $li = $this.closest("dl");
+	var id = $this.attr("val");
+	$.ajax({
+		url: "${base}/cart/delete.jhtml",
+		type: "POST",
+		data: {id: id},
+		dataType: "json",
+		cache: false,
+		beforeSend: function() {
+			$this.prop("disabled", true);
+		},
+		success: function(data) {
+			if (data.message.type == "success") {
+				if (data.quantity > 0) {
+					$li.remove();
+					$total.text(currency(data.effectivePrice, true, true));
+					$st_count.text(data.count);
+					$("#cart_goods_count_top").text(data.count);
+				} else {
+					location.reload(true);
+				}
+			} else {
+				$.message(data.message);
+				setTimeout(function() {
+					location.reload(true);
+				}, 3000);
+			}
+		},
+		complete: function() {
+			$this.prop("disabled", false);
+		}
+	});
+});
+</script>
+<div class="sub-title">
+	<h4>最新加入的商品</h4>
+</div>
+<div class="incart-goods-box ps-container ps-active-y">
+	<div class="incart-goods">
+		[#if cart==null||cart.cartItems==null||cart.cartItems.size()==0]
+			<div class="incart-goods"><div class="no-order"><span>您的购物车中暂无商品，赶快选择心爱的商品吧！</span></div></div>
+		[#else]
+		[#list cart.cartItems as cartItem]
+		<dl nctpye="cart_item_${cartItem.id}">
+			<dt class="goods-name">
+				<a href="${base}${cartItem.product.path}" title="${cartItem.product.fullName}" target="_blank" >${cartItem.product.name}</a>
+			</dt>
+			<dd class="goods-thumb">
+				<a href="${base}${cartItem.product.path}" title="${cartItem.product.fullName}" target="_blank" >
+					<img src="[#if cartItem.product.thumbnail??]${cartItem.product.thumbnail}[#else]${setting.defaultThumbnailProductImage}[/#if]" alt="${cartItem.product.name}"/>
+				</a>
+			</dd>
+			<dd class="goods-sales"></dd>
+			<dd class="goods-price">
+				<em>${currency(cartItem.product,true,true)}×${cartItem.quantity}=${currency(cartItem.tempPrice,true,true)}</em>
+			</dd>
+			<dd class="handle">
+				<em>
+					<a href="javascript:void(0);" class="hover deleteCartItem" val="${cartItem.id}">${message("shop.cart.delete")}</a>
+				</em>
+			</dd>
+		</dl>
+		[/#list]
+		[/#if]
+	</div>
+	[#if cart==null||cart.cartItems==null||cart.cartItems.size()==0]
+	<div class="ps-scrollbar-x-rail"
+		style="width: 348px; display: none; left: 0px; bottom: 3px;">
+		<div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+	</div>
+	<div class="ps-scrollbar-y-rail"
+		style="top: 0px; height: 67px; display: inherit; right: 3px;">
+		<div class="ps-scrollbar-y" style="top: 0px; height: 59px;"></div>
+	</div>
+	[/#if]
+</div>
+[#if cart==null||cart.cartItems==null||cart.cartItems.size()==0]
+
+[#else]
+<div class="checkout">
+	<span class="total-price">共<i id="st_count">${cart.cartItems.size()}</i>种商品&nbsp;&nbsp;总计金额：<em id="cart_goods_price_top">${currency(cart.effectivePrice,true,true)}</em></span>
+	<a href="${base}/cart/list.jhtml" class="see_car">${message("shop.cart.step1")}</a>
+</div>
+[/#if]

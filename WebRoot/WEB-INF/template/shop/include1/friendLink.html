@@ -1,0 +1,33 @@
+<style>
+#friendLink li .name {
+	max-width: 100%;
+	max-height: 100%;
+	padding: 5px;
+	border: solid 1px #F5F5F5;
+}
+</style>
+[@friend_link_list count = 9]
+<div id="friendLink" style="height:80px;">
+	<div class="wrapper" style="height:100%;">
+		<ul style="height:98%;">
+			[#list friendLinks as friendLink]
+			<li>
+				[#if friendLink.type=="image"]
+				<span class="icon"> <a href="${friendLink.url}" target="_blank"><img src="${friendLink.logo}" alt="${friendLink.name}" title="${friendLink.name}" /></a>
+				</span>
+				[#else]
+				<span class="name" style="border: solid 1px #F5F5F5;width: 100%;display: block;text-align: center;"> <a href="${friendLink.url}" target="_blank">${friendLink.name}</a> </span>
+				[/#if]
+			</li>
+			[/#list]
+			
+			[#if friendLinks.size()==9]
+			<li>
+				<span class="icon"> <a href="${base}/friend_link.jhtml"><img src="${base}/upload/image/more.png" alt="${message("shop.index.more")}" title="${message("shop.index.more")}" /></a>
+				</span>
+			</li>
+			[/#if]
+		</ul>
+	</div>
+</div>
+[/@friend_link_list]

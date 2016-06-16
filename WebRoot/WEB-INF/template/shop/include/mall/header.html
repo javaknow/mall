@@ -1,0 +1,124 @@
+
+<script type="text/javascript">
+$().ready(function() {
+	var $headerLogin = $("#headerLogin");
+	var $headerRegister = $("#headerRegister");
+	var $headerUsername = $("#headerUsername");
+	var $headerLogout = $("#headerLogout");
+	var $searchForm = $("#searchForm");
+	var $keyword = $("#searchForm input");
+	var defaultKeyword = "${message("shop.header.keyword")}";
+	var $qiandao = $("#qiandao a");
+	
+	var username = getCookie("username");
+	
+	if (username != null) {
+		$headerUsername.text(username).show();
+		$headerLogout.show();
+		$headerLogin.hide();
+		$headerRegister.hide();
+		$("#qiandao").show();
+	} else {
+		$headerLogin.show();
+		$headerRegister.show();
+		$("#qiandao").hide();
+	}
+});
+</script>
+<div style="display:none">
+<a href="http://m.kuaidi100.com" target="_blank">快递查询</a>
+</div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+
+<div class="public-top-layout w">
+	<div class="topbar wrapper">
+		<div class="user-entry">
+			您好，<a href="${base}/member/index.jhtml"><span id="headerUsername"></span></a> 
+			欢迎来到 <a href="${base}/" title="首页" alt="首页">${setting.siteName}</a>
+			<span id="headerLogin">[<a href="${base}/login.jhtml">${message("shop.header.login")}</a>]</span> 
+			<span id="headerRegister">[<a href="${base}/register.jhtml">${message("shop.header.register")}</a>]</span>
+			<span id="headerLogout">[<a href="${base}/logout.jhtml">${message("shop.header.logout")}</a>]
+		</div>
+		<div class="quick-menu">
+			<dl>
+				<dt>
+					<a href="#">手机触屏版</a>
+				</dt>
+			</dl>
+			<dl>
+				<dt>
+					<a
+						href="http://www.jshgwsc.com/shop/index.php?act=show_joinin&op=index"
+						title="免费开店">免费开店</a><i></i>
+				</dt>
+				<dd>
+					<ul>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=show_joinin&op=index"
+							title="招商入驻">招商入驻</a></li>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=seller_login&op=show_login"
+							target="_blank" title="登录商家管理中心">商家登录</a></li>
+					</ul>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					<a href="http://www.jshgwsc.com/shop/index.php?act=member_order">我的订单</a><i></i>
+				</dt>
+				<dd>
+					<ul>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=member_order&state_type=state_new">待付款订单</a></li>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=member_order&state_type=state_send">待确认收货</a></li>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=member_order&state_type=state_noeval">待评价交易</a></li>
+					</ul>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					<a
+						href="http://www.jshgwsc.com/shop/index.php?act=member_favorites&op=fglist">我的收藏</a><i></i>
+				</dt>
+				<dd>
+					<ul>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=member_favorites&op=fglist">商品收藏</a></li>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=member_favorites&op=fslist">店铺收藏</a></li>
+					</ul>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					客户服务<i></i>
+				</dt>
+				<dd>
+					<ul>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=article&op=article&ac_id=2">帮助中心</a></li>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=article&op=article&ac_id=5">售后服务</a></li>
+						<li><a
+							href="http://www.jshgwsc.com/shop/index.php?act=article&op=article&ac_id=6">客服中心</a></li>
+					</ul>
+				</dd>
+			</dl>
+			<dl class="weixin">
+				<dt>
+					关注我们<i></i>
+				</dt>
+				<dd>
+					<h4>
+						扫描二维码<br /> 关注商城微信号
+					</h4>
+					<img
+						src="http://www.jshgwsc.com/data/upload/shop/common/05040331259375307.png">
+				</dd>
+			</dl>
+		</div>
+	</div>
+</div>

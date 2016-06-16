@@ -1,0 +1,163 @@
+{
+    "code": 200,
+    "datas": [
+        {
+            "adv_list": {
+                "item": [
+                	[#list ads as ad]
+                	[#if ad.type="image"]
+                	[#if ad_index==0]
+                    {
+                        "image": "${ad.path}",
+                        "type": "url",
+                        "data": "${ad.url}"
+                    }
+                    [#else]
+                    ,{
+                        "image": "${ad.path}",
+                        "type": "url",
+                        "data": "${ad.url}"
+                    }
+                    [/#if]
+                    [/#if]
+                    [/#list]
+                ]
+            }
+        },
+        {
+            "home1": {
+                "title": "",
+                "image": "http://b2b2c.shopnctest.com/dema/data/upload/mobile/special/s0/s0_04953034893900222.jpg",
+                "type": "url",
+                "data": "http://www.i-gomall.com/wap/index.jhtml"
+            }
+        },
+        {
+            "home4": {
+                "title": "",
+                "rectangle1_image": "http://b2b2c.shopnctest.com/dema/data/upload/mobile/special/s0/s0_04953035423748800.jpg",
+                "rectangle1_type": "url",
+                "rectangle1_data": "http://www.i-gomall.com/wap/index.jhtml",
+                "rectangle2_image": "http://b2b2c.shopnctest.com/dema/data/upload/mobile/special/s0/s0_04953035652370175.jpg",
+                "rectangle2_type": "url",
+                "rectangle2_data": "http://www.i-gomall.com/wap/index.jhtml",
+                "square_image": "http://b2b2c.shopnctest.com/dema/data/upload/mobile/special/s0/s0_04953035743407744.jpg",
+                "square_type": "url",
+                "square_data": "http://www.i-gomall.com/wap/index.jhtml"
+            }
+        },
+        {
+            "home2": {
+                "title": "",
+                "square_image": "http://b2b2c.shopnctest.com/dema/data/upload/mobile/special/s0/s0_04953036315894578.jpg",
+                "square_type": "url",
+                "square_data": "http://www.i-gomall.com/wap/index.jhtml",
+                "rectangle1_image": "http://b2b2c.shopnctest.com/dema/data/upload/mobile/special/s0/s0_04953036568877399.jpg",
+                "rectangle1_type": "url",
+                "rectangle1_data": "http://www.i-gomall.com/wap/index.jhtml",
+                "rectangle2_image": "http://b2b2c.shopnctest.com/dema/data/upload/mobile/special/s0/s0_04953036851456664.jpg",
+                "rectangle2_type": "url",
+                "rectangle2_data": "http://www.i-gomall.com/wap/index.jhtml"
+            }
+        },
+        {
+            "home1": {
+                "title": "",
+                "image": "http://b2b2c.shopnctest.com/dema/data/upload/mobile/special/s0/s0_04953040911476051.jpg",
+                "type": "url",
+                "data": "http://www.i-gomall.com/wap/index.jhtml"
+            }
+        },
+        [#list home3.keySet() as key]
+        {
+            "home3": {
+                "title": "${key}",
+                "item": [
+                	[#assign ads = home3.get(key)]
+                	[#list ads as ad]
+                	[#if ad.type=="image"]
+                	[#if ad_index==0]
+                    {
+                        "image": "${ad.path}",
+                        "type": "url",
+                        "data": "${ad.url}"
+                    }
+                    [#else]
+                    ,
+                    {
+                        "image": "${ad.path}",
+                        "type": "url",
+                        "data": "${ad.url}"
+                    }
+                    [/#if]
+                    [/#if]
+                    [/#list]
+                ]
+            }
+        },
+        [/#list]
+        {
+            "home1": {
+                "title": "",
+                "image": "http://b2b2c.shopnctest.com/dema/data/upload/mobile/special/s0/s0_04953055773550361.jpg",
+                "type": "url",
+                "data": "http://www.i-gomall.com/wap/index.jhtml"
+            }
+        },
+        [#list map.keySet() as key]
+        [#if key_index==0]
+        {
+            "goods": {
+                "title": "${key}",
+                "item": [
+                	[#assign products = map.get(key)]
+                	[#list products as product]
+                	[#if product_index==0]
+                    {
+                        "goods_id": "${product.id}",
+                        "goods_name": "${product.name}",
+                        "goods_promotion_price": "${currency(product.price)}",
+                        "goods_image": "${product.image}"
+                    }
+                    [#else]
+                    ,{
+                        "goods_id": "${product.id}",
+                        "goods_name": "${product.name}",
+                        "goods_promotion_price": "${currency(product.price)}",
+                        "goods_image": "${product.image}"
+                    }
+                    [/#if]
+                    [/#list]
+                ]
+            }
+        }
+        [#else],
+        {
+            "goods": {
+                "title": "${key}",
+                "item": [
+                	[#assign products = map.get(key)]
+                	[#list products as product]
+                	[#if product_index==0]
+                    {
+                        "goods_id": "${product.id}",
+                        "goods_name": "${product.name}",
+                        "goods_promotion_price": "${currency(product.price)}",
+                        "goods_image": "${product.image}"
+                    }
+                    [#else]
+                    ,{
+                        "goods_id": "${product.id}",
+                        "goods_name": "${product.name}",
+                        "goods_promotion_price": "${currency(product.price)}",
+                        "goods_image": "${product.image}"
+                    }
+                    [/#if]
+                    [/#list]
+                ]
+            }
+        }
+        [/#if]
+        [/#list]
+    ]
+}

@@ -1,0 +1,56 @@
+[#if cart==null||cart.cartItems==null||cart.cartItems.size()==0]
+<div class="sub-title">
+	<h4>最新加入的商品</h4>
+</div>
+<div class="incart-goods-box">
+	<div class="incart-goods">
+		<div class="no-order">
+			<span>您的购物车中暂无商品，赶快选择心爱的商品吧！</span>
+		</div>
+	</div>
+</div>
+<div class="checkout">
+	<span class="total-price"></span><a
+		href="${base}/cart/list.jhtml"
+		class="btn-cart">结算购物车中的商品</a>
+</div>
+[#else]
+<div class="sub-title">
+	<h4>最新加入的商品</h4>
+</div>
+<div class="incart-goods-box ps-container ps-active-y">
+	<div class="incart-goods">
+		[#list cart.cartItems as cartItem]
+		<dl nctpye="cart_item_${cartItem.id}">
+			<dt class="goods-name">
+				<a href="${base}/${cartItem.product.path}">${cartItem.product.name}</a>
+			</dt>
+			<dd class="goods-thumb">
+				<a href="${base}/${cartItem.product.path}" title="${cartItem.product.name}" target="_blank">
+					<img src="[#if cartItem.product.image??]${cartItem.product.image}[#else]${setting.defaultThumbnailProductImage}[/#if]" alt="${abbreviate(cartItem.product.name, 50)}">
+				</a>
+			</dd>
+			<dd class="goods-sales"></dd>
+			<dd class="goods-price">
+				<em>${currency(cartItem.product.price,true,true)}×${cartItem.quantity}</em>
+			</dd>
+			<dd class="handle">
+				<em><a href="javascript:void(0);" onclick="drop_topcart_item1(${cartItem.id});">删除</a></em>
+			</dd>
+		</dl>
+		[/#list]
+	</div>
+	<div class="ps-scrollbar-x-rail"
+		style="width: 348px; display: none; left: 0px; bottom: 3px;">
+		<div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+	</div>
+	<div class="ps-scrollbar-y-rail"
+		style="top: 0px; height: 67px; display: inherit; right: 3px;">
+		<div class="ps-scrollbar-y" style="top: 0px; height: 59px;"></div>
+	</div>
+</div>
+<div class="checkout">
+	<span class="total-price">共<i>${cart.cartItems.size()}</i>种商品&nbsp;&nbsp;总计金额：<em>${currency(cart.effectivePrice,true,true)}</em></span>
+	<a href="${base}/cart/list.jhtml" class="btn-cart">结算购物车中的商品</a>
+</div>
+[/#if]

@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.wechatMenu.add")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/input.js"></script>
+<style type="text/css">
+.brands label {
+	width: 150px;
+	display: block;
+	float: left;
+	padding-right: 6px;
+}
+</style>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $inputForm = $("#inputForm");
+	
+	[@flash_message /]
+
+	// 表单验证
+	$inputForm.validate({
+		rules: {
+			name: "required",
+			order: "digits"
+		}
+	});
+	
+	$.validator.addClassRules({
+		required: {
+			required: true
+		}
+	});
+	
+	$("select[name='parentId']").change(function(){
+		var parentId = $(this).val();
+		if(parentId==""){
+			$("select[name='type']").removeClsss("required");
+		}else{
+			$("select[name='type']").addClass("required");
+		}
+	});
+	
+	$("select[name='type']").change(function(){
+		$this = $(this);
+		var type = $this.val();
+		if(type=="click"){
+			$("#clickTr").show();
+			$("#clickTr").find("input").addClass("required");
+			$("#urlTr").hide();
+			$("#urlTr").find("input").removeClass("required");
+			$("#media_idTr").hide();
+			$("#media_idTr").find("input").removeClass("required");
+		}else if(type=="media_id"||type=="view_limited"){
+			$("#clickTr").hide();
+			$("#clickTr").find("input").removeClass("required");
+			$("#urlTr").hide();
+			$("#urlTr").find("input").removeClass("required");
+			$("#media_idTr").show();
+			$("#media_idTr").find("input").addClass("required");
+		}else if(type=="view"){
+			$("#clickTr").hide();
+			$("#clickTr").find("input").removeClass("required");
+			$("#urlTr").show();
+			$("#urlTr").find("input").addClass("required");
+			$("#media_idTr").hide();
+			$("#media_idTr").find("input").removeClass("required");
+		}else{
+			$("#clickTr").show();
+			$("#clickTr").find("input").addClass("required");
+			$("#urlTr").hide();
+			$("#urlTr").find("input").removeClass("required");
+			$("#media_idTr").hide();
+			$("#media_idTr").find("input").removeClass("required");
+		}
+	});
+	
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="admin/common/index.jhtml">${message("admin.path.index")}</a> &raquo; ${message("admin.wechatMenu.add")}
+	</div>
+	<form id="inputForm" action="save.jhtml" method="post">
+		<table class="input">
+			<tr>
+				<th>
+					${message("WechatMenu.parent")}:
+				</th>
+				<td>
+					<select name="parentId" class="text">
+						<option value="">${message("admin.menu.root")}</option>
+						[#list wechatMenuTree as category]
+							<option value="${category.id}" [#if menuId==category.id] selected="selected" [/#if]>
+								[#if category.grade != 0]
+									[#list 1..category.grade as i]
+										&nbsp;&nbsp;
+									[/#list]
+								[/#if]
+								${category.name}
+							</option>
+						[/#list]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("WechatMenu.name")}:
+				</th>
+				<td>
+					<input type="text" id="name" name="name" class="text" maxlength="200" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					${message("WechatMenu.type")}:
+				</th>
+				<td>
+					<select name="type" class="text">
+						<option value="">选择菜单类型</option>
+						[#list types as type]
+							<option value="${type}">${message("WechatMenu."+type)}</option>
+						[/#list]
+					</select>
+				</td>
+			</tr>
+			<tr class="hidden" id="clickTr">
+				<th>
+					<span class="requiredField">*</span>${message("WechatMenu.key")}:
+				</th>
+				<td>
+					<input type="text" id="key" name="key" class="text" maxlength="200" />
+				</td>
+			</tr>
+			<tr class="hidden" id="media_idTr">
+				<th>
+					<span class="requiredField">*</span>${message("WechatMenu.media_id")}:
+				</th>
+				<td>
+					<input type="text" id="media_id" name="media_id" class="text" maxlength="200" />
+				</td>
+			</tr>
+			
+			<tr class="hidden" id="urlTr">
+				<th>
+					<span class="requiredField">*</span>${message("WechatMenu.url")}:
+				</th>
+				<td>
+					<textarea id="url" name="url" class="text" style="width:80% !important;"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					${message("admin.common.order")}:
+				</th>
+				<td>
+					<input type="text" name="order" class="text" maxlength="9" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					显示:
+				</th>
+				<td>
+					<label>
+						<input type="checkbox" name="isEnabled" value="true" checked="checked" />是
+						<input type="hidden" name="_isEnabled" value="false" />
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<td>
+					<input type="submit" class="button" value="${message("admin.common.submit")}" />
+					<input type="button" class="button" value="${message("admin.common.back")}" onclick="location.href='list.jhtml'" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

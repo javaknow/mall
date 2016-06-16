@@ -1,0 +1,106 @@
+<style type="text/css">
+body {
+_behavior: url(http://www.jshgwsc.com/shop/templates/default/css/csshover.htc);
+}
+</style>
+<link rel="shortcut icon" href="http://www.jshgwsc.com/favicon.ico" />
+<link href="http://www.jshgwsc.com/shop/templates/default/css/base.css" rel="stylesheet" type="text/css">
+<link href="http://www.jshgwsc.com/shop/templates/default/css/home_header.css" rel="stylesheet" type="text/css">
+<link href="http://www.jshgwsc.com/shop/templates/default/css/home_login.css" rel="stylesheet" type="text/css">
+<link href="http://www.jshgwsc.com/shop/resource/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<!--[if IE 7]>
+  <link rel="stylesheet" href="http://www.jshgwsc.com/shop/resource/font/font-awesome/css/font-awesome-ie7.min.css">
+<![endif]-->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="http://www.jshgwsc.com/data/resource/js/html5shiv.js"></script>
+      <script src="http://www.jshgwsc.com/data/resource/js/respond.min.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script src="http://www.jshgwsc.com/data/resource/js/IE6_PNG.js"></script>
+<script>
+DD_belatedPNG.fix('.pngFix');
+</script>
+<script>
+// <![CDATA[
+if((window.navigator.appName.toUpperCase().indexOf("MICROSOFT")>=0)&&(document.execCommand))
+try{
+document.execCommand("BackgroundImageCache", false, true);
+   }
+catch(e){}
+// ]]>
+</script>
+<![endif]-->
+<script>
+var COOKIE_PRE = '6DD2_';var _CHARSET = 'utf-8';var SITEURL = 'http://www.jshgwsc.com/shop';var SHOP_SITE_URL = 'http://www.jshgwsc.com/shop';var RESOURCE_SITE_URL = 'http://www.jshgwsc.com/data/resource';var RESOURCE_SITE_URL = 'http://www.jshgwsc.com/data/resource';var SHOP_TEMPLATES_URL = 'http://www.jshgwsc.com/shop/templates/default';
+</script>
+<script src="http://www.jshgwsc.com/data/resource/js/jquery.js"></script>
+<script src="http://www.jshgwsc.com/data/resource/js/common.js" charset="utf-8"></script>
+<script src="http://www.jshgwsc.com/data/resource/js/jquery-ui/jquery.ui.js">/script>
+<script src="http://www.jshgwsc.com/data/resource/js/jquery.validation.min.js"></script>
+<script src="http://www.jshgwsc.com/data/resource/js/jquery.masonry.js"></script>
+<script src="http://www.jshgwsc.com/data/resource/js/dialog/dialog.js" id="dialog_js" charset="utf-8"></script>
+<script type="text/javascript">
+var PRICE_FORMAT = '&yen;%s';
+$(function(){
+	//首页左侧分类菜单
+	$(".category ul.menu").find("li").each(
+		function() {
+			$(this).hover(
+				function() {
+				    var cat_id = $(this).attr("cat_id");
+					var menu = $(this).find("div[cat_menu_id='"+cat_id+"']");
+					menu.show();
+					$(this).addClass("hover");					
+					var menu_height = menu.height();
+					if (menu_height < 60) menu.height(80);
+					menu_height = menu.height();
+					var li_top = $(this).position().top;
+					$(menu).css("top",-li_top + 38);
+				},
+				function() {
+					$(this).removeClass("hover");
+				    var cat_id = $(this).attr("cat_id");
+					$(this).find("div[cat_menu_id='"+cat_id+"']").hide();
+				}
+			);
+		}
+	);
+	$(".head-user-menu dl").hover(function() {
+		$(this).addClass("hover");
+	},
+	function() {
+		$(this).removeClass("hover");
+	});
+	$('.head-user-menu .my-mall').mouseover(function(){// 最近浏览的商品
+		load_history_information();
+		$(this).unbind('mouseover');
+	});
+	$('.head-user-menu .my-cart').mouseover(function(){// 运行加载购物车
+		load_cart_information();
+		$(this).unbind('mouseover');
+	});
+	$('#button').click(function(){
+	    if ($('#keyword').val() == '') {
+		    return false;
+	    }
+	});
+    });
+
+$(function(){
+	//search
+	var act = "index";
+	if (act == "store_list"){
+		$("#search").children('ul').children('li:eq(1)').addClass("current");
+		$("#search").children('ul').children('li:eq(0)').removeClass("current");
+		}
+	$("#search").children('ul').children('li').click(function(){
+		$(this).parent().children('li').removeClass("current");
+		$(this).addClass("current");
+		$('#search_act').attr("value",$(this).attr("act"));
+		$('#keyword').attr("placeholder",$(this).attr("title"));
+	});
+	$("#keyword").blur();
+
+});
+</script>

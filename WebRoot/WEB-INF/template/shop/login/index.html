@@ -1,0 +1,195 @@
+
+<!doctype html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>${message("shop.login.title")}[#if systemShowPowered][/#if]</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+[#include "/shop/include/mall/css.html"]
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jsbn.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/prng4.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/rng.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/rsa.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/base64.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/common.js"></script>
+</head>
+<body>
+	<div class="header-wrap">
+		<header class="public-head-layout wrapper">
+			<h1 class="site-logo">
+				<a href="${base}/"><img src="${base}${setting.logo}" class="pngFix"></a>
+			</h1>
+		</header>
+	</div>
+	
+	<div class="nch-breadcrumb-layout"></div>
+	<div class="nc-login-layout">
+		<div class="left-pic">
+			<img src="http://www.jshgwsc.com/data/upload/shop/login/2.jpg"border="0">
+		</div>
+		<div class="nc-login">
+			<div class="nc-login-title">
+				<h3>用户登录</h3>
+			</div>
+			<div class="nc-login-content" id="demo-form-site">
+				<form id="loginForm" action="${base}/login/submit.jhtml" method="post">
+					<dl>
+						<dt>
+							[#if setting.isEmailLogin]
+								${message("shop.login.usernameOrEmail")}:
+							[#else]
+								${message("shop.login.username")}:
+							[/#if]
+						</dt>
+						<dd style="min-height:54px;">
+							<input type="text" id="username" name="username" class="text" maxlength="${setting.usernameMaxLength}" />
+						</dd>
+					</dl>
+					<dl>
+						<dt>${message("shop.login.password")}</dt>
+						<dd style="min-height:54px;">
+							<input type="password" id="password" name="password" class="text" maxlength="${setting.passwordMaxLength}" autocomplete="off" />
+						</dd>
+					</dl>
+					[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+					<dl>
+						<dt>${message("shop.captcha.name")}</dt>
+						<dd style="min-height:54px;">
+							<input type="text" id="captcha" name="captcha" class="text w50 fl" maxlength="4" autocomplete="off" style="width:140px !important;"/>
+							<img id="captchaImage" class="fl ml5" src="${base}/common/captcha.jhtml?captchaId=${captchaId}" title="${message("shop.captcha.imageTitle")}" />
+						</dd>
+					</dl>
+					[/#if]
+					<div class="handle-div">
+						<dt>&nbsp;</dt>
+						<span class="auto">
+							<input type="checkbox" id="isRememberUsername" class="checkbox" name="isRememberUsername"/>${message("shop.login.isRememberUsername")}
+							
+						</span>
+						<a class="forget" href="${base}/password/find.jhtml">${message("shop.login.findPassword")}</a>
+					</div>
+					<dl>
+						<dt>&nbsp;</dt>
+						<dd>
+							<input type="submit" class="submit" value="${message("shop.login.submit")}">
+						</dd>
+					</dl>
+				</form>
+				<dl class="mt10 mb10">
+					<dt>&nbsp;</dt>
+					<dd>
+						${message("shop.login.noAccount")}？<a href="${base}/register.jhtml" class="register">${message("shop.login.register")}</a>
+					</dd>
+				</dl>
+				<!-- <dl>
+					<dd class="nc-login-other">
+						<p>您可以用合作伙伴账号登录：</p>
+						<a href="http://www.jshgwsc.com/shop/api.php?act=toqq" title="QQ"
+							class="qq">&nbsp;</a>
+					</dd>
+				</dl> -->
+			</div>
+			<div class="nc-login-bottom"></div>
+		</div>
+	</div>
+	
+	<link href="${base}/resources/mall2/chat/templates/default/css/home_login.css" rel="stylesheet" type="text/css">
+	<div style="clear: both;"></div>
+
+	[#include "/shop/include/mall/footer.html"]
+
+<script type="text/javascript">
+$().ready(function() {
+
+	var $loginForm = $("#loginForm");
+	var $username = $("#username");
+	var $password = $("#password");
+	var $captcha = $("#captcha");
+	var $captchaImage = $("#captchaImage");
+	var $isRememberUsername = $("#isRememberUsername");
+	var $submit = $(":submit");
+	
+	// 记住用户名
+	if (getCookie("memberUsername") != null) {
+		$isRememberUsername.prop("checked", true);
+		$username.val(getCookie("memberUsername"));
+		$password.focus();
+	} else {
+		$isRememberUsername.prop("checked", false);
+		$username.focus();
+	}
+	
+	// 更换验证码
+	$captchaImage.click(function() {
+		$captchaImage.attr("src", "${base}/common/captcha.jhtml?captchaId=${captchaId}&timestamp=" + (new Date()).valueOf());
+	});
+	
+	// 表单验证、记住用户名
+	$loginForm.validate({
+		rules: {
+			username: "required",
+			password: "required"
+			[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+				,captcha: "required"
+			[/#if]
+		},
+		submitHandler: function(form) {
+			$.ajax({
+				url: "${base}/common/public_key.jhtml",
+				type: "GET",
+				dataType: "json",
+				cache: false,
+				beforeSend: function() {
+					$submit.prop("disabled", true);
+				},
+				success: function(data) {
+					var rsaKey = new RSAKey();
+					rsaKey.setPublic(b64tohex(data.modulus), b64tohex(data.exponent));
+					var enPassword = hex2b64(rsaKey.encrypt($password.val()));
+					$.ajax({
+						url: $loginForm.attr("action"),
+						type: "POST",
+						data: {
+							username: $username.val(),
+							enPassword: enPassword
+							[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+								,captchaId: "${captchaId}",
+								captcha: $captcha.val()
+							[/#if]
+						},
+						dataType: "json",
+						cache: false,
+						success: function(message) {
+							if ($isRememberUsername.prop("checked")) {
+								addCookie("memberUsername", $username.val(), {expires: 7 * 24 * 60 * 60});
+							} else {
+								removeCookie("memberUsername");
+							}
+							$submit.prop("disabled", false);
+							if (message.type == "success") {
+								[#if redirectUrl??]
+									location.href = "${redirectUrl}";
+								[#else]
+									location.href = "${base}/";
+								[/#if]
+							} else {
+								$.message(message);
+								[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+									$captcha.val("");
+									$captchaImage.attr("src", "${base}/common/captcha.jhtml?captchaId=${captchaId}&timestamp=" + (new Date()).valueOf());
+								[/#if]
+							}
+						}
+					});
+				}
+			});
+		}
+	});
+
+});
+</script>
+</body>
+</html>

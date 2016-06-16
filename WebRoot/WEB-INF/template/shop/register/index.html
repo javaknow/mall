@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>${setting.siteName} - 用户注册</title>
+<meta name="keywords" content="${setting.siteName}" />
+<meta name="description" content="${setting.siteName}" />
+[#include "/shop/include/mall/css.html"]
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.lSelect.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jsbn.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/prng4.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/rng.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/rsa.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/base64.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/datePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $registerForm = $("#registerForm");
+	var $username = $("#username");
+	var $password = $("#password");
+	var $email = $("#email");
+	var $areaId = $("#areaId");
+	var $captcha = $("#captcha");
+	var $captchaImage = $("#captchaImage");
+	var $submit = $(":submit");
+	var $agreement = $("#agreement");
+	var $parentNumber = $("#parentNumber");
+	
+	// 地区选择
+	$areaId.lSelect({
+		url: "${base}/common/area.jhtml"
+	});
+	
+	// 更换验证码
+	$captchaImage.click(function() {
+		$captchaImage.attr("src", "${base}/common/captcha.jhtml?captchaId=${captchaId}&timestamp=" + (new Date()).valueOf());
+	});
+	
+	// 注册协议
+	$agreement.hover(function() {
+		$(this).height(200);
+	});
+	
+	// 表单验证
+	$registerForm.validate({
+		errorPlacement: function(error, element){
+            var error_td = element.parent('dd');
+            error_td.find('label').hide();
+            error_td.append(error);
+        },
+		rules: {
+			parentNumber: {
+				required: true,
+				pattern: /^[0-9a-z_A-Z\u4e00-\u9fa5]+$/,
+				minlength: ${setting.usernameMinLength},
+				remote: {
+					url: "${base}/register/check_parent.jhtml",
+					cache: false
+				}
+			},
+			username: {
+				required: true,
+				pattern: /^[0-9a-z_A-Z\u4e00-\u9fa5]+$/,
+				minlength: ${setting.usernameMinLength},
+				remote: {
+					url: "${base}/register/check_username.jhtml",
+					cache: false
+				}
+			},
+			password: {
+				required: true,
+				pattern: /^[^\s&\"<>]+$/,
+				minlength: ${setting.passwordMinLength}
+			},
+			rePassword: {
+				required: true,
+				equalTo: "#password"
+			},
+			email: {
+				required: true,
+				email: true
+				[#if !setting.isDuplicateEmail]
+					,remote: {
+						url: "${base}/register/check_email.jhtml",
+						cache: false
+					}
+				[/#if]
+			},
+			agree:{
+				required:true
+			},
+			captcha: "required"
+			[@member_attribute_list]
+				[#list memberAttributes as memberAttribute]
+					[#if memberAttribute.isRequired]
+						,memberAttribute_${memberAttribute.id}: {
+							required: true
+						}
+					[/#if]
+				[/#list]
+			[/@member_attribute_list]
+		},
+		messages: {
+			username: {
+				pattern: "${message("shop.register.usernameIllegal")}",
+				remote: "${message("shop.register.disabledExist")}"
+			},
+			password: {
+				pattern: "${message("shop.register.passwordIllegal")}"
+			},
+			agree:{
+				required:"请阅读并同意该协议"
+			}
+			[#if !setting.isDuplicateEmail]
+				,email: {
+					remote: "${message("shop.register.emailExist")}"
+				}
+			[/#if]
+		},
+		submitHandler: function(form) {
+			$.ajax({
+				url: "${base}/common/public_key.jhtml",
+				type: "GET",
+				dataType: "json",
+				cache: false,
+				beforeSend: function() {
+					$submit.prop("disabled", true);
+				},
+				success: function(data) {
+					var rsaKey = new RSAKey();
+					rsaKey.setPublic(b64tohex(data.modulus), b64tohex(data.exponent));
+					var enPassword = hex2b64(rsaKey.encrypt($password.val()));
+					$.ajax({
+						url: $registerForm.attr("action"),
+						type: "POST",
+						data: {
+							parentNumber: $parentNumber.val(),
+							username: $username.val(),
+							enPassword: enPassword,
+							email: $email.val()
+							[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberRegister")]
+								,captchaId: "${captchaId}",
+								captcha: $captcha.val()
+							[/#if]
+							[@member_attribute_list]
+								[#list memberAttributes as memberAttribute]
+									,memberAttribute_${memberAttribute.id}: $(":input[name='memberAttribute_${memberAttribute.id}']").val()
+								[/#list]
+							[/@member_attribute_list]
+						},
+						dataType: "json",
+						cache: false,
+						success: function(message) {
+							$.message(message);
+							if (message.type == "success") {
+								setTimeout(function() {
+									$submit.prop("disabled", false);
+									location.href = "${base}/";
+								}, 3000);
+							} else {
+								$submit.prop("disabled", false);
+								[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberRegister")]
+									$captcha.val("");
+									$captchaImage.attr("src", "${base}/common/captcha.jhtml?captchaId=${captchaId}&timestamp=" + (new Date()).valueOf());
+								[/#if]
+							}
+						}
+					});
+				}
+			});
+		}
+	});
+
+});
+</script>
+</head>
+<body>
+	<!-- 顶部广告展开效果-->
+	<div class="header-wrap">
+		<header class="public-head-layout wrapper">
+			<h1 class="site-logo">
+				<a href="${base}/"> <img src="${setting.logo}" alt="${setting.siteName}" class="pngFix"></a>
+			</h1>
+		</header>
+	</div>
+	<div class="nch-breadcrumb-layout"></div>
+
+	<div class="nc-login-layout">
+		<div class="nc-login">
+			<div class="nc-login-title">
+				<h3>${message("shop.register.title")}</h3>
+			</div>
+			<div class="nc-login-content">
+				<form id="registerForm" action="${base}/register/submit.jhtml" method="post">
+					<dl>
+						<dt>推荐人：</dt>
+						<dd style="min-height:54px;">
+							<input type="text" id="parentNumber" name="parentNumber" class="text tip" maxlength="${setting.usernameMaxLength}"  autocomplete="off" />
+						</dd>
+					</dl>
+					<dl>
+						<dt>
+							<span class="requiredField">*</span>${message("shop.register.username")}
+						</dt>
+						<dd style="min-height:54px;">
+							<input type="text" id="username" name="username" class="text tip" maxlength="${setting.usernameMaxLength}" />
+						</dd>
+					</dl>
+					<dl>
+						<dt>
+							<span class="requiredField">*</span>${message("shop.register.password")}
+						</dt>
+						<dd style="min-height:54px;">
+							<input type="password" id="password" name="password" class="text tip" maxlength="${setting.passwordMaxLength}" autocomplete="off" />
+						</dd>
+					</dl>
+					<dl>
+						<dt>
+							<span class="requiredField">*</span>${message("shop.register.rePassword")}
+						</dt>
+						<dd style="min-height:54px;">
+							<input type="password" name="rePassword" class="text tip" maxlength="${setting.passwordMaxLength}" autocomplete="off" />
+						</dd>
+					</dl>
+					<dl>
+						<dt>
+							<span class="requiredField">*</span>${message("shop.register.email")}
+						</dt>
+						<dd style="min-height:54px;">
+							<input type="text" id="email" name="email" class="text tip" maxlength="200" />
+						</dd>
+					</dl>
+					[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberRegister")]
+					<dl>
+						<dt>
+							<span class="requiredField">*</span>${message("shop.captcha.name")}
+						</dt>
+						<dd style="min-height:54px;">
+							<input type="text" id="captcha" name="captcha" class="text w50 fl tip captcha" maxlength="4" autocomplete="off" style="width:120px !important;" /> 
+							<img id="captchaImage" class="captchaImage" src="${base}/common/captcha.jhtml?captchaId=${captchaId}" title="${message(" shop.captcha.imageTitle")}"  class="fl ml5" />
+						</dd>
+					</dl>
+					[/#if]
+					<dl>
+						<dt>&nbsp;</dt>
+						<dd>
+							<input type="submit" class="submit" value="${message("shop.register.submit")}" />
+							<input name="agree" type="checkbox" class="vm ml10" id="clause" value="1" checked="checked" /> 
+							<span for="clause" class="ml5">
+								阅读并同意
+								<a href="${base}/register/agreement.jhtml" target="_blank" class="agreement" title="阅读并同意">
+									服务协议
+								</a>
+							</span> 
+						</dd>
+					</dl>
+				</form>
+				<div class="clear"></div>
+			</div>
+			<div class="nc-login-bottom"></div>
+		</div>
+		<div class="nc-login-left">
+			<h3>注册之后您可以</h3>
+			<ol>
+				<li class="ico05"><i></i>购买商品支付订单</li>
+				<li class="ico01"><i></i>申请开店销售商品</li>
+				<li class="ico03"><i></i>空间好友推送分享</li>
+				<li class="ico02"><i></i>收藏商品关注店铺</li>
+				<li class="ico06"><i></i>商品咨询服务评价</li>
+				<li class="ico04"><i></i>安全交易诚信无忧</li>
+				<div class="clear"></div>
+			</ol>
+			<h3 class="mt20">如果您是本站用户</h3>
+			<div class="nc-login-now mt10">
+				<span class="ml20">
+					我${message("shop.register.hasAccount")}<a href="${base}/login.jhtml" class="register">${message("shop.register.login")}</a>
+				</span>
+				<span>
+					或是<a class="forget" href="${base}/password/find.jhtml">${message("shop.login.findPassword")}</a>
+				</span>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="${base}/resources/mall2/js/jquery.poshytip.min.js" charset="utf-8"></script>
+	<script>
+//注册表单提示
+$('.tip').poshytip({
+	className: 'tip-yellowsimple',
+	showOn: 'focus',
+	alignTo: 'target',
+	alignX: 'center',
+	alignY: 'top',
+	offsetX: 0,
+	offsetY: 5,
+	allowTipHover: false
+});
+</script>
+	<link href="${base}/resources/mall2/chat/templates/default/css/home_login.css" rel="stylesheet" type="text/css">
+	<div style="clear: both;"></div>
+	[#include "/shop/include/mall/footer.html"]
+</body>
+</html>

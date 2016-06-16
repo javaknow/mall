@@ -1,0 +1,64 @@
+[@article_category_root_list count = 8]
+<div class="main">
+<div class="shopping">
+	[#list articleCategories as articleCategory]
+	<div class="shopone">
+		<h3>${articleCategory.name}</h3>
+		[@article_list articleCategoryId = articleCategory.id count = 5]
+		<ul>
+			[#list articles as article]
+			<li><a href="${base}${article.path}" title="${article.title}" target="_blank">${abbreviate(article.title, 10)}</a></li>
+			[/#list]
+		</ul>
+		[/@article_list]
+	</div>
+	[/#list]
+</div>
+</div>
+[/@article_category_root_list]
+
+[#include "/shop/include/friendLink.html" /]
+
+<script>
+	jQuery(document).ready(function() {
+		//滚动条滚动事件
+		jQuery(window).scroll(function() {
+			var top = jQuery(document).scrollTop();
+			if (top == 0) {
+				jQuery("#back_box").hide();
+				jQuery(".back_box_x").hide();
+			} else {
+				jQuery("#back_box").show();
+				jQuery(".back_box_x").show();
+			}
+		});
+		//
+		jQuery("#toTop").click(function() {
+			jQuery('body,html').animate({
+				scrollTop : 0
+			}, 1000);
+			return false;
+		});
+	});
+</script>
+<div class="footer">
+	<ul>
+		<li class="hui2">${message("shop.footer.copyright",setting.siteName)}&nbsp;&nbsp;&nbsp;ICP备案许可证号: ${setting.certtext}</li>
+		<li class="hui2">咨询电话：${setting.phone}&nbsp;&nbsp;&nbsp;邮箱：${setting.email}&nbsp;&nbsp;&nbsp;地址：${setting.address}</li>
+		<li></li>
+	</ul>
+	[#include "/shop/include/statistics.html" /]
+</div>
+<!--返回最顶部-->
+<div id="back_box"
+	style="position:fixed;width:40px; height:118px; float:left; right:0; display:none; bottom:150px; _position:absolute;/*兼容IE6的代码*/_bottom:auto;/*兼容IE6的代码*/_top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0)));">
+	<div class="back_index">
+		<a href="${base}" target="_blank"
+			title="返回主页"></a>
+	</div>
+	<div class="back_top">
+		<a id="toTop" href="#" bosszone="hometop" style="display: block;"
+			title="返回顶部" target="_self"></a>
+	</div>
+</div>
+[#include "/shop/include/qq.html" /]

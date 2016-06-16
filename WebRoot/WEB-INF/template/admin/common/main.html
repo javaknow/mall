@@ -1,0 +1,190 @@
+[#assign shiro=JspTaglibs["/WEB-INF/tld/shiro.tld"] /]
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- Apple devices fullscreen -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!-- Apple devices fullscreen -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>${setting.siteName}--${message("admin.main.title")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/js/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
+<link href="${base}/resources/admin/css/index.css" rel="stylesheet" type="text/css">
+<link href="${base}/resources/admin/font/css/font-awesome.min.css" rel="stylesheet" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common1.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript">
+	var ADMIN_SITE_URL = igomall.base;
+	var ADMIN_TEMPLATES_URL = ADMIN_SITE_URL+'/resources/admin/templates/default';
+	var ADMIN_RESOURCE_URL = ADMIN_SITE_URL+'/resources';
+	var SITEURL = ADMIN_SITE_URL;
+</script>
+<script type="text/javascript" src="${base}/resources/admin/js/dialog/dialog.js" id="dialog_js" charset="utf-8"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.bgColorSelector.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/admincp.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/ajaxfileupload/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.Jcrop/jquery.Jcrop.js" id="cssfile2"></script>
+<link href="${base}/resources/admin/js/jquery.Jcrop/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+	if (self != top) {
+		top.location = self.location;
+	}
+</script>
+</head>
+
+<body>
+	<div class="admincp-map ui-widget-content" nctype="map_nav" style="display:none;" id="draggable">
+		<div class="title ui-widget-header">
+			<h3>管理中心全部菜单</h3>
+			<h5>切换显示全部管理菜单，通过点击勾选可添加菜单为管理常用操作项，最多添加10个</h5>
+			<span><a nctype="map_off" href="JavaScript:void(0);">X</a></span>
+		</div>
+		<div class="content">
+			<ul class="admincp-map-nav">
+				[#list menuRoots as menuRoot]
+				<li><a href="javascript:void(0);" data-param="map-${menuRoot.url}">${menuRoot.name}</a></li>
+				[/#list]
+			</ul>
+			[#list menuRoots as menuRoot]
+			<div class="admincp-map-div" data-param="map-${menuRoot.url}">
+				[#list menuRoot.children as child]
+				<dl>
+					<dt>${child.name}</dt>
+					[#list child.children as children]
+					<dd class="">
+						<a href="javascript:void(0);" data-param="${menuRoot.url}|..${children.url}">${children.name}</a><i class="fa fa-check-square-o"></i>
+					</dd>
+					[/#list]
+				</dl>
+				[/#list]
+			</div>
+			[/#list]
+		</div>
+		<script>
+			//固定层移动
+			$(function() {
+				//管理显示与隐藏
+				$("#admin-manager-btn").click(function() {
+					if ($(".manager-menu").css("display") == "none") {
+						$(".manager-menu").css('display','block');
+						$("#admin-manager-btn").attr("title","关闭快捷管理");
+						$("#admin-manager-btn").removeClass().addClass("arrow-close");
+					} else {
+						$(".manager-menu").css('display','none');
+						$("#admin-manager-btn").attr("title","显示快捷管理");
+						$("#admin-manager-btn").removeClass().addClass("arrow");
+					}
+				});
+
+				$("#draggable").draggable({
+					handle : "div.title"
+				});
+				
+				$("div.title").disableSelection();
+			});
+		</script>
+	</div>
+	<div class="admincp-header">
+		<div class="bgSelector"></div>
+		<div id="foldSidebar">
+			<i class="fa fa-outdent " title="展开/收起侧边导航"></i>
+		</div>
+		<div class="admincp-name">
+			<h1>${setting.siteName}</h1>
+			<h2>电商平台系统管理中心</h2>
+		</div>
+		<div class="nc-module-menu">
+			<ul class="nc-row">
+				[#list menuRoots as menuRoot]
+				<li data-param="${menuRoot.url}"><a href="javascript:void(0);">${menuRoot.name}</a></li>
+				[/#list]
+			</ul>
+		</div>
+		<div class="admincp-header-r">
+			<div class="manager">
+				<dl>
+					<dt class="name">[@shiro.principal /]</dt>
+					<dd class="group">${message("admin.main.hello")}!</dd>
+				</dl>
+				<span class="avatar"> 
+					<input name="_pic" type="file" class="admin-avatar-file" id="_pic" title="设置管理员头像" /> 
+					<img alt="" nctype="admin_avatar" src="${base}/upload/admin/avatar/04866539058542542_sm.jpg">
+				</span>
+				<i class="arrow" id="admin-manager-btn" title="显示快捷管理菜单"></i>
+				<div class="manager-menu">
+					<div class="title">
+						<h4>最后登录</h4>
+						<a href="javascript:void(0);" onclick="CUR_DIALOG = ajax_form('modifypw', '修改密码', '${base}/admin/profile/edit.jhtml?act=index&op=modifypw');" class="edit-password">修改密码</a>
+					</div>
+					<div class="login-date">
+						${admin.loginDate?string("yyyy-MM-dd HH:mm:ss")} <span>(IP: ${admin.loginIp} )</span>
+					</div>
+					<div class="title">
+						<h4>常用操作</h4>
+						<a href="javascript:void(0)" class="add-menu">添加菜单</a>
+					</div>
+					<ul class="nc-row" nctype="quick_link">
+						<li><a href="javascript:void(0);" onclick="openItem('system|upload')">上传设置</a></li>
+						<li><a href="javascript:void(0);" onclick="openItem('system|cache')">清理缓存</a></li>
+						<li><a href="javascript:void(0);" onclick="openItem('shop|operating')">运营设置</a></li>
+						<li><a href="javascript:void(0);" onclick="openItem('shop|rechargecard')">平台充值卡</a></li>
+						<li><a href="javascript:void(0);" onclick="openItem('shop|contract')">消费者保障服务</a></li>
+					</ul>
+				</div>
+			</div>
+			<ul class="operate nc-row">
+				<li style="display: none !important;" nctype="pending_matters">
+					<a class="toast show-option" href="javascript:void(0);" onclick="$.cookie('commonPendingMatters', 0, {expires : -1});ajax_form('pending_matters', '待处理事项', '${base}/admin/index.jhtml?act=common&op=pending_matters', '480');" title="查看待处理事项">&nbsp;<em>0</em></a></li>
+				<li><a class="sitemap show-option" nctype="map_on" href="javascript:void(0);" title="查看全部管理菜单">&nbsp;</a></li>
+				<li><a class="style-color show-option" id="trace_show" href="javascript:void(0);" title="给管理中心换个颜色">&nbsp;</a></li>
+				<li><a class="homepage show-option" target="_blank" href="${base}/" title="新窗口打开商城首页">&nbsp;</a></li>
+				<li><a class="login-out show-option" href="../logout.jsp?act=index&op=logout" title="安全退出管理中心">&nbsp;</a></li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="admincp-container unfold">
+		<div class="admincp-container-left">
+			<div class="top-border">
+				<span class="nav-side"></span><span class="sub-side"></span>
+			</div>
+			[#list menuRoots as menuRoot]
+			<div id="admincpNavTabs_${menuRoot.url}" class="nav-tabs">
+				[#list menuRoot.children as parentRoot]
+				<dl>
+					<dt>
+						<a href="javascript:void(0);">[#if parentRoot.css??]${parentRoot.css}[#else]<span class='ico-system-0'></span>[/#if]
+						<h3>${parentRoot.name}</h3></a>
+					</dt>
+					<dd class="sub-menu">
+						<ul>
+							[#list parentRoot.children as child]
+							<li><a href="javascript:void(0);" data-param="${menuRoot.url}|..${child.url}">${child.name}</a></li>
+							[/#list]
+						</ul>
+					</dd>
+				</dl>
+				[/#list]
+			</div>
+			[/#list]
+			
+			<div class="about" title="关于${setting.siteName}"
+				onclick="ajax_form('about', '', '${base}/admin/index.jhtml?act=aboutus&op=index', 640);">
+				<i class="fa fa-copyright"></i><span>ShopNC.NET</span>
+			</div>
+		</div>
+		<div class="admincp-container-right">
+			<div class="top-border"></div>
+			<iframe src="" id="workspace" name="workspace" style="overflow: visible;" frameborder="0" width="100%" height="94%" scrolling="yes" onload="window.parent"></iframe>
+		</div>
+	</div>
+</body>
+</html>

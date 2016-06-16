@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.shop.add")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.tools.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.lSelect.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/input.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/datePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $inputForm = $("#inputForm");
+	var $areaId = $("#areaId");
+	
+	[@flash_message /]
+	
+	// 地区选择
+	$areaId.lSelect({
+		url: "admin/common/area.jhtml"
+	});
+	
+	// 表单验证
+	$inputForm.validate({
+		rules: {
+			name: {
+				required: true,
+			},
+			balance: {
+				required: true,
+				decimal: {
+					integer: 12,
+					fraction: ${setting.priceScale}
+				}
+			},
+			rate1: {
+				required: true,
+				min: 0,
+				max: 0.99,
+				decimal: {
+					integer: 12,
+					fraction: ${setting.priceScale}
+				}
+			},
+			rate2: {
+				required: true,
+				min: 0,
+				max: 0.99,
+				decimal: {
+					integer: 12,
+					fraction: ${setting.priceScale}
+				}
+			},
+			buyerRate: {
+				required: true,
+				min: 0,
+				max: 0.99,
+				decimal: {
+					integer: 12,
+					fraction: ${setting.priceScale}
+				}
+			},
+			buyerParentRate: {
+				required: true,
+				min: 0,
+				max: 0.99,
+				decimal: {
+					integer: 12,
+					fraction: ${setting.priceScale}
+				}
+			},
+			buyerParentParentRate: {
+				required: true,
+				min: 0,
+				max: 0.99,
+				decimal: {
+					integer: 12,
+					fraction: ${setting.priceScale}
+				}
+			},
+			days: {
+				required: true,
+				digits: true,
+				min:1
+			},
+			rate3: {
+				required: true,
+				min: 0,
+				decimal: {
+					integer: 12,
+					fraction: ${setting.priceScale}
+				}
+			}
+			[#list shopAttributes as shopAttribute]
+				[#if shopAttribute.isRequired]
+					,shopAttribute_${shopAttribute.id}: {
+						required: true
+					}
+				[/#if]
+			[/#list]
+		},
+		messages: {
+			name: {
+				pattern: "${message("admin.validate.illegal")}",
+			},
+			logo: {
+				pattern: "${message("admin.validate.illegal")}"
+			}
+		}
+	});
+
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="admin/common/index.jhtml">${message("admin.path.index")}</a> &raquo; ${message("admin.shop.add")}
+	</div>
+	<form id="inputForm" action="save.jhtml" method="post">
+		<ul id="tab" class="tab">
+			<li>
+				<input type="button" value="${message("admin.shop.base")}" />
+			</li>
+			[#if shopAttributes?has_content]
+				<li>
+					<input type="button" value="${message("admin.shop.profile")}" />
+				</li>
+			[/#if]
+		</ul>
+		<table class="input tabContent">
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.name")}:
+				</th>
+				<td>
+					<input type="text" name="name" class="text" maxlength="20" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.logo")}:
+				</th>
+				<td>
+					<input type="password" id="logo" name="logo" class="text" maxlength="20" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					${message("Shop.shopRank")}:
+				</th>
+				<td>
+					<select name="shopRankId">
+						[#list shopRanks as shopRank]
+							<option value="${shopRank.id}"[#if shopRank.isDefault] selected="selected"[/#if]>${shopRank.name}</option>
+						[/#list]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.balance")}:
+				</th>
+				<td>
+					<input type="text" name="balance" class="text" maxlength="7" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.rate1")}:
+				</th>
+				<td>
+					<input type="text" name="rate1" class="text" maxlength="7" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.rate2")}:
+				</th>
+				<td>
+					<input type="text" name="rate2" class="text" maxlength="7" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.buyerRate")}:
+				</th>
+				<td>
+					<input type="text" name="buyerRate" class="text" maxlength="7" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.buyerParentRate")}:
+				</th>
+				<td>
+					<input type="text" name="buyerParentRate" class="text" maxlength="7" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.buyerParentParentRate")}:
+				</th>
+				<td>
+					<input type="text" name="buyerParentParentRate" class="text" maxlength="7" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.rate3")}:
+				</th>
+				<td>
+					<input type="text" name="rate3" class="text" maxlength="7" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Shop.days")}:
+				</th>
+				<td>
+					<input type="text" name="days" class="text" maxlength="7" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					${message("admin.common.setting")}:
+				</th>
+				<td>
+					<label>
+						<input type="checkbox" name="isEnabled" value="true" checked="checked" />${message("Shop.isEnabled")}
+						<input type="hidden" name="_isEnabled" value="false" />
+					</label>
+				</td>
+			</tr>
+		</table>
+		[#if shopAttributes?has_content]
+			<table class="input tabContent">
+				[#list shopAttributes as shopAttribute]
+					<tr>
+						<th>
+							[#if shopAttribute.isRequired]<span class="requiredField">*</span>[/#if]${shopAttribute.name}:
+						</th>
+						<td>
+							[#if shopAttribute.type == "text"]
+								<input type="text" name="shopAttribute_${shopAttribute.id}" class="text" maxlength="200" />
+							[#elseif shopAttribute.type == "select"]
+								<select name="shopAttribute_${shopAttribute.id}">
+									<option value="">${message("admin.common.choose")}</option>
+									[#list shopAttribute.options as option]
+										<option value="${option}">
+											${option}
+										</option>
+									[/#list]
+								</select>
+							[#elseif shopAttribute.type == "checkbox"]
+								<span class="fieldSet">
+									[#list shopAttribute.options as option]
+										<label>
+											<input type="checkbox" name="shopAttribute_${shopAttribute.id}" value="${option}" />${option}
+										</label>
+									[/#list]
+								</span>
+							[/#if]
+						</td>
+					</tr>
+				[/#list]
+			</table>
+		[/#if]
+		<table class="input">
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<td>
+					<input type="submit" class="button" value="${message("admin.common.submit")}" />
+					<input type="button" class="button" value="${message("admin.common.back")}" onclick="location.href='list.jhtml'" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

@@ -1,0 +1,69 @@
+@charset "utf-8";
+
+div.header{
+    height: 26px;
+    line-height: 26px;
+    position: relative;
+    left: 0px;
+    z-index: 1000;
+    border-bottom: 1px solid #EEE;
+    width: 100%;
+    background: none repeat scroll 0% 0% #F7F7F7;
+    font-family: "宋体";
+}
+div.header div.topNav{
+	width: 1202px;
+}
+.head_width {
+    width: 100%;
+    background-color: #FFF;
+}
+.head {
+    width: 1202px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 103;
+    height: 100px;
+}
+.logo {
+    float: left;
+    height: 70px;
+    margin-top: 10px;
+    margin-right: 20px;
+    width: 209px;
+    overflow: hidden;
+}
+
+form, fieldset, legend, input, button, textarea, p, blockquote {
+    margin: 0px;
+    padding: 0px;
+    font-size: 12px;
+}
+.head_search {
+    float: left;
+    margin-top: 27px;
+    position: relative;
+}
+.head_seartxt {
+    display: block;
+    float: left;
+    width: 100%;
+}
+.head_searstr {
+    display: block;
+    width: 540px;
+    overflow: hidden;
+    margin-top: 5px;
+    color: #999;
+    float: left;
+    height: 20px;
+}
+.head_searstr a {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #999;
+    text-decoration: none;
+    color: #555;
+    outline: medium none;
+}

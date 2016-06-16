@@ -1,0 +1,273 @@
+{
+    "code": 200,
+    "datas": {
+        "goods_info": {
+            "goods_name": "${product.name}",
+            "goods_jingle": "",
+            "gc_id_1": "${(product.productCategory.parent.parent.name)!}",
+            "gc_id_2": "${(product.productCategory.parent.name)!}",
+            "gc_id_3": "${(product.productCategory.name)!}",
+            "spec_name": {
+            	[#list product.spec_name.keySet() as key]
+            	[#if key_index==0]
+                "${key}": "${product.spec_name.get(key)}"
+                [#else]
+                ,"${key}": "${product.spec_name.get(key)}"
+                [/#if]
+                [/#list]
+            },
+            "spec_value": {
+            	[#list product.spec_value.keySet() as key]
+            	[#if key_index==0]
+                "${key}": {
+                	[#assign map = product.spec_value.get(key)]
+                	[#list map.keySet() as key1]
+                	[#if key1_index==0]
+                    "${key1}": "${map.get(key1)}"
+                    [#else]
+                    ,"${key1}": "${map.get(key1)}"
+                    [/#if]
+                    [/#list]
+                }
+                [#else]
+                ,"${key}": {
+                    [#assign map = product.spec_value.get(key)]
+                	[#list map.keySet() as key1]
+                	[#if key1_index==0]
+                    "${key1}": "${map.get(key1)}"
+                    [#else]
+                    ,"${key1}": "${map.get(key1)}"
+                    [/#if]
+                    [/#list]
+                }
+                [/#if]
+                [/#list]
+                
+            },
+            "goods_attr": {
+                "83": {
+                    "444": "400-699",
+                    "name": "价格"
+                },
+                "84": {
+                    "449": "青年",
+                    "name": "人群"
+                },
+                "85": {
+                    "454": "商务休闲",
+                    "name": "风格"
+                },
+                "86": {
+                    "471": "涤纶",
+                    "name": "材质"
+                },
+                "87": {
+                    "481": "2014年",
+                    "name": "上市时间"
+                },
+                "88": {
+                    "486": "纯色",
+                    "name": "图案"
+                },
+                "89": {
+                    "498": "普通",
+                    "name": "厚度"
+                },
+                "90": {
+                    "513": "其他",
+                    "name": "工艺"
+                },
+                "91": {
+                    "515": "修身裤",
+                    "name": "裤型"
+                },
+                "92": {
+                    "523": "长裤",
+                    "name": "裤长"
+                },
+                "93": {
+                    "526": "中腰",
+                    "name": "腰型"
+                }
+            },
+            "goods_custom": false,
+            "mobile_body": "",
+            "goods_price": "${product.price}",
+            "goods_marketprice": "${product.marketPrice}",
+            "goods_costprice": "0.00",
+            "goods_discount": "100",
+            "goods_serial": "",
+            "goods_storage_alarm": "${setting.stockAlertCount}",
+            "goods_barcode": "",
+            "transport_id": "0",
+            "transport_title": "",
+            "goods_freight": "${product.weight}",
+            "goods_vat": "0",
+            "areaid_1": "0",
+            "areaid_2": "0",
+            "goods_stcids": "",
+            "plateid_top": "0",
+            "plateid_bottom": "0",
+            "is_virtual": "0",
+            "virtual_indate": "0",
+            "virtual_limit": "0",
+            "virtual_invalid_refund": "0",
+            "sup_id": "0",
+            "is_own_shop": "0",
+            "goods_id": "${product.id}",
+            "goods_promotion_price": "539.00",
+            "goods_promotion_type": "0",
+            "goods_click": ${product.hits},
+            "goods_salenum": "${product.sales}",
+            "goods_collect": "${product.favoriteMembers.size()}",
+            "goods_spec": {
+            	[#assign specificationValues = product.goods.specificationValues /][#list product.specifications as specification][#if specification_index==0]"${specification.id}":"[#list specification.specificationValues as specificationValue][#if specificationValues?seq_contains(specificationValue)]${specificationValue.name}[#break /][/#if][/#list]"[#else],"${specification.id}":"[#list specification.specificationValues as specificationValue][#if specificationValues?seq_contains(specificationValue)]${specificationValue.name}[#break /][/#if][/#list]"[/#if][/#list]
+            },
+            "goods_storage": "[#if product.stock==null]99999[#else]${product.stock}[/#if]",
+            "color_id": "138",
+            "evaluation_good_star": "5",
+            "evaluation_count": "0",
+            "is_fcode": "0",
+            "is_presell": "0",
+            "presell_deliverdate": "0",
+            "is_book": "0",
+            "book_down_payment": "0.00",
+            "book_final_payment": "0.00",
+            "book_down_time": "0",
+            "book_buyers": "0",
+            "have_gift": 1,
+            "contract_1": "0",
+            "contract_2": "0",
+            "contract_3": "0",
+            "contract_4": "0",
+            "contract_5": "0",
+            "contract_6": "0",
+            "contract_7": "0",
+            "contract_8": "0",
+            "contract_9": "0",
+            "contract_10": "0",
+            "is_chain": "0",
+            "sole_info": [],
+            "groupbuy_info": null,
+            "xianshi_info": null,
+            "jjg_info": null,
+            "cart": 1,
+            "buynow": 1,
+            "contractlist": [],
+            "goods_url": "http://blackboy1987:8080/wap/product/detail.jhtml?goods_id=15164"
+        },
+        "spec_image": {
+            "138": "http://b2b2c.shopnctest.com/dema/data/upload/shop/store/goods/9/9_04626396290143184_60.jpg"
+        },
+        "mansong_info": null,
+        "gift_array": [
+        	[#list product.giftItems as giftItem]
+        	[#if giftItem_index==0]
+            {
+                "gift_id": "${giftItem.id}",
+                "goods_id": "${giftItem.gift.id}",
+                "goods_commonid": "100102",
+                "gift_goodsid": "100298",
+                "gift_goodsname": "${giftItem.gift.name}",
+                "gift_goodsimage": "${giftItem.gift.image}",
+                "gift_amount": "${giftItem.quantity}"
+            }
+            [#else]
+            ,{
+                "gift_id": "${giftItem.id}",
+                "goods_id": "${giftItem.gift.id}",
+                "goods_commonid": "100102",
+                "gift_goodsid": "100298",
+                "gift_goodsname": "${giftItem.gift.name}",
+                "gift_goodsimage": "${giftItem.gift.image}",
+                "gift_amount": "${giftItem.quantity}"
+            }
+            [/#if]
+            [/#list]
+        ],
+        "goods_commend_list": [
+        	[#list goods_commend_list as product1]
+        	[#if product1_index==0]
+            {
+                "goods_id": "$product1.id}",
+                "goods_name": "${product1.name}",
+                "goods_price": ${product1.marketPrice},
+                "goods_promotion_price": "${product1.price}",
+                "goods_image_url": "${product1.image}"
+            }
+            [#else]
+            ,{
+                "goods_id": "$product1.id}",
+                "goods_name": "${product1.name}",
+                "goods_price": ${product1.marketPrice},
+                "goods_promotion_price": "${product1.price}",
+                "goods_image_url": "${product1.image}"
+            }
+            [/#if]
+            [/#list]
+            
+        ],
+        "store_info": {
+            "store_id": "${product.shop.id}",
+            "store_name": "${product.shop.name}",
+            "member_id": "${product.shop.member.id}",
+            "member_name": "${product.shop.member.username}",
+            "is_own_shop": "[#if product.shop.is_own_shop]0[#else]1[/#if]",
+            "goods_count": "22",
+            "store_credit": {
+                "store_desccredit": {
+                    "text": "描述",
+                    "credit": "5.0",
+                    "percent": "--",
+                    "percent_class": "equal",
+                    "percent_text": "平"
+                },
+                "store_servicecredit": {
+                    "text": "服务",
+                    "credit": "5.0",
+                    "percent": "--",
+                    "percent_class": "equal",
+                    "percent_text": "平"
+                },
+                "store_deliverycredit": {
+                    "text": "物流",
+                    "credit": "5.0",
+                    "percent": "--",
+                    "percent_class": "equal",
+                    "percent_text": "平"
+                }
+            }
+        },
+        "spec_list": {
+            "138|139": "100252",
+            "138|140": "100253",
+            "138|141": "100254",
+            "138|142": "100255",
+            "138|143": "100256",
+            "138|144": "100257",
+            "138|145": "100258",
+            "138|146": "100259",
+            "138|147": "100260"
+        },
+        "goods_image": "[#list product.mediums as pic][#if pic_index==0]${pic}[#else],${pic}[/#if][/#list]",
+        "goods_eval_list": [],
+        "goods_evaluate_info": {
+            "good": ${product.getReviews().size()},
+            "normal": 0,
+            "bad": 0,
+            "all": ${product.getReviews().size()},
+            "img": 0,
+            "good_percent": 100,
+            "normal_percent": 0,
+            "bad_percent": 0,
+            "good_star": 5,
+            "star_average": 5
+        },
+        "goods_hair_info": {
+            "content": "免运费",
+            "if_store_cn": "有货",
+            "if_store": true,
+            "area_name": "全国"
+        }
+    }
+}

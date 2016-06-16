@@ -1,0 +1,73 @@
+
+<!doctype html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+[@seo type = "index"]
+	<title>[#if seo.title??][@seo.title?interpret /][#else]${message("shop.index.title")}[/#if][#if systemShowPowered]  [/#if]</title>
+	<meta name="author" content="" />
+	<meta name="copyright" content="" />
+	[#if seo.keywords??]
+		<meta name="keywords" content="[@seo.keywords?interpret /]" />
+	[/#if]
+	[#if seo.description??]
+		<meta name="description" content="[@seo.description?interpret /]" />
+	[/#if]
+[/@seo]
+
+[#include "/shop/include1/css.html" /]
+<script src="${base}/resources/shop/js/detectmobilebrowser.js"></script>
+	<script>
+		if(jQuery.browser.mobile){
+			window.location.href="${base}/wap/index.jhtml";
+		}else{
+			
+		}
+	</script>
+</head>
+<body>
+	
+	[#include "/shop/include1/side.html" /] 
+	[#include "/shop/include1/header.html" /]
+	[#include "/shop/include1/category.html" /]
+	
+	<div class="nch-breadcrumb-layout"></div>
+	<link href="${base}/resources/shop1/css/index.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="${base}/resources/shop1/js/home_index.js" charset="utf-8"></script>
+	<style type="text/css">
+		.category {
+			display: block !important;
+		}
+	</style>
+	<div class="clear"></div>
+
+	[#include "/shop/include1/gundong.html" /]
+	
+	<div class="wrapper">
+		<div class="mt10">
+			<div class="mt10">
+				<a title="物流自提服务站广告" target="_blank" href=""> 
+					<img border="0" alt="物流自提服务站广告" src="${base}/resources/shop1/images/banner.gif" style="width:1200px;height:100px">
+				</a>
+			</div>
+		</div>
+	</div>
+	
+	[#include "/shop/include1/floor.html" /]
+	
+	<div class="wrapper">
+		<div class="mt10">
+			<a href='' target='_blank' title='看大片'>
+				<img style='width:1200px;height:100px' border='0' src='${base}/resources/shop1/images/04759494673199733.jpg' alt='看大片' /></a>
+		</div>
+	</div>
+	
+	[#include "/shop/include1/chat.html" /]
+	
+	[#include "/shop/include1/faq.html" /]
+	[#include "/shop/include1/footer.html" /]
+	
+	[#include "/shop/include1/js.html" /]
+	
+</body>
+</html>

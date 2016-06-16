@@ -1,0 +1,38 @@
+[#if cart==null||cart.cartItems==null||cart.cartItems.size()==0]
+<ul class="cart-list">
+	<li>
+		<dl>
+			<dd style="text-align: center; ">暂无商品</dd>
+		</dl>
+	</li>
+</ul>
+<div class="btn-box"></div>
+[#else]
+<ul class="cart-list">
+	[#list cart.cartItems as cartItem]
+	<li nctpye="cart_item_${cartItem.id}">
+		<div class="goods-pic">
+			<a href="${base}${cartItem.product.path}" title="${cartItem.product.name}" target="_blank";="">
+				<img
+				src="http://b2b2c.shopnctest.com/demo/data/upload/shop/store/goods/1/1_04758451982179683_60.jpg"
+				alt="${cartItem.product.name}"></a>
+		</div>
+		<dl>
+			<dt class="goods-name">
+				<a href="${base}${cartItem.product.path}" title="${cartItem.product.name}" target="_blank">${cartItem.product.name}</a>
+			</dt>
+			<dd>
+				<em class="goods-price">${currency(cartItem.product.price,true,true)}</em>×${cartItem.quantity}
+			</dd>
+		</dl> <a href="javascript:drop_topcart_item3(${cartItem.id});" class="del" title="删除">X</a>
+	</li>
+	[/#list]
+
+</ul>
+<div class="btn-box">
+	<div nctype="rtoolbar_total_price" class="total-price">
+		共计金额：<em class="goods-price">${currency(cart.effectivePrice,true,true)}</em>
+	</div>
+	<a href="${base}/cart/list.jhtml">结算购物车中的商品</a>
+</div>
+[/#if]

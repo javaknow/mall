@@ -1,0 +1,62 @@
+<div class="index_center_box">
+	[@promotion_list hasEnded = false count = 4]
+	<div class="index_sale">
+		<div class="index_sale_tab" id="index_sale_tab">
+			<!-- <a href="javascript:void(0);" class="sale_change" mark="7"
+				id="sale_change" onclick="change_case_goods();">换一组</a> -->
+			<ul>
+				[#list promotions as promotion]
+					<li [#if promotion_index==0] class="this" id="goodscase${promotion.id}" goods_random="1" [/#if]>
+						<a href="product/list.jhtml?promotionId=${promotion.id}" target="_blank">${promotion.name}</a><s></s>
+					</li>
+				[/#list]
+			</ul>
+		</div>
+		[#list promotions as promotion]
+		[@product_list count=5 promotionId = promotion.id]
+		<div class="index_sale_box" id="index_sale_box_${promotion.id}" [#if promotion_index!=0] style="display: none;" [/#if]>
+			<div class="index_sale_con" id="index_sale_con_${promotion.id}">
+				[#list products as product]
+				<ul class="index_sale_two">
+					<li class="sale_two_img">
+						<a href="${base}${product.path}" target="_blank"> 
+							<span class="img_cspan">
+								<p>
+									<img src="[#if product.image??]${product.image}[#else]${setting.defaultThumbnailProductImage}[/#if]" width="100%" />
+								</p>
+							</span>
+						</a>
+					</li>
+					<li class="sale_two_name">
+						<a href="${base}${product.path}" target="_blank">${abbreviate(product.name, 30)}</a>
+					</li>
+					<li class="sale_two_price">${message("Product.price")}：<strong>${currency(product.price, true, true)}</strong></li>
+				</ul>
+				[/#list]
+			</div>
+		</div>
+		[/@product_list]
+		[/#list]
+	</div>
+	[/@promotion_list]
+	
+	<div class="index_brand_right">
+		<div class="brand">
+			<h3>
+				<span><a href="brand/list/1.jhtml"
+					target="_blank">${message("shop.index.allBrand")}</a></span>${message("shop.index.hotBrand")}
+			</h3>
+			<ul>
+				[@brand_list type = "image" count = 14]
+					[#list brands as brand]
+						<li>
+							<img src="${brand.logo}" width="142" height="66" />
+							<a href="${base}${brand.path}" target="_blank">${brand.name}</a>
+						</li>
+					[/#list]
+				[/@brand_list]
+				
+			</ul>
+		</div>
+	</div>
+</div>

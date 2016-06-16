@@ -1,0 +1,247 @@
+
+<div class="public-top-layout w">
+	<div class="topbar wrapper">
+		<div class="user-entry">
+			您好，<a href="${base}/member/index.jhtml"><span id="headerUsername"></span></a> 
+			欢迎来到 <a href="${base}/" title="首页" alt="首页">${setting.siteName}</a>
+			<span id="headerLogin">[<a href="${base}/login.jhtml">${message("shop.header.login")}</a>]</span> 
+			<span id="headerRegister">[<a href="${base}/register.jhtml">${message("shop.header.register")}</a>]</span>
+			<span id="headerLogout">[<a href="${base}/logout.jhtml">${message("shop.header.logout")}</a>]
+		</div>
+			<div class="quick-menu">
+				<dl>
+					<dt>
+						<a href="${base}/member/order/list.jhtml">我的订单</a><i></i>
+					</dt>
+					<dd>
+						<ul>
+							<li><a href="${base}/member/order/list.jhtml">待付款订单</a></li>
+							<li><a href="${base}/member/order/list.jhtml">待确认收货</a></li>
+							<li><a href="${base}/member/order/list.jhtml">待评价交易</a></li>
+						</ul>
+					</dd>
+				</dl>
+				<dl>
+					<dt>
+						<a href="${base}/member/favorite/list.jhtml">我的收藏</a><i></i>
+					</dt>
+					<dd>
+						<ul>
+							<li><a href="${base}/member/favorite/list.jhtml">商品收藏</a></li>
+							<li class="hide"><a href="${base}/member/favorite/list.jhtml">店铺收藏</a></li>
+						</ul>
+					</dd>
+				</dl>
+				<dl class="hide">
+					<dt>
+						客户服务<i></i>
+					</dt>
+					<dd>
+						<ul>
+							<li><a href="${base}/">帮助中心</a></li>
+							<li><a href="${base}/">售后服务</a></li>
+							<li><a href="${base}/">客服中心</a></li>
+						</ul>
+					</dd>
+				</dl>
+				<dl>
+					<dt> 站点导航<i></i>
+					</dt>
+					<dd>
+						<ul>
+							<li><a target="_blank" href="${base}/">资讯频道</a></li>
+							<li><a target="_blank" href="${base}/">社区圈子</a></li>
+							<li><a target="_blank" href="${base}/">微商城</a></li>
+							<li><a target="_blank" href="${base}/">商城首页</a></li>
+						</ul>
+					</dd>
+				</dl>
+				<dl class="weixin">
+					<dt>
+						关注我们<i></i>
+					</dt>
+					<dd>
+						<h4>
+							扫描二维码<br /> 关注商城微信号
+						</h4>
+						<img src="${base}/upload/image/qrCode/qrcode_for_430.jpg">
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="header-wrap">
+		<header class="public-head-layout wrapper">
+			<h1 class="site-logo">
+				<a href="${base}/">
+				<img src="${base}${setting.logo}" alt="${setting.siteName}" class="pngFix"></a>
+			</h1>
+			<div class="head-app">
+				<span class="pic"></span>
+				<div class="download-app">
+					<div class="qrcode">
+						<img src="${base}/upload/image/qrCode/qrcode_for_430.jpg">
+					</div>
+					<div class="hint">
+						<h4>扫描商城官方二维码</h4>
+						<!-- 下载手机客户端 -->
+					</div>
+					<!-- <div class="addurl">
+						<a href="${base}/" target="_blank">
+							<i class="icon-android"></i>Android
+						</a> 
+						<a href="${base}/" target="_blank">
+							<i class="icon-apple"></i>iPhone
+						</a>
+					</div> -->
+				</div>
+			</div>
+			<div class="head-search-layout">
+				<div class="head-search-bar" id="head-search-bar">
+					<form id="productSearchForm" action="${base}/product/search.jhtml" method="get" class="search-form">
+						<input name="keyword" id="keyword" type="text" class="input-text" value="${productKeyword!message("shop.header.keyword")}" maxlength="60" x-webkit-speech lang="zh-CN" onwebkitspeechchange="foo()" placeholder="message("shop.header.keyword")" data-value="message("shop.header.keyword")" x-webkit-grammar="builtin:search" autocomplete="off" /> 
+						<input type="submit" id="button" value="搜索" class="input-submit">
+					</form>
+					<div class="search-tip" id="search-tip">
+						<div class="search-history">
+							<div class="title">
+								历史纪录<a href="javascript:void(0);" id="search-his-del">清除</a>
+							</div>
+							<ul id="search-his-list">
+							</ul>
+						</div>
+						[#if setting.hotSearches?has_content]
+						<div class="search-hot">
+							<div class="title">${message("shop.header.hotSearch")}...</div>
+							<ul>
+								[#list setting.hotSearches as hotSearch]
+									<li><a href="${base}/product/search.jhtml?keyword=${hotSearch?url}">${hotSearch}</a></li>
+								[/#list]
+							</ul>
+						</div>
+						[/#if]
+					</div>
+				</div>
+				[#if setting.hotSearches?has_content]
+				<div class="keyword">
+					<ul>
+						[#list setting.hotSearches as hotSearch]
+							<li><a href="${base}/product/search.jhtml?keyword=${hotSearch?url}">${hotSearch}</a></li>
+						[/#list]
+					</ul>
+				</div>
+				[/#if]
+			</div>
+			<div class="head-user-menu">
+				<dl class="my-mall">
+				<script type="text/javascript">
+					$().ready(function() {
+						$.ajax({
+							url: "${base}/info1.jhtml",
+							type: "POST",
+							cache: false,
+							success: function(data) {
+								$(".my-mall").html("");
+								$(".my-mall").html(data);
+							}
+						});
+					});
+				</script>
+				</dl>
+				<dl class="my-cart">
+					<dt>
+						<span class="ico"></span>购物车结算<i class="arrow"></i>
+					</dt>
+					<dd class="my-cart-dd">
+						
+					</dd>
+				</dl>
+			</div>
+		</header>
+	</div>
+	<script type="text/javascript">
+	$(function() {
+		$(".head-user-menu dl").hover(function() {
+			$(this).addClass("hover");
+		}, function() {
+			$(this).removeClass("hover");
+		});
+		$(".head-user-menu .my-mall").mouseover(function() {// 最近浏览的商品
+			load_history_information();
+			$(this).unbind("mouseover");
+		});
+		$(".head-user-menu .my-cart").mouseover(function() {// 运行加载购物车
+			load_cart_information1();
+			$(this).unbind("mouseover");
+		});
+		
+		
+		$('#button').click(function() {
+			if ($('#keyword').val() == '') {
+				if ($('#keyword').attr('data-value') == '') {
+					return false
+				} else {
+					//window.location.href = "http://b2b2c.shopnctest.com/demo/shop/index.php?act=search&op=index&keyword="+ $('#keyword').attr('data-value');
+					return false;
+				}
+			}
+		});
+		$(".head-search-bar").hover(null, function() {
+			$('#search-tip').hide();
+		});
+		// input ajax tips
+		$('#keyword') .focus(function() {
+			$('#search-tip').show()
+		}).autocomplete({
+			//minLength:0,
+			source : function(request, response) {
+				/* $.getJSON('http://b2b2c.shopnctest.com/demo/shop/index.php?act=search&op=auto_complete',request,function(data, status, xhr) {
+					$('#top_search_box > ul').unwrap();
+					response(data);
+					if (status == 'success') {
+						$('#search-tip').hide();
+						$(".head-search-bar").unbind('mouseover');
+						$('body > ul:last').wrap("<div id='top_search_box'></div>").css({
+							'zIndex' : '1000',
+							'width' : '362px'
+						});
+					}
+				}); */
+			},select : function(ev, ui) {
+				$('#keyword').val(ui.item.label);
+				$('#top_search_form').submit();
+			}
+		});
+		$('#search-his-del').on('click', function() {
+			$.cookie('9204_his_sh', null, {
+				path : '/'
+			});
+			$('#search-his-list').empty();
+		});
+	});
+	</script>
+<script type="text/javascript">
+$().ready(function() {
+	var $headerLogin = $("#headerLogin");
+	var $headerRegister = $("#headerRegister");
+	var $headerUsername = $("#headerUsername");
+	var $headerLogout = $("#headerLogout");
+	var $searchForm = $("#searchForm");
+	var $keyword = $("#searchForm input");
+	var defaultKeyword = "${message("shop.header.keyword")}";
+	var $qiandao = $("#qiandao a");
+	
+	var username = getCookie("username");
+	if (username != null) {
+		$headerUsername.text(username).show();
+		$headerLogout.show();
+		$headerLogin.hide();
+		$headerRegister.hide();
+		$("#qiandao").show();
+	} else {
+		$headerLogin.show();
+		$headerRegister.show();
+		$("#qiandao").hide();
+	}
+});
+</script>

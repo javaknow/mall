@@ -1,0 +1,15 @@
+<div id="footer" class="wrapper">
+	[@navigation_list position = "bottom"]
+		<p>
+		[#list navigations as navigation]
+			<a href="${navigation.url}"[#if navigation.isBlankTarget] target="_blank"[/#if]>${navigation.name}</a>
+			[#if navigation_has_next]|[/#if]
+		[/#list]
+	</p>
+	[/@navigation_list]
+	${message("shop.footer.copyright", setting.siteName)}<br />
+		<script type="text/javascript">
+		var cnzz_protocol = (("https:" == document.location.protocol) ? " https://": " http://");
+			document.write(unescape("%3Cspan id='cnzz_stat_icon_2076168'%3E%3C/span%3E%3Cscript src='"+ cnzz_protocol+ "s11.cnzz.com/stat.php%3Fid%3D2076168' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>

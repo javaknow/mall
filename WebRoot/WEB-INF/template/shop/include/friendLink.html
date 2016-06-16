@@ -1,0 +1,25 @@
+<div class="main">
+	<div class="shopping">
+		[@friend_link_list count = 10]
+			[#list friendLinks as friendLink]
+			<div class="friendLink" >
+				[#if friendLink.logo!=null]
+				<a href="${friendLink.url}" target="_blank">
+					<img src="${friendLink.logo}" alt="${friendLink.name}" title="${friendLink.name}" style="width:88px;height:35px"/>
+				</a>
+				[#else]
+				<a href="${friendLink.url}" target="_blank">${friendLink.name}</a>
+				[/#if]
+			</div>
+			[/#list]
+			<div class="friendLink">
+				<a href="${base}/friend_link.jhtml" target="_blank">
+					<img src="${base}/upload/image/more.png" alt="更多" title="更多" style="width:88px;height:35px"/>
+				</a>
+			</div>
+		[/@friend_link_list]
+	</div>
+</div>
+
+
+

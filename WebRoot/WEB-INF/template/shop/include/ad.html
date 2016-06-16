@@ -1,0 +1,32 @@
+<script />
+jQuery('document').ready(function(){
+	jQuery('.top_mid_slide').slide({
+		mainCell:'.top_mid_slider_ul',
+		titCell:'.banner_top li',
+		titOnClassName:'this',
+		trigger:'mouseover',autoPlay:true
+	});
+});
+</script>
+<div class='top_mid_slide'>
+	<ul class='top_mid_slider_ul'>
+		[#list adPosition.ads as ad]
+			[#if ad.hasBegun() && !ad.hasEnded() && ad.type == "image"]
+				[#if ad.url??]
+					<li class='top_mid_slider_ul_li' style='background:#f3f3f3 url(${ad.path}) no-repeat; background-position: 50% 0%;'  alt="${ad.title}" title="${ad.title}" >
+						<a style='width:${adPosition.width}px; height:${adPosition.height}px; display:block; margin-left:20%;' href='${ad.url}'></a>
+					</li>
+				[#else]
+					<li class='top_mid_slider_ul_li' style='background:#f3f3f3 url(${ad.path}) no-repeat; background-position: 50% 0%;'  alt="${ad.title}" title="${ad.title}" ></li>
+				[/#if]
+			[/#if]
+		[/#list]
+	</ul>
+	<div class='banner_top'>
+		<ul>
+			[#list adPosition.ads as ad]
+				<li [#if ad_index==0]class='this'[/#if] style='cursor:pointer;'></li>
+			[/#list]
+		</ul>
+	</div>
+</div>

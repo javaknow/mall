@@ -1,0 +1,56 @@
+<script>
+	jQuery('document').ready(function() {
+		jQuery('.picScroll').slide({
+			mainCell : 'ul',
+			autoPlay : true,
+			effect : 'left',
+			vis : 3,
+			scroll : 3,
+			autoPage : true
+		});
+		jQuery('.picScroll').mouseover(function() {
+			jQuery('.picScroll .next').show();
+			jQuery('.picScroll .prev').show();
+		}).mouseleave(function() {
+			jQuery('.picScroll .next').hide();
+			jQuery('.picScroll .prev').hide();
+		});
+	})
+</script>
+
+<div class="top_mid">
+	<div class="top_mid">
+		<div class="banner_nothing"></div>
+		<div class="bottom_slide">
+			<div class='picScroll'>
+				<ul>
+					[#list adPosition.ads as ad]
+						[#if ad.hasBegun() && !ad.hasEnded() && ad.type == "image"]
+							<li>
+								[#if ad.url??]
+									<a href='${ad.url}' target='_blank'>
+										<span class='img_cspan'>
+											<p>
+												<img src='${ad.path}' width='${adPosition.width}' height='${adPosition.height}' />
+											</p>
+										</span>
+									</a>
+								[#else]
+									<span class='img_cspan'>
+										<p>
+											<img src='${ad.path}' width='${adPosition.width}' height='${adPosition.height}' />
+										</p>
+									</span>
+								[/#if]
+							</li>
+						[/#if]
+					[/#list]
+				</ul>
+				<a href='javascript:void(0);' class='next' style='display:none;'></a>
+				<a href='javascript:void(0);' class='prev' style='display:none;'></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+

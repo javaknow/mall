@@ -1,0 +1,280 @@
+<link href="${base}/resources/mall/css/header.css" type="text/css" rel="stylesheet" />
+<link href="${base}/resources/shop/css/common.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/mall/css/public.css" type="text/css" rel="stylesheet" />
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?9d7fb9d68180c31290c6d620e3330ac3";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<script type="text/javascript">
+$().ready(function() {
+
+	var $headerLogin = $("#headerLogin");
+	var $headerRegister = $("#headerRegister");
+	var $headerUsername = $("#headerUsername");
+	var $headerLogout = $("#headerLogout");
+	var $searchForm = $("#searchForm");
+	var $keyword = $("#searchForm input");
+	var defaultKeyword = "${message("shop.header.keyword")}";
+	var $qiandao = $("#qiandao a");
+	
+	var username = getCookie("username");
+	if (username != null) {
+		$headerUsername.text("${message("shop.header.welcome")}, " + username).show();
+		$headerLogout.show();
+		$headerLogin.hide();
+		$headerRegister.hide();
+		$("#qiandao").show();
+	} else {
+		$headerLogin.show();
+		$headerRegister.show();
+		$("#qiandao").hide();
+	}
+	
+	$keyword.focus(function() {
+		if ($keyword.val() == defaultKeyword) {
+			$keyword.val("");
+		}
+	});
+	
+	$keyword.blur(function() {
+		if ($keyword.val() == "") {
+			$keyword.val(defaultKeyword);
+		}
+	});
+	
+	$searchForm.submit(function() {
+		if ($.trim($keyword.val()) == "" || $keyword.val() == defaultKeyword) {
+			return false;
+		}
+	});
+
+	$qiandao.click(function() {
+		$.ajax({
+			url : "${base}/member/signIn.jhtml",
+			type : "POST",
+			dataType : "json",
+			cache : false,
+			success : function(message) {
+				if (message.type = "success") {
+					$.message(message);
+				} else {
+					$.message(message);
+				}
+			}
+		});
+	});
+	
+	$("#top_user_sp").mouseover(function(){
+		if($("#top_user_hb").size()==0){
+			$.ajax({
+				type:"POST",
+				url:"${base}/info.jhtml",
+				data:"",
+				contentType: "application/x-www-form-urlencoded; charset=utf-8",
+				beforeSend:function(){
+					$("#top_user_hid").html("<div class='top_user_hb' id='top_user_hb'><span class='top_user_loading'><img src='http://b2b2c.iskyshop.com/resources/style/system/front/default/images/loading.gif' /></span><b class='top_user_warning'>加载中，请稍后...</b></div>");
+					$("#top_user_hid").show();
+				},
+				success:function(data){
+					$("#top_user_hid").empty();
+					$("#top_user_hid").html(data);
+				}
+			});
+		}else{
+			$("#top_user_hid").show();
+		}
+		$("#top_user_sp").addClass("top_user_sp_this");
+	});
+
+	$("#top_user").mouseleave(function(){
+	    $("#top_user_hid").hide();
+		$("#top_user_sp").removeClass("top_user_sp_this");
+	});
+	
+	
+	//鼠标经过购物车
+	$("#goodscar_sp").mouseover(function(){
+		var gstatus =$("#goodscar_con_box").attr("mark");
+		if(gstatus=="none"){
+			$.ajax({
+				type:"POST",
+				url:"${base}/cart/info.jhtml",
+				data:"",
+				beforeSend:function(){
+					$("#goodscar_con_box").empty().html(' <div><span class="top_user_loading"><img src="http://b2b2c.iskyshop.com/resources/style/system/front/default/images/loading.gif" /></span><b class="top_user_warning">加载中，请稍后...</b></div>');
+					$("#goodscar_con_box").show();
+				},
+				success:function(data){
+					$("#goodscar_con_box").attr("mark","show");
+					$("#goodscar_con_box").empty();
+					$("#goodscar_con_box").html(data);
+				}
+			});
+		}
+		$("#goodscar_sp").addClass("goodscar_sp_this");
+	});
+	$("#goodscar").mouseleave(function(){
+		$("#goodscar_con_box").attr("mark","none");
+		$("#goodscar_con_box").hide();
+		$("#goodscar_sp").removeClass("goodscar_sp_this");
+	});
+});
+</script>
+
+<div class="top1" id="top" style="">
+  <div class="top_page">
+    <div class="top_right">
+    	<span  class="top_pull" id="headerUsername"></span>
+    	<span class="top_pull" id="headerLogin"> [<a href="${base}/login.jhtml">${message("shop.header.login")}</a>]</span><b>|</b> 
+    	<!-- <span class="top_pull" id="headerRegister"> [<a href="${base}/register.jhtml">${message("shop.header.register")}</a>]</span> <b>|</b>  -->
+    	<span class="top_pull"id="headerLogout">[<a href="${base}/logout.jhtml">${message("shop.header.logout")}</a>]</span>  <b>|</b> 
+    	<!-- <span class="top_pull" id="qiandao"> [<a href="javascript:;" class="qiandao">签到</a>] </span> <b>|</b> -->
+    	[@navigation_list position = "top"]
+			[#list navigations as navigation]
+				<span class="top_pull" id="qiandao"> [<a href="${base}${navigation.url}"[#if navigation.isBlankTarget] target="_blank"[/#if]>${navigation.name}</a>]
+    			[#if navigation_has_next] </span> <b>|</b>[/#if]
+			[/#list]
+		[/@navigation_list]
+    	
+    		
+      <!-- <span class="top_pull"> <em class="">
+      <h3>微信商城</h3>
+      <s class="this"></s></em>
+      <div class="top_this">
+        <div class="top_this_box_wx" style="display:none;">
+          <h3>扫一扫关注公众账号</h3>
+          <div class="top_this_code"><img src="http://b2b2c.iskyshop.com/upload/system/00b29f41-9fc7-4435-85cd-6e6b56d6583e.jpg"></div>
+        </div>
+      </div>
+      </span> <b>|</b>        <span class="top_pull">
+      加em_this和top_this
+      <em class=""><i>手机商城</i><s class="this"></s></em>
+      <div class="top_this" style="display:none;">
+        <div class="top_this_box">
+          <div class="top_this_code"><img src="http://b2b2c.iskyshop.com/upload/app/app_dowload.png" width="77" height="77"></div>
+          <i class="top_this_i"><a href="https://itunes.apple.com/us/app/iskyshop-b2b2c/id975791093?l=zh&amp;ls=1&amp;mt=8" target="_blank"><img src="http://b2b2c.iskyshop.com/resources/style/system/front/default/images/app-store.png" width="111" height="37"></a></i> <i class="top_this_i"><a href="upload/app/iskyshop.apk" target="_blank"><img src="http://b2b2c.iskyshop.com/resources/style/system/front/default/images/android.png" width="111" height="37"></a></i> </div>
+      </div>
+      </span> <b>|</b>  
+      <span class="top_pull"> <em class="">客户服务<s class="this"></s></em>
+      <div class="top_this" style="display:none;">
+        <ul class="top_pull_con_style2">
+          <li><a href="http://b2b2c.iskyshop.com/articlelist_help.htm" target="_blank">帮助中心</a></li>
+          <li><a href="http://b2b2c.iskyshop.com/doc_service.htm" target="_blank">售后服务</a></li>
+          <li><a href="http://b2b2c.iskyshop.com/doc_online.htm" target="_blank">在线客服</a></li>
+          <li><a href="http://b2b2c.iskyshop.com/doc_complaint.htm" target="_blank">投诉中心</a></li>
+          <li><a href="http://b2b2c.iskyshop.com/doc_email.htm" target="_blank">客服邮箱</a></li>
+          <li><a href="http://b2b2c.iskyshop.com/seller_apply.htm" target="_blank">商家入驻</a></li>
+          <li><a href="http://b2b2c.iskyshop.com/delivery_apply0.htm" target="_blank">自提服务</a></li>
+        </ul>
+      </div>
+      </span> <b>|</b> -->
+   </div>
+    <span class="top_collect"><a href="javascript:void(0);" onclick="browserEvent(this, 'http://mall.qiaomgj.com','ISkyShop商城系统')">收藏本站</a></span>          </div>
+</div>
+
+<!-- <div class="top1" id="top">
+	<div class="top_page">
+		<div class="top_right">
+			<span id="headerLogin" class="headerLogin">
+				[<a href="${base}/login.jhtml">${message("shop.header.login")}</a>]|
+			</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span id="headerRegister" class="headerRegister">
+				[<a href="${base}/register.jhtml">${message("shop.header.register")}</a>]|
+			</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span id="headerUsername" class="headerUsername"></span>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span id="qiandao" class="headerUsername">
+				[<a href="javascript:;" class="qiandao">签到</a>]
+			</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span  id="me" class="headerUsername"> 
+				[<a href="${base}/member/index.jhtml">个人中心</a>]
+			</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<span id="headerLogout" class="headerLogout"> 
+				[<a href="${base}/logout.jhtml">${message("shop.header.logout")}</a>]
+			</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+		</div>
+		<span class="top_collect"><a href="javascript:void(0);"
+			onclick="browserEvent(this, 'http://www.i-gomall.com','爱购网络商城')">收藏本站</a></span>
+		
+	</div>
+</div> -->
+<div id="head_unbomb">
+	<script src="${base}/resources/mall/js/jquery.cookie.js"></script>
+	<script>
+		function search_form() {
+			var keyword = arguments[0];
+			if (keyword != "" && keyword != undefined) {
+				$("#keyword").val(keyword);
+			}
+			$("#searchForm").submit();
+			$("#keyword").val("");
+		}
+
+	</script>
+	<!--[if lt IE 9]>
+    <script src="${base}/resources/mall/js/css3-mediaqueries.js"></script>
+<![endif]-->
+	<div class="head_width" id="head_h">
+		<div class="head">
+			<h1 class="logo">
+				<span>
+					<p>
+						<a href="${base}"><img src="${setting.logo}" alt="${setting.siteName}" border="0"/></a>
+					</p>
+				</span>
+			</h1>
+			<h1 class="logo" style="width:250px;height:60px;">
+				<span>
+					<p>
+						<img src="${base}/upload/image/msg.gif" alt="${setting.siteName}" border="0"/>
+					</p>
+				</span>
+			</h1>
+			<form id="searchForm" action="${base}/product/search.jhtml" method="post" target="_blank" id="searchForm">
+				<input name="type" type="hidden" id="type" value="goods" />
+				<div class="head_search" id="head_search" style="width:505px; margin-left:0px;">
+					<span class="head_seartxt"> 
+						<input name="keyword" type="text" id="keyword" value="${productKeyword!message("shop.header.keyword")}" class="h_sear_txt" style="padding-left:5px;width:418px;" autocomplete="off" /> 
+						<input name="" type="submit" class="h_sear_btn" value="${message("shop.header.search")}" />
+					</span>
+					<span class="head_searstr">
+					${message("shop.header.hotSearch")}：
+					[#list setting.hotSearches as hotSearch]
+						<a href="javascript:void(0);" onclick="search_form('${hotSearch}','goods');">${hotSearch}</a> 
+					[/#list] 
+						
+					</span>
+				</div>
+			</form>
+			<div class="top_user" id="top_user">
+      			<span class="top_user_sp" id="top_user_sp" style="width: 60px !important;">
+      				<a href="${base}/member/index.jhtml">用户中心</a><s></s>
+      			</span>
+      			<div class="top_user_hid" id="top_user_hid" style="display: none;">
+					
+     			</div>
+    		</div>
+	<div class="goodscar" id="goodscar">
+      <span class="goodscar_sp" id="goodscar_sp">
+      <span>
+      <i class="goodscar_img"></i>
+      <em class="goodscar_num"><b id="cart_goods_count_top">${(cart.cartItems.size())!"0"}</b></em><a href="${base}/cart/list.jhtml">${message("shop.header.cart")}</a>
+      </span>
+      </span>
+      <div class="goodscar_con_box" id="goodscar_con_box" style="display:none" mark="none"> </div>
+    </div>
+</div>
+	</div>
+</div>

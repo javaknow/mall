@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.menu.list")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/list.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $delete = $("#listTable a.delete");
+	var $createWechatMenu = $("#createWechatMenu");
+	
+	[@flash_message /]
+
+	// 删除
+	$delete.click(function() {
+		var $this = $(this);
+		$.dialog({
+			type: "warn",
+			content: "${message("admin.dialog.deleteConfirm")}",
+			onOk: function() {
+				$.ajax({
+					url: "delete.jhtml",
+					type: "POST",
+					data: {id: $this.attr("val")},
+					dataType: "json",
+					cache: false,
+					success: function(message) {
+						$.message(message);
+						if (message.type == "success") {
+							$this.closest("tr").remove();
+						}
+					}
+				});
+			}
+		});
+		return false;
+	});
+	
+	//刷新微信端的菜单
+	$createWechatMenu.click(function(){
+		var $this = $(this);
+		$.dialog({
+			type: "warn",
+			content: "确定执行该操作",
+			onOk: function() {
+				$.ajax({
+					url: "createWechatMenu.jhtml",
+					type: "POST",
+					dataType: "json",
+					cache: false,
+					success: function(message) {
+						$.message(message);
+					}
+				});
+			}
+		});
+		return false;
+	});
+
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="admin/common/index.jhtml">${message("admin.path.index")}</a> &raquo; ${message("admin.menu.list")}<span>(${message("admin.page.total", wechatMenuTree.size())})</span>
+	</div>
+	<div class="bar">
+		<a href="add.jhtml" class="iconButton">
+			<span class="addIcon">&nbsp;</span>${message("admin.common.add")}
+		</a>
+		<a href="javascript:;" id="refreshButton" class="iconButton">
+			<span class="refreshIcon">&nbsp;</span>${message("admin.common.refresh")}
+		</a>
+		<a href="javascript:;" id="createWechatMenu" class="iconButton">
+			<span class="addIcon">&nbsp;</span>刷新微信端菜单
+		</a>
+	</div>
+	<table id="listTable" class="list">
+		<tr>
+			<th>
+				<span>${message("WechatMenu.name")}</span>
+			</th>
+			<th>
+				<span>${message("WechatMenu.type")}</span>
+			</th>
+			<th>
+				<span>${message("WechatMenu.key")}</span>
+			</th>
+			<th>
+				<span>${message("WechatMenu.url")}</span>
+			</th>
+			<th>
+				<span>${message("WechatMenu.media_id")}</span>
+			</th>
+			<th>
+				<span>${message("admin.common.order")}</span>
+			</th>
+			<th>
+				<span>是否显示</span>
+			</th>
+			<th>
+				<span>${message("admin.common.handle")}</span>
+			</th>
+		</tr>
+		[#list wechatMenuTree as wechatMenu]
+			<tr class="row" vlaue="${wechatMenu.id}" parent="${(wechatMenu.treePath)!"0"}">
+				<td>
+					<span style="margin-left: ${wechatMenu.grade * 40}px;" class="gradeCss${wechatMenu.grade}">
+						${wechatMenu.name}
+					</span>
+					[#if wechatMenu.children.size()>0]
+					<span style="font-size:12px;color:red">
+						(${message("admin.page.total", wechatMenu.children.size())})
+					</span>
+					[/#if]
+				</td>
+				<td>[#if wechatMenu.type??]${message("WechatMenu."+wechatMenu.type)}[#else]-[/#if]</td>
+				<td>${wechatMenu.key}</td>
+				<td>${wechatMenu.url}</td>
+				<td>${wechatMenu.media_id}</td>
+				<td>${wechatMenu.order}</td>
+				<td>
+					[#if !wechatMenu.isEnabled]
+						<span class="red">否</span>
+					[#elseif wechatMenu.isEnabled]
+						<span class="green">是 </span>
+					[#else]
+						<span class="red">-</span>
+					[/#if]
+				</td>
+				<td>
+					<a href="add.jhtml?menuId=${wechatMenu.id}">[${message("admin.common.add")}]</a>
+					<a href="edit.jhtml?id=${wechatMenu.id}">[${message("admin.common.edit")}]</a>
+					[#if wechatMenu.children.size()==0]
+					<a href="javascript:;" class="delete" val="${wechatMenu.id}">[${message("admin.common.delete")}]</a>
+					[/#if]
+					
+				</td>
+			</tr>
+		[/#list]
+	</table>
+</body>
+</html>

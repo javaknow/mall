@@ -1,0 +1,95 @@
+<div id="friendsShare" class="normal">
+	<div class="outline">
+		<div class="title">
+			<h3>好友动态</h3>
+		</div>
+		<dl class="null-tip">
+			<dt></dt>
+			<dd>
+				<h4>您的好友最近没有什么动静</h4>
+				<h5>关注其他用户成为好友可将您的动态进行分享</h5>
+				<p>
+					<a target="_blank" href="http://hao.wx008.com/shop/index.php?act=member_snsfriend&op=follow" class="ncm-btn-mini">查看我的全部好友</a>
+				</p>
+			</dd>
+		</dl>
+
+	</div>
+</div>
+<div id="circle" class="normal">
+	<div class="outline">
+		<div class="title">
+			<h3>我的圈子</h3>
+		</div>
+		<dl class="null-tip">
+			<dt></dt>
+			<dd>
+				<h4>您还没有自己的圈子</h4>
+				<h5>您可以创建或加入感兴趣的社交圈子</h5>
+				<p>
+					<a target="_blank" href="http://hao.wx008.com/circle/index.php?act=index&op=add_group" class="ncm-btn-mini">创建圈子</a>
+				</p>
+			</dd>
+		</dl>
+	</div>
+</div>
+<div id="browseMark" class="normal">
+	<div class="outline">
+		<div class="title">
+			<h3>我的足迹</h3>
+		</div>
+		<div class="ncm-browse-mark">
+			<ul id="browseMarkList" class="jcarousel-skin-tango">
+				[#list historyProducts as product]
+				<li>
+					<div class="ncm-goods-pic">
+						<a href="http://hao.wx008.com/shop/index.php?act=goods&op=index&goods_id=53" target="_blank">
+							<img alt="" src="http://hao.wx008.com/data/upload/shop/store/goods/1/1_04418254088878407_240.jpg">
+						</a>
+					</div>
+					<dl>
+						<dt class="ncm-goods-name">
+							<a href="http://hao.wx008.com/shop/index.php?act=goods&op=index&goods_id=53" title="新款 女款 拼接 不规则摆 长袖针织衫开衫 杏雨 紫色" target="_blank">
+								新款 女款 拼接不规则摆 长袖针织衫开衫 杏雨 紫色
+							</a>
+						</dt>
+						<dd class="ncm-goods-price">
+							<em>￥99.00</em>
+						</dd>
+					</dl>
+				</li>
+				[/#list]
+			</ul>
+			<div class="more">
+				<a
+					href="http://hao.wx008.com/shop/index.php?act=member_goodsbrowse&op=list"
+					target="_blank">查看所有商品</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	//信息轮换
+	$.getScript("http://hao.wx008.com/data/resource/js/jcarousel/jquery.jcarousel.min.js",function() {
+		$('#favoritesGoodsList').jcarousel({
+			visible : 4,
+			itemFallbackDimension : 300
+		});
+		$('#favoritesStoreList').jcarousel({
+			visible : 3,
+			itemFallbackDimension : 300
+		});
+		$('#friendsShareList').jcarousel({
+			visible : 3,
+			itemFallbackDimension : 300
+		});
+		$('#circleList').jcarousel({
+			visible : 3,
+			itemFallbackDimension : 300
+		});
+		$('#browseMarkList').jcarousel({
+			visible : 3,
+			itemFallbackDimension : 300
+		});
+	});
+</script>

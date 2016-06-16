@@ -1,0 +1,203 @@
+{
+    "code": 200,
+    "hasmore": ${hasmore},
+    "page_total": ${page.totalPages},
+    "datas": {
+    	
+        "order_group_list": [
+        	[#if page.content?has_content]
+        	[#list page.content as order]
+            [#if order_index==0]
+            {
+                "order_list": [
+                    {
+                        "order_id": "${order.id}",
+                        "order_sn": "${order.sn}",
+                        "pay_sn": "320514370603646168",
+                        "store_id": "${order.shop.id}",
+                        "store_name": "${order.shop.name}",
+                        "buyer_id": "${order.member.id}",
+                        "buyer_name": "${order.member.username}",
+                        "buyer_email": "${order.member.email}",
+                        "buyer_phone": "${order.member.phone}",
+                        "add_time": "1461026603",
+                        "payment_code": "online",
+                        "payment_time": "0",
+                        "finnshed_time": "0",
+                        "goods_amount": "369.00",
+                        "order_amount": "369.00",
+                        "rcb_amount": "0.00",
+                        "pd_amount": "0.00",
+                        "shipping_fee": "0.00",
+                        "evaluation_state": "0",
+                        "evaluation_again_state": "0",
+                        "order_state": "10",
+                        "refund_state": "0",
+                        "lock_state": "0",
+                        "delete_state": "0",
+                        "refund_amount": "0.00",
+                        "delay_time": "0",
+                        "order_from": "2",
+                        "shipping_code": "",
+                        "order_type": "1",
+                        "api_pay_time": "1461026605",
+                        "chain_id": "0",
+                        "chain_code": "0",
+                        "rpt_amount": "0.00",
+                        "trade_no": null,
+                        "state_desc": "待付款",
+                        "payment_name": "在线付款",
+                        "extend_order_goods": [
+                        	[#list order.orderItems as orderItem]
+                        	[#if orderItem_index==0]
+                            {
+                                "goods_id": "100289",
+                                "goods_name": "${orderItem.name}",
+                                "goods_price": "${currency(orderItem.price)}",
+                                "goods_num": "${orderItem.quantity}",
+                                "goods_type": "${orderItem.name}",
+                                "goods_spec": null,
+                                "goods_image_url": "${orderItem.thumbnail}",
+                                "refund": false
+                            }
+                            [#else]
+                            ,{
+                                "goods_id": "100289",
+                                "goods_name": "${orderItem.name}",
+                                "goods_price": "${currency(orderItem.price)}",
+                                "goods_num": "${orderItem.quantity}",
+                                "goods_type": "${orderItem.name}",
+                                "goods_spec": null,
+                                "goods_image_url": "${orderItem.thumbnail}",
+                                "refund": false
+                            }
+                            [/#if]
+                            [/#list]
+                        ],
+                        "zengpin_list": [
+                        	{
+                                "goods_id": "100298",
+                                "goods_name": "劲霸卡包 男士时尚新款三件套钥匙卡包 正品男装配件",
+                                "goods_price": "0.00",
+                                "goods_num": "1",
+                                "goods_type": "5",
+                                "goods_spec": null,
+                                "goods_image_url": "http://b2b2c.shopnctest.com/dema/data/upload/shop/store/goods/9/9_04626435601909875_240.jpg",
+                                "refund": false
+                            }
+                        ],
+                        "if_cancel": true,
+                        "if_refund_cancel": false,
+                        "if_receive": false,
+                        "if_lock": false,
+                        "if_deliver": false,
+                        "if_evaluation": false,
+                        "if_evaluation_again": false,
+                        "if_delete": false,
+                        "ownshop": false
+                    }
+                ],
+                "pay_amount": 369,
+                "add_time": "1461026603",
+                "pay_sn": "320514370603646168"
+            }
+            [#else],
+            {
+                "order_list": [
+                    {
+                        "order_id": "${order.id}",
+                        "order_sn": "${order.sn}",
+                        "pay_sn": "320514370603646168",
+                        "store_id": "${order.shop.id}",
+                        "store_name": "${order.shop.name}",
+                        "buyer_id": "${order.member.id}",
+                        "buyer_name": "${order.member.username}",
+                        "buyer_email": "${order.member.email}",
+                        "buyer_phone": "${order.member.phone}",
+                        "add_time": "1461026603",
+                        "payment_code": "online",
+                        "payment_time": "0",
+                        "finnshed_time": "0",
+                        "goods_amount": "369.00",
+                        "order_amount": "369.00",
+                        "rcb_amount": "0.00",
+                        "pd_amount": "0.00",
+                        "shipping_fee": "0.00",
+                        "evaluation_state": "0",
+                        "evaluation_again_state": "0",
+                        "order_state": "10",
+                        "refund_state": "0",
+                        "lock_state": "0",
+                        "delete_state": "0",
+                        "refund_amount": "0.00",
+                        "delay_time": "0",
+                        "order_from": "2",
+                        "shipping_code": "",
+                        "order_type": "1",
+                        "api_pay_time": "1461026605",
+                        "chain_id": "0",
+                        "chain_code": "0",
+                        "rpt_amount": "0.00",
+                        "trade_no": null,
+                        "state_desc": "待付款",
+                        "payment_name": "在线付款",
+                        "extend_order_goods": [
+                        	[#list order.orderItems as orderItem]
+                        	[#if orderItem_index==0]
+                            {
+                                "goods_id": "100289",
+                                "goods_name": "${orderItem.name}",
+                                "goods_price": "${currency(orderItem.price)}",
+                                "goods_num": "${orderItem.quantity}",
+                                "goods_type": "${orderItem.name}",
+                                "goods_spec": null,
+                                "goods_image_url": "${orderItem.thumbnail}",
+                                "refund": false
+                            }
+                            [#else]
+                            ,{
+                                "goods_id": "100289",
+                                "goods_name": "${orderItem.name}",
+                                "goods_price": "${currency(orderItem.price)}",
+                                "goods_num": "${orderItem.quantity}",
+                                "goods_type": "${orderItem.name}",
+                                "goods_spec": null,
+                                "goods_image_url": "${orderItem.thumbnail}",
+                                "refund": false
+                            }
+                            [/#if]
+                            [/#list]
+                        ],
+                        "zengpin_list": [
+                        	{
+                                "goods_id": "100298",
+                                "goods_name": "劲霸卡包 男士时尚新款三件套钥匙卡包 正品男装配件",
+                                "goods_price": "0.00",
+                                "goods_num": "1",
+                                "goods_type": "5",
+                                "goods_spec": null,
+                                "goods_image_url": "http://b2b2c.shopnctest.com/dema/data/upload/shop/store/goods/9/9_04626435601909875_240.jpg",
+                                "refund": false
+                            }
+                        ],
+                        "if_cancel": true,
+                        "if_refund_cancel": false,
+                        "if_receive": false,
+                        "if_lock": false,
+                        "if_deliver": false,
+                        "if_evaluation": false,
+                        "if_evaluation_again": false,
+                        "if_delete": false,
+                        "ownshop": false
+                    }
+                ],
+                "pay_amount": 369,
+                "add_time": "1461026603",
+                "pay_sn": "320514370603646168"
+            }
+            [/#if]
+            [/#list]
+            [/#if]
+        ]
+    }
+}

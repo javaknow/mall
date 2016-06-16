@@ -1,0 +1,40 @@
+[#assign shiro=JspTaglibs["/WEB-INF/tld/shiro.tld"] /]
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.main.title")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/admin/css/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<style type="text/css">
+*{
+	font: 12px tahoma, Arial, Verdana, sans-serif;
+}
+html, body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+</style>
+<script type="text/javascript">
+$().ready(function() {
+
+});
+</script>
+</head>
+<body>
+	<table class="main">
+		<tr>
+			<td class="menu" style="width:200px;">
+				<iframe id="leftIframe" name="leftIframe" src="left1.jhtml" frameborder="0"></iframe>
+			</td>
+			<td>
+				<iframe id="rightIframe" name="rightIframe" src="list1.jhtml" frameborder="0"></iframe>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

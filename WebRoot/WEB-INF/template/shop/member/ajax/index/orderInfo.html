@@ -1,0 +1,165 @@
+
+<div id="transaction" class="double">
+	<div class="outline">
+		<div class="title">
+			<h3>交易提醒</h3>
+			<ul>
+				<li><a href="index.php?act=member_order&state_type=state_new">待付款<em>${waitingPaymentOrderCount}</em></a>
+				</li>
+				<li>待收货<em>0</em>
+				</li>
+				<li>待评价<em>0</em>
+				</li>
+			</ul>
+		</div>
+		[#if newOrders==null||newOrders.size()==0]
+		<div class="order-list">
+			<ul>
+			</ul>
+		</div>
+		<dl class="null-tip">
+			<dt></dt>
+			<dd>
+				<h4>您好久没在商城购物了</h4>
+				<h5>交易提醒可帮助您了解订单状态和物流情况</h5>
+			</dd>
+		</dl>
+		[#else]
+		<div class="order-list">
+			<ul>
+				[#list newOrders as order]
+				[#if order_index<3]
+				[#list order.orderItems as orderItem]
+				[#if orderItem_index==0]
+				<li>
+					<div class="ncm-goods-thumb">
+						<a href="${base}${orderItem.product.path}" title="${orderItem.product.fullName}" target="_blank">
+							<img src="[#if orderItem.product.thumbnail??]${orderItem.product.thumbnail}[#else]${setting.defaultThumbnailProductImage}[/#if]" alt="${orderItem.product.name}" />
+						</a>
+						<em>${order.orderItems.size()}</em>
+					</div>
+					<dl class="ncm-goods-info">
+						<dt>
+							<a href="${base}${orderItem.product.path}" title="${orderItem.product.fullName}" target="_blank">${abbreviate(orderItem.product.fullName, 50, "...")}</a>
+							<span>等<strong>${order.orderItems.size()}</strong>种商品</span>
+						</dt>
+						<dd>
+							<span class="order-date">下单时间：${order.createDate?string("yyyy-MM-dd HH:mm:ss")}</span>
+							<span class="ncm-order-price">订单金额：<em>${currency(order.price, true)}</em></span>
+						</dd>
+						<dd>
+							<span class="order-state">${message("shop.member.order.status")}：
+								[#if order.expired]
+									${message("shop.member.order.hasExpired")}
+								[#elseif order.orderStatus == "completed" || order.orderStatus == "cancelled"]
+									${message("Order.OrderStatus." + order.orderStatus)}
+								[#elseif order.paymentStatus == "unpaid" || order.paymentStatus == "partialPayment"]
+									${message("shop.member.order.waitingPayment")}
+									[#if order.shippingStatus != "unshipped"]
+										${message("Order.ShippingStatus." + order.shippingStatus)}
+									[/#if]
+								[#else]
+									${message("Order.PaymentStatus." + order.paymentStatus)}
+									[#if order.paymentStatus == "paid" && order.shippingStatus == "unshipped"]
+										${message("shop.member.order.waitingShipping")}
+									[#else]
+										${message("Order.ShippingStatus." + order.shippingStatus)}
+									[/#if]
+								[/#if]
+							</span>
+						</dd>
+					</dl>
+					[#if !order.expired && (order.orderStatus == "unconfirmed" || order.orderStatus == "confirmed") && (order.paymentStatus == "unpaid" || order.paymentStatus == "partialPayment")]
+						<a href="payment.jhtml?sn=${order.sn}" class="ncm-btn" target="_blank">${message("shop.member.order.payment")}</a>
+					[/#if]
+					[#if !order.expired && order.orderStatus == "unconfirmed" && order.paymentStatus == "unpaid"]
+						<a href="javascript:;" id="cancel" class="ncm-btn" target="_blank">${message("shop.member.order.cancel")}</a>
+					[/#if]
+				</li>
+				[/#if]
+				[/#list]
+				[/#if]
+				[/#list]
+			</ul>
+		</div>
+		[/#if]
+	</div>
+</div>
+<div id="shopping" class="normal">
+	<div class="outline">
+		<div class="title">
+			<h3>购物车</h3>
+		</div>
+		[#if cart==null||cart.cartItems==null||cart.cartItems.size()==0]
+		<dl class="null-tip">
+			<dt></dt>
+			<dd>
+				<h4>您的购物车还是空的</h4>
+				<h5>将想买的商品放进购物车，一起结算更轻松</h5>
+			</dd>
+		</dl>
+		[#else]
+		<div class="cart-list">
+			<ul>
+				<li>
+					<div class="ncm-goods-thumb">
+						<a target="_blank"
+							href="http://hao.wx008.com/shop/index.php?act=goods&op=index&goods_id=232"><img
+							src="http://hao.wx008.com/data/upload/shop/store/goods/1/1_04423411880302392_60.png"></a>
+					</div>
+					<dl class="ncm-goods-info">
+						<dt>
+							<a
+								href="http://hao.wx008.com/shop/index.php?act=goods&op=index&goods_id=232">中华老字号
+								东阿阿胶桃花姬阿胶糕300g</a>
+						</dt>
+						<dd>
+							<span class="ncm-order-price">商城价：<em>￥95.00</em></span>
+							<!-- <span class="sale">限时折扣</span> -->
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<div class="ncm-goods-thumb">
+						<a target="_blank"
+							href="http://hao.wx008.com/shop/index.php?act=goods&op=index&goods_id=53"><img
+							src="http://hao.wx008.com/data/upload/shop/store/goods/1/1_04418254088878407_60.jpg"></a>
+					</div>
+					<dl class="ncm-goods-info">
+						<dt>
+							<a
+								href="http://hao.wx008.com/shop/index.php?act=goods&op=index&goods_id=53">新款
+								女款 拼接 不规则摆 长袖针织衫开衫 杏雨 紫色</a>
+						</dt>
+						<dd>
+							<span class="ncm-order-price">商城价：<em>￥99.00</em></span>
+							<!-- <span class="sale">限时折扣</span> -->
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<div class="ncm-goods-thumb">
+						<a target="_blank"
+							href="http://hao.wx008.com/shop/index.php?act=goods&op=index&goods_id=54"><img
+							src="http://hao.wx008.com/data/upload/shop/store/goods/1/1_04418254218437108_60.jpg"></a>
+					</div>
+					<dl class="ncm-goods-info">
+						<dt>
+							<a
+								href="http://hao.wx008.com/shop/index.php?act=goods&op=index&goods_id=54">新款
+								女款 拼接 不规则摆 长袖针织衫开衫 杏雨 粉色</a>
+						</dt>
+						<dd>
+							<span class="ncm-order-price">商城价：<em>￥99.00</em></span>
+							<!-- <span class="sale">限时折扣</span> -->
+						</dd>
+					</dl>
+				</li>
+			</ul>
+			<div class="more">
+				<a href="index.php?act=cart">查看购物车所有商品</a>
+			</div>
+		</div>
+		[/#if]
+	</div>
+</div>

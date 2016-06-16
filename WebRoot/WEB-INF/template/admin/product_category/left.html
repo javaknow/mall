@@ -1,0 +1,98 @@
+[#assign shiro=JspTaglibs["/WEB-INF/tld/shiro.tld"] /]
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.main.title")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/admin/css/main.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="${base}/resources/plugin/zTree_v3.5.19/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/plugin/zTree_v3.5.19/js/jquery.ztree.core-3.5.js"></script>
+<style type="text/css">
+*{
+	font: 12px tahoma, Arial, Verdana, sans-serif;
+}
+html, body {
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+}
+</style>
+<script type="text/javascript">
+$().ready(function() {
+	var zTree;
+	var demoIframe;
+
+	var setting = {
+		view: {
+			dblClickExpand: false,
+			showLine: true,
+			selectedMulti: false,
+			nameIsHTML: true
+		},
+		data: {
+			simpleData: {
+				enable:true,
+				idKey: "id",
+				pIdKey: "pId",
+				rootPId: ""
+			}
+		},
+		callback: {
+			beforeClick: function(treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("tree");
+				if (treeNode.isParent) {
+					zTree.expandNode(treeNode);
+					return false;
+				} else {
+					demoIframe.attr("src",treeNode.file + ".html");
+					return true;
+				}
+			}
+		}
+	};
+
+	var zNodes =[
+		{id:0, pId:-1, name:"商品分类列表", open:true},
+		[#list productCategoryTree as productCategory]
+		[#if productCategory.isEnabled]
+		{id:${productCategory.id}, pId:${(productCategory.parent.id)!"0"}, name:"${productCategory.name}", url:"list.jhtml?parentId=${productCategory.id}", target:"rightIframe"},
+		[#else]
+		{id:${productCategory.id}, pId:${(productCategory.parent.id)!"0"}, name:"<font color='red'>${productCategory.name}</font>", url:"list.jhtml?parentId=${productCategory.id}", target:"rightIframe"},
+		[/#if]
+		[/#list]
+	];
+
+	$(document).ready(function(){
+		var t = $("#tree");
+		t = $.fn.zTree.init(t, setting, zNodes);
+		demoIframe = $("#testIframe");
+		demoIframe.bind("load", loadReady);
+		var zTree = $.fn.zTree.getZTreeObj("tree");
+
+	});
+
+	function loadReady() {
+		var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+		htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+		maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+		h = demoIframe.height() >= maxH ? minH:maxH ;
+		if (h < 530) h = 530;
+		demoIframe.height(h);
+	}
+});
+</script>
+</head>
+<body>
+	<table id="listTable" class="list">
+		<tr>
+			<td>
+				<ul id="tree" class="ztree" ></ul>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,104 @@
+[@product_category_root_list count = 10]
+[#list productCategories as parent]
+<div class="home-standard-layout wrapper style-pink">
+	<div class="left-sidebar">
+		<div class="title">
+			<div class="txt-type">
+				<span>${parent_index+1}F</span>
+				<h2 title="${parent.name}">${parent.name}</h2>
+			</div>
+		</div>
+		[@product_index_show productCategoryId=parent.id count=1 orderBy="monthSales desc"]
+		<div class="left-ads">
+			[#list products as product]
+			<a href="${base}${product.path}" title="${product.name}" target="_blank">
+				[#if product.productImages?has_content]
+					<img src="${product.productImages[0].medium}" alt="${product.name}" title="${product.name}"/>
+				[#else]
+					<img src="${setting.defaultMediumProductImage}" alt="${product.name}" title="${product.name}"/>
+				[/#if] 
+			</a>
+			[/#list]
+		</div>
+		[/@product_index_show]
+		[@product_category_children_list productCategoryId=parent.id count=12]
+		<div class="recommend-classes">
+			<ul>
+				[#list productCategories as productCategory]
+				<li><a href="${base}${productCategory.path}" target="_blank" title="${productCategory.name}">${abbreviate(productCategory.name, 8)}</a></li>
+				[/#list]
+			</ul>
+		</div>
+		<ul>
+        [/@product_category_children_list]
+	</div>
+	<div class="middle-layout">
+		[@product_category_direct_children_list productCategoryId=parent.id count=4]
+		<ul class="tabs-nav">
+			[#list productCategories as productCategory]
+           	<li  [#if productCategory_index==0]class="tabs-selected"[/#if]  style="cursor:pointer;">
+           		<i class="arrow"></i>
+           		<h3><a href="${base}${productCategory.path}" target="_blank" title="${productCategory.name}">${productCategory.name}</a></h3>
+           	</li>
+        	[/#list]
+		</ul>
+		[#list productCategories as productCategory]
+		[@product_list productCategoryId = productCategory.id count = 8]
+		<div class="tabs-panel middle-goods-list [#if productCategory_index!=0]tabs-hide[/#if]">
+			<ul>
+				[#list products as product]
+				<li style="opacity: 0.9;">
+					<dl>
+						<dt class="goods-name">
+							<a href="${base}${product.path}" title="${product.name}" target="_blank">${abbreviate(product.name, 50)}</a>
+						</dt>
+						<dd class="goods-thumb">
+							<a href="${base}${product.path}" title="${product.name}" target="_blank">
+								<img src="[#if product.image??]${product.image}[#else]${setting.defaultThumbnailProductImage}[/#if]"
+								alt="${abbreviate(product.name, 50)}"  title="${abbreviate(product.name, 50)}">
+							</a>
+						</dd>
+						<dd class="goods-price">
+							<em>${currency(product.price, true)}</em> <span class="original">${currency(product.marketPrice, true)}</span>
+						</dd>
+					</dl>
+				</li>
+				[/#list]
+			</ul>
+		</div>
+		[/@product_list]
+		[/#list]
+		[/@product_category_direct_children_list]
+	</div>
+	<div class="right-sidebar">
+		<div class="title"></div>
+		[@product_category_brand_list productCategoryId=parent.id count=12]
+		<div class="recommend-brand">
+			<ul>
+				[#list brands as brand]
+				<li>
+					<a href="${base}${brand.path}" title="${brand.name}" target="_blank"> 
+						<img src="${brand.logo}" alt="${brand.name}" title="${brand.name}"/>
+					</a>
+				</li>
+				[/#list]
+			</ul>
+		</div>
+		[/@product_category_brand_list]
+		[@product_index_show productCategoryId=parent.id count=2 orderBy="monthSales asc"]
+		<div class="right-side-focus">
+			<ul>
+				[#list products as product]
+				<li>
+					<a href="${base}${product.path}" title="${product.name}" target="_blank">
+						<img src="[#if product.image??]${product.image}[#else]${setting.defaultThumbnailProductImage}[/#if]" alt="${abbreviate(product.name, 50)}" title="${abbreviate(product.name, 50)}">
+					</a>
+				</li>
+				[/#list]
+			</ul>
+		</div>
+		[/@product_index_show]
+	</div>
+</div>
+[/#list]
+[/@product_category_root_list]

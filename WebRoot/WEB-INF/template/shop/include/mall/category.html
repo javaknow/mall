@@ -1,0 +1,162 @@
+<script type="text/javascript">
+	$(function() {
+		//首页左侧分类菜单
+		$(".category ul.menu").find("li").each(function() {
+			$(this).hover(function() {
+				var cat_id = $(this).attr("cat_id");
+				var menu = $(this).find("div[cat_menu_id='" + cat_id + "']");
+				menu.show();
+				$(this).addClass("hover");
+				var menu_height = menu.height();
+				if (menu_height < 60)
+					menu.height(80);
+				menu_height = menu.height();
+				var li_top = $(this).position().top;
+				$(menu).css("top", -li_top + 38);
+			}, function() {
+				$(this).removeClass("hover");
+				var cat_id = $(this).attr("cat_id");
+				$(this).find("div[cat_menu_id='" + cat_id + "']").hide();
+			});
+		});
+	});
+</script>
+<nav class="public-nav-layout">
+	<div class="wrapper">
+		<div class="all-category">
+			<div class="title">
+				<i></i>
+				<h3>
+					<a href="product_category.jhtml">${message("shop.index.allProductCategory")}</a>
+				</h3>
+			</div>
+			[@product_category_root_list count = 14]
+			<div class="category">
+				<ul class="menu">
+					[#list productCategories as rootProductCategory]
+					<li cat_id="${rootProductCategory.id}" [#if rootProductCategory_index%2==0]class="odd"[#else]class="even"[/#if]>
+						<div class="class">
+							<span class="ico">
+								[#if rootProductCategory_index==0]
+								<img src="${base}/resources/shop1/images/04849346415545755.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==1]
+								<img src="${base}/resources/shop1/images/04849344505821846.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==2]
+								<img src="${base}/resources/shop1/images/04849345975757419.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==3]
+								<img src="${base}/resources/shop1/images/04849343852775378.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==4]
+								<img src="${base}/resources/shop1/images/04849346837120218.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==5]
+								<img src="${base}/resources/shop1/images/04849347515759481.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==6]
+								<img src="${base}/resources/shop1/images/04849348133390475.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==7]
+								<img src="${base}/resources/shop1/images/04849352648636017.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==8]
+								<img src="${base}/resources/shop1/images/04849347913383394.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==9]
+								<img src="${base}/resources/shop1/images/04849348436546686.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==10]
+								<img src="${base}/resources/shop1/images/04849348664379344.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==11]
+								<img src="${base}/resources/shop1/images/04849352366294406.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==12]
+								<img src="${base}/resources/shop1/images/04849353182209090.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[#elseif  rootProductCategory_index==13]
+								<img src="${base}/resources/shop1/images/04849353042725089.png" alt="${rootProductCategory.name}" title="${rootProductCategory.name}">
+								[/#if]
+							</span>
+							<h4>
+								<a href="${base}${rootProductCategory.path}">${rootProductCategory.name}</a>
+							</h4>
+							<span class="arrow"></span>
+						</div>
+						<div class="sub-class"  cat_menu_id="${rootProductCategory.id}">
+							<div class="sub-class-content">
+								[@product_category_direct_children_list productCategoryId = rootProductCategory.id count=7]
+								<div class="recommend-class">
+									[#list productCategories as productCategory]
+									<span>
+										<a href="${base}${productCategory.path}">${productCategory.name}</a> 
+									</span>
+									[/#list]
+								</div>
+								[/@product_category_direct_children_list]
+								[@product_category_direct_children_list productCategoryId = rootProductCategory.id]
+								[#list productCategories as productCategory]
+								<dl>
+									<dt>
+										<h3>
+											<a href="${base}${productCategory.path}">${productCategory.name}</a> 
+										</h3>
+									</dt>
+									[@product_category_direct_children_list productCategoryId = productCategory.id]
+									<dd class="goods-class">
+										[#list productCategories as productCategory]
+											<a href="${base}${productCategory.path}">${productCategory.name}</a>
+										[/#list]
+									</dd>
+									[/@product_category_direct_children_list]
+								</dl>
+								[/#list]
+								[/@product_category_direct_children_list]
+							</div>
+							<div class="sub-class-right">
+								[@product_category_brand_list productCategoryId=rootProductCategory.id count=8]
+								<div class="brands-list">
+									<ul>
+										[#list brands as brand]
+										<li>
+											<a href="${base}${brand.path}" title="${brand.name}" target="_blank"> 
+												<img src="${brand.logo}" alt="${brand.name}" title="${brand.name}"/>
+												<span>${brand.name}</span>
+											</a>
+										</li>
+										[/#list]
+									</ul>
+								</div>
+								[/@product_category_brand_list]
+								[@product_index_show productCategoryId=rootProductCategory.id count=2 orderBy="monthSales desc"]
+								<div class="adv-promotions">
+									[#list products as product]
+									<a href="${base}${product.path}" title="${product.name}" target="_blank">
+										[#if product.productImages?has_content]
+											<img src="${product.productImages[0].medium}" alt="${product.name}" title="${product.name}"/>
+										[#else]
+											<img src="${setting.defaultMediumProductImage}" alt="${product.name}" title="${product.name}"/>
+										[/#if] 
+									</a>
+									[/#list]
+								</div>
+								[/@product_index_show]
+							</div>
+						</div>
+					</li>
+					[/#list]
+				</ul>
+			</div>
+		</div>
+		[/@product_category_root_list]
+		[@navigation_list position = "middle"]
+		<ul class="site-menu">
+			<li><a href="${base}/" class="current">首页</a></li>
+			[#list navigations as navigation]
+			<li><a href="${base}${navigation.url}"[#if navigation.isBlankTarget] target="_blank"[/#if]> ${navigation.name}</a></li>
+			[/#list]
+		</ul>
+		[/@navigation_list]
+	</div>
+</nav>
+<script>
+	$(function(){
+		var size = $(".menu").find("li[class='odd']").length+$(".menu").find("li[class='even']").length;
+		var height = $(".home-focus-layout").height();
+		if(height<481){
+			height = 481;
+		}
+		var avgHeight = height/size;
+		$("li[class='odd']").height(avgHeight);
+		$("li[class='even']").height(avgHeight);
+	});
+</script>

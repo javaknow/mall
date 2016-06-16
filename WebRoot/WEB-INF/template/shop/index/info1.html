@@ -1,0 +1,101 @@
+
+<dt>
+	<span class="ico"></span>我的商城<i class="arrow"></i>
+</dt>
+<dd>
+	<div class="sub-title">
+		<h4>
+			[#if member!=null]
+				${member.username}
+				<div class="nc-grade-mini" style="cursor:pointer;" onclick="javascript:go('${base}/');">${(member.memberRank.name)!""}</div>
+        	[/#if]
+        </h4>
+		<a href="${base}/member/index.jhtml" class="arrow">我的用户中心<i></i></a>
+	</div>
+	<div class="user-centent-menu">
+		<ul>
+			<li>
+				<a href="${base}/member/order/list.jhtml">${message("shop.member.index.waitingPaymentOrderCount")}</a><span style="color:#F00">(${waitingPaymentOrderCount})</span>
+			</li>
+			<li>
+				<a href="${base}/member/order/list.jhtml">${message("shop.member.index.waitingShippingOrderCount")}</a><span style="color:#F00">(${waitingShippingOrderCount})</span>
+			</li>
+          	<li>
+				<a href="${base}/member/message/list.jhtml">${message("shop.member.index.messageCount")}</a><span style="color:#F00">(${messageCount})</span>
+			</li>
+          	<li>
+				<a href="${base}/member/coupon_code/list.jhtml">${message("shop.member.index.couponCodeCount")}</a><span style="color:#F00">(${couponCodeCount})</span>
+			</li>
+         	<li>
+				<a href="${base}/member/favorite/list.jhtml">${message("shop.member.index.favoriteCount")}</a><span style="color:#F00">(${favoriteCount})</span>
+			</li>
+         	<li>
+				<a href="${base}/member/product_notify/list.jhtml">${message("shop.member.index.productNotifyCount")}</a><span style="color:#F00">(${productNotifyCount})</span>
+			</li>
+         	<li>
+				<a href="${base}/member/review/list.jhtml">${message("shop.member.index.reviewCount")}</a><span style="color:#F00">(${reviewCount})</span>
+			</li>
+         	<li>
+				<a href="${base}/member/consultation/list.jhtml">${message("shop.member.index.consultationCount")}</a><span style="color:#F00">(${consultationCount})</span>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="browse-history">
+		<div class="part-title">
+			<h4>最近浏览的商品</h4>
+			<span style="float:right;" class="hide">
+				<a href="">全部浏览历史</a>
+			</span>
+		</div>
+		<ul>
+			
+		</ul>
+	</div>
+</dd>
+
+<script type="text/javascript">
+	$().ready(function() {
+		var $historyProduct = $(".browse-history ul");
+		var $clearHistoryProduct = $("#clearHistoryProduct");
+		
+		// 浏览记录
+		var historyProduct = getCookie("historyProduct");
+		var historyProductIds = historyProduct != null ? historyProduct.split(",") : new Array();
+		if (historyProductIds.length > 5) {
+			historyProductIds.pop();
+		}
+		addCookie("historyProduct", historyProductIds.join(","), {path: "${base}/"});
+		$.ajax({
+			url: "${base}/product/history.jhtml",
+			type: "GET",
+			data: {ids: historyProductIds},
+			dataType: "json",
+			traditional: true,
+			cache: false,
+			beforeSend: function(){
+				$historyProduct.html("");
+				$historyProduct.html('<li class="no-goods"><img class="loading" src="http://b2b2c.shopnctest.com/demo/shop/templates/default/images/loading.gif" /></li>');
+			},
+			success: function(data) {
+				$historyProduct.html("");
+				if(data==""){
+					$historyProduct.html('<li class="no-goods">暂无商品</li>');
+				}else{
+					$.each(data, function (index, product) {
+						var thumbnail = product.thumbnail != null ? product.thumbnail : "${setting.defaultThumbnailProductImage}";
+						var result='<li class="goods-thumb"><a href="${base}' + product.path + '" title="' + product.name + '" target="_blank"><img src="' + thumbnail + '" alt="' + product.name + '" \/><\/a><\/li>';
+						$historyProduct.append(result);
+					});
+				}
+			}
+		});
+		
+		// 清空浏览记录
+		$clearHistoryProduct.click(function() {
+			$historyProduct.empty();
+			$(this).text("${message("shop.product.noHistoryProduct")}");
+			removeCookie("historyProduct", {path: "${base}/"});
+		});
+	});
+</script>

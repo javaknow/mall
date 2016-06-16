@@ -1,0 +1,15 @@
+[#include "/shop/include1/friendLink.html" /]
+
+<div id="footer" class="wrapper">
+	[@navigation_list position = "bottom"]
+	<p>
+		[#list navigations as navigation]
+			<a href="${navigation.url}"[#if navigation.isBlankTarget] target="_blank"[/#if]>${navigation.name}</a>
+			[#if navigation_has_next]|[/#if]
+		[/#list]
+	</p>
+	[/@navigation_list] 
+	${message("shop.footer.copyright", setting.siteName)}<br /> 
+	<!-- Powered by <span class="vol"><font class="b">Shop</font><font
+		class="o">NC</font></span> <br /> -->
+</div>

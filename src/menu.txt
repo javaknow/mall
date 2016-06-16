@@ -1,0 +1,59 @@
+{"button":[{"name":"关于商城","sub_button":[{"type":"view", "name":"关于商城",
+	"url":
+	"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc284282dbf28ab83&redirect_uri=http%3A%2F%2Fblackboy1987.eicp.net%2Fwechat%2Findex%2Findex.jhtml%3Fmethod%3Dcontent%26id%3D18&response_type=code&scope=snsapi_base&state=igomall#wechat_redirect"
+	"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc284282dbf28ab83&redirect_uri=http%3A%2F%2Fblackboy1987.eicp.net%2Fwechat%2Findex%2Findex.jhtml%3Fmethod%3Dcontent%26id%3D18&response_type=code&scope=snsapi_userinfo&state=igomall#wechat_redirect"},{"type":"view", "name":"提现说明","url":"https://open.weixin.qq.c
+{
+    "button": [
+        {
+            "name": "关于商城", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "关于商城", 
+                    
+                }, 
+                {
+                    "type": "view", 
+                    "name": "充值说明", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc284282dbf28ab83&redirect_uri=http%3A%2F%2Fblackboy1987.eicp.net%2Fwechat%2Findex%2Findex.jhtml%3Fmethod%3Dcontent%26id%3D19&response_type=code&scope=snsapi_base&state=igomall#wechat_redirect"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "提现说明", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc284282dbf28ab83&redirect_uri=http%3A%2F%2Fblackboy1987.eicp.net%2Fwechat%2Findex%2Findex.jhtml%3Fmethod%3Dcontent%26id%3D20&response_type=code&scope=snsapi_base&state=igomall#wechat_redirect"
+                }
+            ]
+        }, 
+        {
+            "name": "商品", 
+            "sub_button": [
+                
+            	{
+                    "type": "view", 
+                    "name": "商城首页", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc284282dbf28ab83&redirect_uri=http%3A%2F%2Fblackboy1987.eicp.net%2Fwechat%2Findex%2Findex.jhtml%3Fmethod%3Dindex&response_type=code&scope=snsapi_base&state=igomall#wechat_redirect"
+                },
+                {
+                    "type": "view", 
+                    "name": "促销产品", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc284282dbf28ab83&redirect_uri=http%3A%2F%2Fblackboy1987.eicp.net%2Fwechat%2Findex%2Findex.jhtml%3Fmethod%3DpromotionProduct%26promotionId%3D2&response_type=code&scope=snsapi_base&state=igomall#wechat_redirect"
+                }
+            ]
+        }, 
+        {
+            "name": "个人中心", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "个人中心", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc284282dbf28ab83&redirect_uri=http://www.i-gomall.com/wechat/index/index.jhtml?method=memberInfo&response_type=code&scope=snsapi_base&state=igomall#wechat_redirect"
+                }, 
+                {
+                    "type": "click", 
+                    "name": "我的推广码", 
+                    "key": "getQrcode_34"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,111 @@
+<!-- HomeFocusLayout Begin-->
+<div class="home-focus-layout">
+[@ad_list id=1]
+	[#if ads?has_content]
+	<ul id="fullScreenSlides" class="full-screen-slides">
+	[#list ads as ad]
+			<li style="background:  url('${ad.path}') no-repeat center top">
+				[#if ad.url??]
+					<a href="${ad.url}" target="_blank" title="${ad.title}"> 
+				[/#if]
+			</li>
+	[/#list]
+		</ul>
+		[/#if]
+	[/@ad_list]
+	[@ad_list id=2]
+	[#if ads?has_content]
+	<div class="jfocus-trigeminy">
+		<ul>
+			[#list ads?chunk(3) as row]
+			<li>
+				[#list row as ad]
+				[#if ad.hasBegun() && !ad.hasEnded() && ad.type == "image"]
+				[#if ad.url??]
+					<a href="${ad.url}" target="_blank" title="${ad.title}"> 
+						<img src="${ad.path}" width="${ad.adPosition.width}" height="${ad.adPosition.height}" alt="${ad.title}" title="${ad.title}" />
+					</a>
+				[#else]
+					<img src="${ad.path}" width="${ad.adPosition.width}" height="${ad.adPosition.height}" alt="${ad.title}" title="${ad.title}" />
+				[/#if]
+				[/#if]
+				[/#list]
+			</li>
+			[/#list]
+		</ul>
+	</div>
+	[/#if]
+	[/@ad_list]
+	<script type="text/javascript">
+		update_screen_focus();
+	</script>
+	<div class="right-sidebar">
+		<div class="policy">
+			<ul>
+				<li class="b1">七天包退</li>
+				<li class="b2">正品保障</li>
+				<li class="b3">闪电发货</li>
+			</ul>
+		</div>
+		[@promotion_list hasEnded = false id=3]
+		[#list promotions as promotion]
+		<div class="groupbuy">
+			<div class="title">
+				<i>秒</i>${promotion.name}
+			</div>
+			[@product_list promotionId = promotion.id count = 5]
+			<ul>
+				[#list products as product]
+				<li>
+					<dl style="background-image:url([#if product.image??]${product.image}[#else]${setting.defaultThumbnailProductImage}[/#if]);background-size:210px;">
+						<dt>${abbreviate(product.name, 24)}</dt>
+						<dd class="price">
+							<span class="groupbuy-price">${currency(product.effectivePrice, true)}</span><span
+								class="buy-button"><a href="${base}${product.path}" title="${product.name}" target="_blank">立即秒</a></span>
+						</dd>
+						<dd class="time">
+							<span class="sell">已售<em>${product.sales}</em></span> 
+							<span class="time-remain" count_down="${countdown(promotion.endDate)}"> 
+								<em time_id="d">0</em>天
+								<em time_id="h">0</em>小时 
+								<em time_id="m">0</em>分
+								<em time_id="s">0</em>秒
+							</span>
+						</dd>
+					</dl>
+				</li>
+				[/#list]
+			</ul>
+			[/@product_list]
+		</div>
+		[/#list]
+		[/@promotion_list]
+		<div class="proclamation">
+			<ul class="tabs-nav">
+				<li class="tabs-selected">
+					<h3>招商入驻</h3>
+				</li>
+				<li>
+					<h3>商城公告</h3>
+				</li>
+			</ul>
+			<div class="tabs-panel">
+				<a href="" title="申请商家入驻；已提交申请，可查看当前审核状态。" class="store-join-btn" target="_blank">&nbsp;</a> 
+				<a href="" target="_blank" class="store-join-help"><i class="icon-cog"></i>登录商家管理中心</a>
+			</div>
+			[@article_category_root_list count = 1 id = 1]
+			[#list articleCategories as articleCategory]
+			<div class="tabs-panel tabs-hide">
+				<ul class="mall-news">
+					[@article_list articleCategoryId = articleCategory.id count = 5]
+					[#list articles as article]
+						<li><i></i><a href="${base}${article.path}" title="${article.title}" target="_blank">${abbreviate(article.title, 8)} </a> <time>(${article.createDate?string("yyyy-MM-dd")})</time></li>
+					[/#list]
+					[/@article_list]
+				</ul>
+			</div>
+			[/#list]
+			[/@article_category_root_list]
+		</div>
+	</div>
+</div>

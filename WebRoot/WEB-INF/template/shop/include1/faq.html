@@ -1,0 +1,44 @@
+<div id="cti">
+	<div class="wrapper">
+		<ul>
+			<li><span class="line"></span> <span class="icon"> <img
+					style="width: 60px;"
+					src="${base}/resources/shop1/images/7day_60.gif" />
+			</span> <span class="name"> 7天退货 </span></li>
+			<li><span class="line"></span> <span class="icon"> <img
+					style="width: 60px;"
+					src="${base}/resources/shop1/images/pz_60.gif" />
+			</span> <span class="name"> 品质承诺 </span></li>
+			<li><span class="line"></span> <span class="icon"> <img
+					style="width: 60px;"
+					src="${base}/resources/shop1/images/psbf_60.gif" />
+			</span> <span class="name"> 破损补寄 </span></li>
+			<li><span class="line"></span> <span class="icon"> <img
+					style="width: 60px;"
+					src="${base}/resources/shop1/images/jswl_60.gif" />
+			</span> <span class="name"> 急速物流 </span></li>
+		</ul>
+	</div>
+</div>
+[@article_category_root_list count = 6]
+<div id="faq">
+	<div class="wrapper">
+		<ul>
+			[#list articleCategories as articleCategory]
+			<li>
+				<dl class="s${articleCategory_index+1}">
+					<dt>${articleCategory.name}</dt>
+					[@article_list articleCategoryId = articleCategory.id count = 5]
+					[#list articles as article]
+						<dd>
+							<i></i><a href="${base}${article.path}" title="${article.title}" target="_blank"> ${abbreviate(article.title, 10)} </a>
+						</dd>
+					[/#list]
+					[/@article_list]
+				</dl>
+			</li>
+			[/#list]
+		</ul>
+	</div>
+</div>
+[/@article_category_root_list]

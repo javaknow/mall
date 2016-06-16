@@ -1,0 +1,13 @@
+/applicationContext-mvc.xml
+/applicationContext-shiro.xml
+/applicationContext.xml
+/beans.xml
+/com
+/ehcache.xml
+/log4j.properties
+/lx2014.properties
+/lx2014.xml
+/menu.txt
+/org
+/persistence.xml
+/weChat.xml

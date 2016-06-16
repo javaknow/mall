@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>jquery.zclip.js¼ôÌù°å</title>
+</head>
+<script src="http://www.coding123.net/js/jquery.js"></script>
+<script src="jquery.zclip.min.js"></script>
+<script>
+    $(function () {
+        $('a[rel]').zclip({ copy: function () { return $(this.getAttribute('rel')).html(); } });
+    });
+</script>
+<body>
+<a rel="#p1">¿½±´1</a>
+<p id="p1">¿½±´ÄÚÈİ1¿½±´ÄÚÈİ1¿½±´ÄÚÈİ1</p>
+<a rel="#p2">¿½±´2</a>
+<p id="p2">¿½±´ÄÚÈİ2<br />¿½±´ÄÚÈİ2</p>
+<a rel="#p3">¿½±´3</a>
+<p id="p3">¿½±´ÄÚÈİ3<br />¿½±´ÄÚÈİ3</p>
+</body>
+</html>

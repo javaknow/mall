@@ -1,0 +1,217 @@
+<!-- PublicTopLayout Begin -->
+
+	<div id="append_parent"></div>
+	<div id="ajaxwaitid"></div>
+	<div id="ncToolbar" class="nc-appbar">
+		<div class="nc-appbar-tabs" id="appBarTabs">
+			<div class="ever">
+				<div class="cart">
+					<a href="javascript:void(0);" id="rtoolbar_cart"><span
+						class="icon"></span> <span class="name">购物车</span><i
+						id="rtoobar_cart_count" class="new_msg" style="display:none;"></i></a>
+				</div>
+				<div class="chat">
+					<a href="javascript:void(0);" id="chat_show_user"><span
+						class="icon"></span><i id="new_msg" class="new_msg"
+						style="display:none;"></i><span class="tit">在线联系</span></a>
+				</div>
+			</div>
+			<div class="variation">
+				<div class="middle">
+					<div class="user" nctype="a-barLoginBox">
+						<a href="javascript:void(0);">
+							<div class="avatar">
+								<img
+									src="http://www.jshgwsc.com/data/upload/shop/common/default_user_portrait.gif" />
+							</div> <span class="tit">会员登录</span>
+						</a>
+					</div>
+					<div class="user-login-box" nctype="barLoginBox"
+						style="display:none;">
+						<i class="arrow"></i> <a href="javascript:void(0);" class="close"
+							nctype="close-barLoginBox" title="关闭">X</a>
+						<form id="login_form" method="post"
+							action="index.php?act=login&op=login"
+							onsubmit="ajaxpost('login_form', '', '', 'onerror')">
+							<input type='hidden' name='formhash'
+								value='hmVTHU1S6Zjde3UIWFkboPhFPKTiFS-' /> <input type="hidden"
+								name="form_submit" value="ok" /> <input name="nchash"
+								type="hidden" value="5908ef61" />
+							<dl>
+								<dt>
+									<strong>登录名</strong>
+								</dt>
+								<dd>
+									<input type="text" class="text" tabindex="1" autocomplete="off"
+										name="user_name" autofocus> <label></label>
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<strong>登录密码</strong><a
+										href="index.php?act=login&op=forget_password" target="_blank">忘记登录密码？</a>
+								</dt>
+								<dd>
+									<input tabindex="2" type="password" class="text"
+										name="password" autocomplete="off"> <label></label>
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<strong>验证码</strong><a href="javascript:void(0)" class="ml5"
+										onclick="javascript:document.getElementById('codeimage').src='http://www.jshgwsc.com/shop/index.php?act=seccode&op=makecode&nchash=5908ef61&t=' + Math.random();">更换验证码</a>
+								</dt>
+								<dd>
+									<input tabindex="3" type="text" name="captcha"
+										autocomplete="off" class="text w130" id="captcha2"
+										maxlength="4" size="10" /> <img src="" name="codeimage"
+										border="0" id="codeimage" class="vt"> <label></label>
+								</dd>
+							</dl>
+							<div class="bottom">
+								<input type="submit" class="submit" value="确认"> <input
+									type="hidden" value="" name="ref_url"> <a
+									href="index.php?act=login&op=register&ref_url=" target="_blank">注册新用户</a>
+								<a class="mr20" title="QQ账号登录"
+									href="http://www.jshgwsc.com/shop/api.php?act=toqq">QQ账号</a>
+							</div>
+						</form>
+					</div>
+
+					<div class="prech">&nbsp;</div>
+					<div class="compare">
+						<a href="javascript:void(0);" id="compare"><span class="icon"></span><span
+							class="tit">商品对比</span></a>
+					</div>
+				</div>
+				<div class="gotop">
+					<a href="javascript:void(0);" id="gotop"><span class="icon"></span><span
+						class="tit">返回顶部</span></a>
+				</div>
+			</div>
+			<div class="content-box" id="content-compare">
+				<div class="top">
+					<h3>商品对比</h3>
+					<a href="javascript:void(0);" class="close" title="隐藏"></a>
+				</div>
+				<div id="comparelist"></div>
+			</div>
+			<div class="content-box" id="content-cart">
+				<div class="top">
+					<h3>我的购物车</h3>
+					<a href="javascript:void(0);" class="close" title="隐藏"></a>
+				</div>
+				<div id="rtoolbar_cartlist"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		//返回顶部
+		backTop = function(btnId) {
+			var btn = document.getElementById(btnId);
+			var scrollTop = document.documentElement.scrollTop
+					|| document.body.scrollTop;
+			window.onscroll = set;
+			btn.onclick = function() {
+				btn.style.opacity = "0.5";
+				window.onscroll = null;
+				this.timer = setInterval(function() {
+					scrollTop = document.documentElement.scrollTop
+							|| document.body.scrollTop;
+					scrollTop -= Math.ceil(scrollTop * 0.1);
+					if (scrollTop == 0)
+						clearInterval(btn.timer, window.onscroll = set);
+					if (document.documentElement.scrollTop > 0)
+						document.documentElement.scrollTop = scrollTop;
+					if (document.body.scrollTop > 0)
+						document.body.scrollTop = scrollTop;
+				}, 10);
+			};
+			function set() {
+				scrollTop = document.documentElement.scrollTop
+						|| document.body.scrollTop;
+				btn.style.opacity = scrollTop ? '1' : "0.5";
+			}
+		};
+		backTop('gotop');
+		//动画显示边条内容区域
+		$(function() {
+			ncToolbar();
+			$(window).resize(function() {
+				ncToolbar();
+			});
+			function ncToolbar() {
+				if ($(window).width() >= 1240) {
+					$('#appBarTabs >.variation').show();
+				} else {
+					$('#appBarTabs >.variation').hide();
+				}
+			}
+			$('#appBarTabs').hover(function() {
+				$('#appBarTabs >.variation').show();
+			}, function() {
+				ncToolbar();
+			});
+			$("#compare").click(function() {
+				if ($("#content-compare").css('right') == '-210px') {
+					loadCompare(false);
+					$('#content-cart').animate({
+						'right' : '-210px'
+					});
+					$("#content-compare").animate({
+						right : '35px'
+					});
+				} else {
+					$(".close").click();
+					$(".chat-list").css("display", 'none');
+				}
+			});
+			$("#rtoolbar_cart")
+					.click(
+							function() {
+								if ($("#content-cart").css('right') == '-210px') {
+									$('#content-compare').animate({
+										'right' : '-210px'
+									});
+									$("#content-cart").animate({
+										right : '35px'
+									});
+									if (!$("#rtoolbar_cartlist").html()) {
+										$("#rtoolbar_cartlist")
+												.load(
+														'index.php?act=cart&op=ajax_load&type=html');
+									}
+								} else {
+									$(".close").click();
+									$(".chat-list").css("display", 'none');
+								}
+							});
+			$(".close").click(function() {
+				$(".content-box").animate({
+					right : '-210px'
+				});
+			});
+
+			$(".quick-menu dl").hover(function() {
+				$(this).addClass("hover");
+			}, function() {
+				$(this).removeClass("hover");
+			});
+
+			// 右侧bar用户信息
+			$('div[nctype="a-barUserInfo"]').click(function() {
+				$('div[nctype="barUserInfo"]').toggle();
+			});
+			// 右侧bar登录
+			$('div[nctype="a-barLoginBox"]')
+					.click(
+							function() {
+								$('div[nctype="barLoginBox"]').toggle();
+								document.getElementById('codeimage').src = 'http://www.jshgwsc.com/shop/index.php?act=seccode&op=makecode&nchash=5908ef61&t='
+										+ Math.random();
+							});
+			$('a[nctype="close-barLoginBox"]').click(function() {
+				$('div[nctype="barLoginBox"]').toggle();
+			});
+		});
+	</script>

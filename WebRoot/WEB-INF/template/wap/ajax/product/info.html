@@ -1,0 +1,25 @@
+<div class="default">
+<div class="content ke-post">
+	[#if (product.parameterValue.size() >= 3)]
+				<table class="brief">
+					[#list product.parameterValue.keySet() as parameter]
+						[#if parameter_index == 0]
+							<tr>
+						[/#if]
+						<th>${abbreviate(parameter.name, 20)}</th>
+						<td>
+							<span title="${product.parameterValue.get(parameter)}">${abbreviate(product.parameterValue.get(parameter), 30, "...")}</span>
+						</td>
+						[#if (parameter_index == 2 && product.parameterValue?size < 6) || parameter_index == 5]
+							</tr>
+							[#break /]
+						[#elseif (parameter_index + 1) % 3 == 0]
+							</tr>
+							<tr>
+						[/#if]
+					[/#list]
+				</table>
+			[/#if]
+	${product.introduction}
+</div>
+</div>

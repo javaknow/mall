@@ -1,0 +1,44 @@
+{
+    "code": 200,
+    "datas": {
+        "class_list": [
+        	[#list productCategories as productCategory]
+        	[#if productCategory_index==0]
+            {
+                "gc_id": "${productCategory.id}",
+                "gc_name": "${productCategory.name}",
+                "type_id": "0",
+                "type_name": "",
+                "gc_parent_id": "0",
+                "commis_rate": "0",
+                "gc_sort": "1",
+                "gc_virtual": "0",
+                "gc_title": "${productCategory.seoTitle}",
+                "gc_keywords": "${seoKeywords}",
+                "gc_description": "${productCategory.seoDescription}",
+                "show_type": "1",
+                "image": "${productCategory.icon}",
+                "text": "${productCategory.seoDescription}"
+            }
+            [#else]
+            ,{
+                "gc_id": "${productCategory.id}",
+                "gc_name": "${productCategory.name}",
+                "type_id": "0",
+                "type_name": "",
+                "gc_parent_id": "0",
+                "commis_rate": "0",
+                "gc_sort": "1",
+                "gc_virtual": "0",
+                "gc_title": "${productCategory.seoTitle}",
+                "gc_keywords": "${seoKeywords}",
+                "gc_description": "${productCategory.seoDescription}",
+                "show_type": "1",
+                "image": "${productCategory.icon}",
+                "text": "${productCategory.seoDescription}"
+            }
+            [/#if]
+            [/#list]
+        ]
+    }
+}

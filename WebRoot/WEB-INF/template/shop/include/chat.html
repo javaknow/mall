@@ -1,0 +1,38 @@
+<link href="http://www.jshgwsc.com/chat/templates/default/css/chat.css"
+	rel="stylesheet" type="text/css">
+<link
+	href="http://www.jshgwsc.com/chat/templates/default/css/home_login.css"
+	rel="stylesheet" type="text/css">
+<div style="clear: both;"></div>
+<div id="web_chat_dialog" style="display: none;float:right;"></div>
+<a id="chat_login" href="javascript:void(0)" style="display: none;"></a>
+<script type="text/javascript">
+	var APP_SITE_URL = 'http://www.jshgwsc.com/shop';
+	var CHAT_SITE_URL = 'http://www.jshgwsc.com/chat';
+	var SHOP_SITE_URL = 'http://www.jshgwsc.com/shop';
+	var connect_url = "http://120.24.238.165:8090";
+
+	var layout = "layout/home_layout.php";
+	var act_op = "index_index";
+	var user = {};
+
+	user['u_id'] = "";
+	user['u_name'] = "";
+	user['s_id'] = "";
+	user['s_name'] = "";
+	user['avatar'] = "http://www.jshgwsc.com/data/upload/shop/common/default_user_portrait.gif";
+
+	$("#chat_login").nc_login({
+		action : '/index.php?act=login',
+		nchash : '3a2d61da',
+		formhash : 'nk8qQ3gH5Ld4fEdoxoe0tBKps2O4gtf'
+	});
+</script>
+<script type="text/javascript"
+	src="http://www.jshgwsc.com/data/resource/js/jquery.charCount.js"
+	charset="utf-8"></script>
+<script type="text/javascript"
+	src="http://www.jshgwsc.com/data/resource/js/jquery.smilies.js"
+	charset="utf-8"></script>
+<script type="text/javascript"
+	src="http://www.jshgwsc.com/chat/resource/js/user.js" charset="utf-8"></script>

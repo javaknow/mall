@@ -1,0 +1,23 @@
+[#list products as product]
+<tr>
+	<td>${product.sn}</td>
+	<td>${product.name}</td>
+	<td>${product.productCategory.name}</td>
+	<td>${product.stockMemo}</td>
+	<td>${product.cost}</td>
+	<td>${product.price}</td>
+	<td>
+		<input type="hidden" name="productIds" value="${product.id}"/>
+		<input type="text" name="groupBuyProductPrice" class="text groupBuyProductPrice" maxlength="9" style="width: 50px;"/>
+	</td>
+	<td>${product.stock}</td>
+	<td>${product.sales}</td>
+	<td>${product.shop}</td>
+	<td>
+		<input type="text" name="order" class="text groupBuyProductOrder" maxlength="9" style="width: 50px;"/>
+	</td>
+	<td>
+		<a href="javascript:;" class="deleteGroupBuyProduct">[${message("admin.common.delete")}]</a>
+	</td>
+</tr>
+[/#list]

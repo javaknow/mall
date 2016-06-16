@@ -1,0 +1,209 @@
+
+<!doctype html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+[@seo type = "index"]
+	<title>[#if seo.title??][@seo.title?interpret /][#else]${message("shop.index.title")}[/#if][#if systemShowPowered]  [/#if]</title>
+	<meta name="author" content="" />
+	<meta name="copyright" content="" />
+	[#if seo.keywords??]
+		<meta name="keywords" content="[@seo.keywords?interpret /]" />
+	[/#if]
+	[#if seo.description??]
+		<meta name="description" content="[@seo.description?interpret /]" />
+	[/#if]
+[/@seo]
+[#include "/shop/include1/css.html" /]
+</head>
+<body>
+	[#include "/shop/include1/side.html" /] 
+	[#include "/shop/include1/header.html" /]
+	[#include "/shop/include1/category.html" /]
+	<div class="nch-breadcrumb-layout">
+		<div class="nch-breadcrumb wrapper">
+			<i class="icon-home"></i> <span><a
+				href="${base}/">首页</a></span><span
+				class="arrow">></span> <span>${promotion.name}</span>
+		</div>
+	</div>
+	<style type="text/css">
+#box {
+	background: #FFF;
+	width: 238px;
+	height: 410px;
+	margin: -390px 0 0 0;
+	display: block;
+	border: solid 4px #D93600;
+	position: absolute;
+	z-index: 999;
+	opacity: .5
+}
+
+#infscr-loading {
+	display: none;
+}
+</style>
+	<link href="http://b2b2c.shopnctest.com/dema/shop/templates/default/css/layout.css" rel="stylesheet" type="text/css">
+
+	<div class="nch-container wrapper">
+		<div id="promotionGoods">
+			[#list products as product]
+			<div class="item">
+				<div class="scope">
+					<dl class="goods">
+						<dt class="goods-thumb">
+							[#if isLogin]
+							<a href="${base}/product/promotion.jhtml?id=${product.id}&key=${key}&result=${result}" target="_blank" title="${product.name}">
+							<img src="[#if product.image??]${product.image}[#else]${setting.defaultThumbnailProductImage}[/#if]" /></a>
+							[#else]
+								<a href="${base}/product/promotion.jhtml?id=${product.id}" target="_blank" title="${product.name}">
+							<img src="[#if product.image??]${product.image}[#else]${setting.defaultThumbnailProductImage}[/#if]" /></a>
+							[/#if]
+							
+						</dt>
+						<dd class="goods-name">
+							<span><strong>${promotion.name}</strong></span> <a target="_blank" href="${base}${product.path}">
+								${abbreviate(product.name, 50)}
+							</a>
+						</dd>
+					</dl>
+					<div class="goods-price">
+						<span class="sale">促销价<em>${currency(product.effectivePrice, true, true)}</em></span>
+						<p>
+						</p>
+						<span class="sale">原价<em style="font-size: 18px !important;text-decoration: line-through;">${currency(product.price, true, true)}</em></span>
+					</div>
+					<div class="goods-buy">
+						[#if isLogin]
+						<a href="javascript:void(0)" class="btn copyBtn" nctype="add_cart" data-gid="${product.id}" val="${base}/product/promotion.jhtml?id=${product.id}&key=${key}&result=${result}" style="float:left;">我要推广</a>
+						<a href="${base}/product/promotion.jhtml?id=${product.id}&key=${key}&result=${result}" nctype="add_cart" data-gid="${product.id}" class="btn">立即抢购</a>
+						[#else]
+							<a href="${base}/product/promotion.jhtml?id=${product.id}" nctype="add_cart" data-gid="${product.id}"
+							class="btn">立即抢购</a>
+						[/#if]
+						 <span class="raty" data-score="${product_index}"
+							style="width: 100px;"></span> <!-- <span class="mt5"><a href="">平台自营</a></span> -->
+					</div>
+					<ul class="goodseval">
+						<!-- <li>
+							<div class="user-avatar">
+								<a href="index.php?act=member_snshome&mid=7" target="_blank"
+									data-param="{'id':7}" nctype="mcard"> <img
+									src="${base}/upload/image/default_user_portrait.gif">
+								</a>
+							</div>
+							<div class="eval">
+								<i class="icon-quote-left"></i>物流速度很快，配送服务态度很好，手机和描述的一样，很实用，很好操作，支持国产，，，，美中不足的是没得礼品赠送。<i
+									class="icon-quote-right"></i>
+							</div>
+						</li> -->
+					</ul>
+				</div>
+			</div>
+			[/#list]
+		</div>
+		<div class="tc mt20 mb20">
+			<div class="pagination" id="page-nav"></div>
+		</div>
+	</div>
+	<div id="page-more">
+		<a href="promotionMore.jhtml?promotionId=${promotion.id}&page=2"></a>
+	</div>
+	<script type="text/javascript" src="${base}/resources/jd/js/jquery.raty/jquery.raty.min.js"></script>
+	<script src="${base}/resources/jd/js/jquery.masonry.js" type="text/javascript"></script>
+	<script src="${base}/resources/jd/js/jquery.infinitescroll.js" type="text/javascript"></script>
+	<script type="text/javascript" src="${base}/resources/jd/js/fly/jquery.fly.min.js" charset="utf-8"></script>
+	<!--[if lt IE 10]>
+<script type="text/javascript" src="${base}/resources/jd/js/fly/requestAnimationFrame.js" charset="utf-8"></script>
+<![endif]-->
+<script>
+var $container = $('#promotionGoods');
+$container.masonry({
+    columnWidth: 305,
+    itemSelector: '.item'
+});
+$(function(){
+	$container.infinitescroll({  
+        navSelector : '#page-more',
+        nextSelector : '#page-more a',
+        itemSelector : '.item',
+        loading: {
+        	selector:'#page-nav',
+            img: '${base}/resources/jd/images/loading.gif',
+            msgText:'努力加载中...',
+            maxPage : 3,
+            finishedMsg : '没有记录了',
+            finished : function() {
+            	$('.raty').raty({
+                    path: "${base}/resources/jd/js/jquery.raty/img",
+                    readOnly: true,
+                    width: 100,
+                    score: function() {
+                      return $(this).attr('data-score');
+                    }
+                });
+            }
+        }
+    },function(newElements){
+		var $newElems = $(newElements);
+		$container.masonry('appended', $newElems, true);
+	});
+
+	$('.raty').raty({
+        path: "${base}/resources/jd/js/jquery.raty/img",
+        readOnly: true,
+        width: 100,
+        score: function() {
+          return $(this).attr('data-score');
+        }
+    });
+    // 加入购物车
+    $(window).resize(function() {
+        $('#promotionGoods').on('click', 'a[nctype="add_cart"]', function() {
+            flyToCart($(this));
+        });
+    });
+    $('#promotionGoods').on('click', 'a[nctype="add_cart"]', function() {
+        flyToCart($(this));
+    });
+     function flyToCart($this) {
+        var rtoolbar_offset_left = $("#rtoolbar_cart").offset().left;
+        var rtoolbar_offset_top = $("#rtoolbar_cart").offset().top-$(document).scrollTop();
+        var img = $this.parents('.scope:first').find('img:first').attr('src');
+        var data_gid = $this.attr('data-gid');
+        var flyer = $('<img class="u-flyer" src="'+img+'" style="z-index:999">');
+        flyer.fly({
+            start: {
+                left: $this.offset().left,
+                top: $this.offset().top-$(document).scrollTop()-450
+            },
+            end: {
+                left: rtoolbar_offset_left,
+                top: rtoolbar_offset_top,
+                width: 0,
+                height: 0
+            },
+            onEnd: function(){
+                addcart(data_gid,1,'');
+                flyer.remove();
+            }
+        });
+     }
+});
+</script>
+	[#include "/shop/include1/chat.html" /] 
+	[#include "/shop/include1/faq.html" /] 
+	[#include "/shop/include1/footer.html" /]
+	[#include "/shop/include1/js.html" /]
+	<script type="text/javascript" src="${base}/resources/plugin/jquery.zclip/jquery.zclip.js"></script>
+	<script> 
+        $(".copyBtn").zclip({ 
+            path: "${base}/resources/plugin/jquery.zclip/ZeroClipboard.swf", 
+            copy: function(){
+                return $(this).attr("val"); 
+  　　　 　　	} 
+        }); 
+	</script>
+</body>
+</html>

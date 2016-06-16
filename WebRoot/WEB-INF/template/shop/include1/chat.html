@@ -1,0 +1,30 @@
+<link href="${base}/resources/shop1/css/chat.css" rel="stylesheet" type="text/css">
+	<div style="clear: both;"></div>
+	<div id="web_chat_dialog" style="display: none;float:right;"></div>
+	<a id="chat_login" href="javascript:void(0)" style="display: none;"></a>
+	<script type="text/javascript">
+		var LOGIN_SITE_URL = 'http://b2b2c.shopnctest.com/demo/member';
+		var CHAT_SITE_URL = 'http://b2b2c.shopnctest.com/demo/chat';
+		var SHOP_SITE_URL = 'http://b2b2c.shopnctest.com/demo/shop';
+		var connect_url = "http://b2b2c.shopnctest.com:8091";
+
+		var layout = "layout/home_layout.php";
+		var act_op = "index_index";
+		var chat_goods_id = "0";
+		var user = {};
+
+		user['u_id'] = "";
+		user['u_name'] = "";
+		user['s_id'] = "";
+		user['s_name'] = "";
+		user['s_avatar'] = "http://b2b2c.shopnctest.com/demo/data/upload/shop/common/default_store_avatar.gif";
+		user['avatar'] = "${base}/upload/image/default_user_portrait.gif";
+
+		$("#chat_login").nc_login({
+			nchash : '93af80f2',
+			formhash : '2vuf8Rem4BDdqfYh9zqk419ATVu5CeT'
+		});
+	</script>
+	<script type="text/javascript" src="${base}/resources/shop1/js/jquery.charCount.js" charset="utf-8"></script>
+	<script type="text/javascript" src="${base}/resources/shop1/js/jquery.smilies.js" charset="utf-8"></script>
+	<script type="text/javascript" src="${base}/resources/shop1/js/user.js" charset="utf-8"></script>

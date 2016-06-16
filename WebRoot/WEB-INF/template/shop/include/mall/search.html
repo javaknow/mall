@@ -1,0 +1,151 @@
+<script type="text/javascript">
+	$(function() {
+		$(".head-user-menu dl").hover(function() {
+			$(this).addClass("hover");
+		}, function() {
+			$(this).removeClass("hover");
+		});
+		$('.head-user-menu .my-mall').mouseover(function() {// 最近浏览的商品
+			load_history_information();
+			$(this).unbind('mouseover');
+		});
+		$('.head-user-menu .my-cart').mouseover(function() {// 运行加载购物车
+			load_cart_information();
+			$(this).unbind('mouseover');
+		});
+		$('#button').click(function() {
+			if ($('#keyword').val() == '') {
+				return false;
+			}
+		});
+	});
+
+	$(function() {
+		//search
+		var act = "index";
+		if (act == "store_list") {
+			$("#search").children('ul').children('li:eq(1)')
+					.addClass("current");
+			$("#search").children('ul').children('li:eq(0)').removeClass(
+					"current");
+		}
+		$("#search").children('ul').children('li').click(function() {
+			$(this).parent().children('li').removeClass("current");
+			$(this).addClass("current");
+			$('#search_act').attr("value", $(this).attr("act"));
+			$('#keyword').attr("placeholder", $(this).attr("title"));
+		});
+		$("#keyword").blur();
+
+	});
+</script>
+<div class="header-wrap">
+	<header class="public-head-layout wrapper">
+		<h1 class="site-logo">
+			<a href="${base}/"><img src="${base}${setting.logo}" class="pngFix" alt="${setting.siteName}" title="${setting.siteName}"></a>
+		</h1>
+		<div class="head-app">
+			<span class="pic"></span>
+			<div class="download-app">
+				<div class="qrcode">
+					<img src="${base}/upload/image/qrCode/qrcode_for_430.jpg" alt="${setting.siteName}二维码" title="${setting.siteName}二维码">
+				</div>
+				<div class="hint">
+					<h4>扫描二维码</h4>
+					下载手机客户端
+				</div>
+				<div class="addurl">
+					<a href="" target="_blank">
+						<i class="icon-android"></i>Android
+					</a> 
+					<a href="" target="_blank">
+						<i class="icon-apple"></i>iPhone
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div id="search" class="head-search-bar">
+			<!--商品和店铺-->
+			<ul class="tab">
+				<li title="请输入您要搜索的商品关键字" act="search" class="current">商品</li>
+				<li title="请输入您要搜索的店铺关键字" act="store_list">店铺</li>
+			</ul>
+			<form class="search-form" method="get" action="${base}/product/search.jhtml">
+				<input type="hidden" value="search" id="search_act" name="act">
+				<input placeholder="请输入您要搜索的商品关键字" name="keyword" id="keyword"
+					type="text" class="input-text" value="" maxlength="60"
+					x-webkit-speech lang="zh-CN" onwebkitspeechchange="foo()"
+					x-webkit-grammar="builtin:search" /> <input type="submit"
+					id="button" value="搜索" class="input-submit">
+			</form>
+			<!--搜索关键字-->
+			[#if setting.hotSearches?has_content]
+			<div class="keyword">
+				${message("shop.header.hotSearch")}：
+				<ul>
+					[#list setting.hotSearches as hotSearch]
+						<li><a href="${base}/product/search.jhtml?keyword=${hotSearch?url}">${hotSearch}</a></li>
+					[/#list]
+				</ul>
+			</div>
+			[/#if]
+		</div>
+		<div class="head-user-menu">
+			<dl class="my-mall">
+				<dt>
+					<span class="ico"></span>我的商城<i class="arrow"></i>
+				</dt>
+				<dd>
+					<div class="sub-title">
+						<h4></h4>
+						<a href="http://www.jshgwsc.com/shop/index.php?act=member&op=home"
+							class="arrow">我的用户中心<i></i></a>
+					</div>
+					<div class="user-centent-menu">
+						<ul>
+							<li><a href="">站内消息(<span id="messageCount">0</span>)</a></li>
+							<li><a href="" class="arrow">我的订单<i></i></a></li>
+							<li><a href="">咨询回复(<span id="member_consult">0</span>) </a></li>
+							<li><a href="" class="arrow">我的收藏<i></i></a></li>
+							<li><a href="">代金券(<span id="member_voucher">0</span>)</a></li>
+							<li><a href="" class="arrow">我的积分<i></i></a></li>
+						</ul>
+					</div>
+					<div class="browse-history">
+						<div class="part-title">
+							<h4>最近浏览的商品</h4>
+							<span style="float:right;"><a
+								href="http://www.jshgwsc.com/shop/index.php?act=member_goodsbrowse&op=list">全部浏览历史</a></span>
+						</div>
+						<ul>
+							<li class="no-goods"><img class="loading"
+								src="http://www.jshgwsc.com/shop/templates/default/images/loading.gif" /></li>
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			<dl class="my-cart">
+				<dt>
+					<span class="ico"></span>购物车结算<i class="arrow"></i>
+				</dt>
+				<dd>
+					<div class="sub-title">
+						<h4>最新加入的商品</h4>
+					</div>
+					<div class="incart-goods-box">
+						<div class="incart-goods">
+							<img class="loading"
+								src="http://www.jshgwsc.com/shop/templates/default/images/loading.gif" />
+						</div>
+					</div>
+					<div class="checkout">
+						<span class="total-price">共<i>0</i>种商品
+						</span><a href="http://www.jshgwsc.com/shop/index.php?act=cart"
+							class="btn-cart">结算购物车中的商品</a>
+					</div>
+				</dd>
+			</dl>
+		</div>
+	</header>
+</div>

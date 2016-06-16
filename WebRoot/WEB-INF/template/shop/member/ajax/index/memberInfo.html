@@ -1,0 +1,44 @@
+<div id="account" class="double">
+	<div class="outline">
+		<div class="user-account">
+			<ul>
+				<li id="pre-deposit">
+					<a href="${base}/member/balance.jhtml" title="查看我的余额">
+						<h5>账户余额</h5> 
+						<span class="icon"></span> <span class="value"><em>${currency(member.balance,true,true)}</em></span>
+					</a>
+				</li>
+				<li id="voucher">
+					<a href="index.php?act=member_voucher&op=index" title="查看我的代金券">
+						<h5>代金券</h5> <span class="icon"></span> <span class="value"><em>0</em>张</span>
+					</a>
+				</li>
+				<li id="points">
+					<a href="index.php?act=member_points&op=index" title="查看我的积分">
+						<h5>可用积分</h5> <span class="icon"></span> <span class="value"><em>${member.point}</em>分</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="security" class="normal">
+	<div class="outline">
+		<div class="SAM">
+			<h5>账户安全</h5>
+			<div id="low" class="SAM-info">
+				<strong>低</strong><span><em></em></span> 
+				<a href="http://hao.wx008.com/shop/index.php?act=member_security&op=index" title="安全设置">提升></a>
+			</div>
+			<div class="SAM-handle">
+				<span>
+					<i class="mobile"></i>手机： 
+					<a href="http://hao.wx008.com/shop/index.php?act=member_security&op=auth&type=modify_mobile" title="绑定手机">未绑定</a> 
+				</span> 
+				<span>
+					<i class="mail"></i>邮箱： 
+					<a href="http://hao.wx008.com/shop/index.php?act=member_security&op=auth&type=modify_email" title="绑定邮箱">未绑定</a> </span>
+			</div>
+		</div>
+	</div>
+</div>

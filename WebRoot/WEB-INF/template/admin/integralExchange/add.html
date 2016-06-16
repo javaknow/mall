@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.groupBuy.add")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.tools.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/editor/kindeditor.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/input.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/datePicker/WdatePicker.js"></script>
+
+<script type="text/javascript">
+$().ready(function() {
+
+	var $inputForm = $("#inputForm");
+	var $deleteGroupBuyProduct = $("a.deleteGroupBuyProduct");
+	var $searchBtn = $("#searchBtn")
+	var $groupBuyProductTable = $("#groupBuyProductTable");
+	
+	[@flash_message /]
+	
+	$.validator.addMethod("compare", 
+		function(value, element, param) {
+			var parameterValue = $(param).val();
+			if ($.trim(parameterValue) == "" || $.trim(value) == "") {
+				return true;
+			}
+			try {
+				return parseFloat(parameterValue) <= parseFloat(value);
+			} catch(e) {
+				return false;
+			}
+		},
+		"${message("admin.groupBuy.compare")}"
+	);
+	
+	// 删除团购产品
+	$deleteGroupBuyProduct.live("click", function() {
+		var $this = $(this);
+		$.dialog({
+			type: "warn",
+			content: "${message("admin.dialog.deleteConfirm")}",
+			onOk: function() {
+				$this.closest("tr").remove();
+			}
+		});
+	});
+	
+	$searchBtn.click(function(){
+		var $stockMemo = $("#stockMemo");
+		if($stockMemo.val()==""){
+			$stockMemo.next().show();
+			if(!$stockMemo.hasClass("fieldError")){
+				$stockMemo.addClass("fieldError");
+			}
+			
+			return false;
+		}else{
+			$stockMemo.next().hide();
+			if($stockMemo.hasClass("fieldError")){
+				$stockMemo.removeClass("fieldError");
+			}
+			$.ajax({
+				url: "search.jhtml",
+				type: "POST",
+				data: {
+					stockMemo: $stockMemo.val()
+				},
+				contentType: "application/x-www-form-urlencoded; charset=utf-8",
+				cache: false,
+				success: function(data) {
+					$groupBuyProductTable.append(data);
+					$searchBtn.prop("disabled",true)
+				}
+			});
+		}
+		
+	});
+	
+	$.validator.addClassRules({
+		groupBuyProductPoint: {
+			min: 0,
+			digits: true
+		},
+		groupBuyProductStock:{
+			min: 1,
+			digits: true
+		},
+		groupBuyProductOrder: {
+			digits: true
+		}
+	});
+	
+	// 表单验证
+	$inputForm.validate({
+		rules: {
+			productCategoryId: "required",
+			name: "required",
+			order: "digits"
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="admin/common/index.jhtml">${message("admin.path.index")}</a> &raquo; ${message("admin.groupBuy.add")}
+	</div>
+	<form id="inputForm" action="save.jhtml" method="post">
+		<table id="groupBuyProductTable" class="input tabContent">
+			<tr>
+				<td colspan="6">
+					<input type="text" name="stockMemo" id="stockMemo" class="text" value="" style="width: 90%;height: 40px;font-size: 30px;" />
+					<label for="stockMemo" class="fieldError" style="display: none;">必填</label>
+				</td>
+				<td colspan="2">
+					<input type="button" id="searchBtn" value="查询" class="button" />
+				</td>
+			</tr>
+			<tr id="groupBuyProductTable" class="title">
+				<th>
+					${message("Product.sn")}
+				</th>
+				<th style="width: 20%;">
+					${message("Product.name")}
+				</th>
+				<th>
+					${message("Product.productCategory")}
+				</th>
+				<th>
+					${message("Product.stock")}
+				</th>
+				<th>
+					${message("Product.stockMemo")}
+				</th>
+				<th>
+					${message("Product.price")}
+				</th>
+				<th>
+					兑换数量
+				</th>
+				<th>
+					兑换积分
+				</th>
+				<th>
+					开始时间
+				</th>
+				<th>
+					结束时间
+				</th>
+				<th>
+					${message("admin.common.order")}
+				</th>
+				<th>
+					${message("admin.common.delete")}
+				</th>
+			</tr>
+		</table>
+		<table class="input">
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<td>
+					<input type="submit" class="button" value="${message("admin.common.submit")}" />
+					<input type="button" class="button" value="${message("admin.common.back")}" onclick="location.href='list.jhtml'" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

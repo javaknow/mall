@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" type="text/css" href="${base}/resources/kefu/kefu.css">
+<script type="text/javascript">
+	$(function(){
+		$("#aFloatTools_Show").click(function(){
+			$('#divFloatToolsView').animate({
+				width:'show',opacity:'show'
+			},100,function(){
+				$('#divFloatToolsView').show();
+			});
+			$('#aFloatTools_Show').hide();
+			$('#aFloatTools_Hide').show();				
+		});
+		$("#aFloatTools_Hide").click(function(){
+			$('#divFloatToolsView').animate({
+				width:'hide', opacity:'hide'
+			},100,function(){
+				$('#divFloatToolsView').hide();
+			});
+			$('#aFloatTools_Show').show();
+			$('#aFloatTools_Hide').hide();	
+		});
+	});
+</script>
+</head>
+<body>
+<!--kefu-->
+<div id="floatTools" class="rides-cs" style="height:246px;">
+  <div class="floatL">
+  	<a style="display:block" id="aFloatTools_Show" class="btnOpen" title="展开" style="top:20px" href="javascript:void(0);">展开</a>
+  	<a style="display:none" id="aFloatTools_Hide" class="btnCtn" title="展开" style="top:20px" href="javascript:void(0);">收缩</a>
+  </div>
+  <div id="divFloatToolsView" class="floatR" style="display: none;height:237px;width: 140px;">
+    <div class="cn">
+      <h3 class="titZx">乔美国际在线客服</h3>
+      <ul>
+      	[#list setting.kefuQQs.keySet() as key]
+        	<li style="font-size: 14px;color: #333; font-weight: 600; line-height: 24px; padding: 5px; text-align: center; ">
+        		<span style="float:left;">${key}</span> 
+        		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=${setting.kefuQQs.get(key)}&site=qq&menu=yes">
+        			<img border="0" src="http://wpa.qq.com/pa?p=2:${setting.kefuQQs.get(key)}:41" alt="点击这里给我发消息" title="点击这里给我发消息"/>
+        		</a>
+        	</li>
+      	[/#list]
+      	[#list setting.kefuWangWangs.keySet() as key]
+      		<li style="font-size: 14px;color: #333; font-weight: 600; line-height: 24px; padding: 5px; text-align: center; ">
+      			<span style="float:left;">${key}</span> 
+      			<a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${setting.kefuWangWangs.get(key)}&siteid=cntaobao&status=1&charset=utf-8">
+					<img border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid=${setting.kefuWangWangs.get(key)}&site=cntaobao&s=1&charset=utf-8"/>
+				</a>
+			</li>
+      	[/#list]
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+[#list products as product]
+<tr>
+	<td>${product.sn}</td>
+	<td>${product.name}</td>
+	<td>${product.productCategory.name}</td>
+	<td>${product.stock}</td>
+	<td>${product.stockMemo}</td>
+	<td>${product.price}</td>
+	<td>
+		<input type="text" name="integralExchangeProducts[${product_index}].stock" class="text groupBuyProductStock" maxlength="9" style="width: 50px;"/>
+	</td>
+	<td>
+		<input type="hidden" name="integralExchangeProducts[${product_index}].productId" value="${product.id}"/>
+		<input type="text" name="integralExchangeProducts[${product_index}].point" class="text groupBuyProductPoint" maxlength="9" style="width: 50px;"/>
+	</td>
+	<td>
+		<input type="text" name="integralExchangeProducts[${product_index}].beginDate" class="text groupBuyProductBeginDate Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'});" />
+	</td>
+	<td>
+		<input type="text" name="integralExchangeProducts[${product_index}].endDate" class="text groupBuyProductEndDate Wdate" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'});" />
+	</td>
+	<td>
+		<input type="text" name="integralExchangeProducts[${product_index}].order" class="text groupBuyProductOrder" maxlength="9" style="width: 50px;"/>
+	</td>
+	<td>
+		<a href="javascript:;" class="deleteGroupBuyProduct">[${message("admin.common.delete")}]</a>
+	</td>
+</tr>
+[/#list]

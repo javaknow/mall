@@ -1,0 +1,150 @@
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jsbn.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/prng4.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/rng.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/rsa.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/base64.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/common.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $loginForm = $("#login_form");
+	var $username = $("#username");
+	var $password = $("#password");
+	var $captcha = $("#captcha");
+	var $captchaImage = $("#captchaImage");
+	var $isRememberUsername = $("#isRememberUsername");
+	var $submit = $(":submit");
+	
+	// 记住用户名
+	if (getCookie("memberUsername") != null) {
+		$isRememberUsername.prop("checked", true);
+		$username.val(getCookie("memberUsername"));
+		$password.focus();
+	} else {
+		$isRememberUsername.prop("checked", false);
+		$username.focus();
+	}
+	
+	// 更换验证码
+	$captchaImage.click(function() {
+		$captchaImage.attr("src", "${base}/common/captcha.jhtml?captchaId=${captchaId}&timestamp=" + (new Date()).valueOf());
+	});
+	
+	// 表单验证、记住用户名
+	$loginForm.validate({
+		rules: {
+			username: "required",
+			password: "required"
+			[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+				,captcha: "required"
+			[/#if]
+		},
+		submitHandler: function(form) {
+			$.ajax({
+				url: "${base}/common/public_key.jhtml",
+				type: "GET",
+				dataType: "json",
+				cache: false,
+				beforeSend: function() {
+					$submit.prop("disabled", true);
+				},
+				success: function(data) {
+					var rsaKey = new RSAKey();
+					rsaKey.setPublic(b64tohex(data.modulus), b64tohex(data.exponent));
+					var enPassword = hex2b64(rsaKey.encrypt($password.val()));
+					$.ajax({
+						url: $loginForm.attr("action"),
+						type: "POST",
+						data: {
+							username: $username.val(),
+							enPassword: enPassword
+							[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+								,captchaId: "${captchaId}",
+								captcha: $captcha.val()
+							[/#if]
+						},
+						dataType: "json",
+						cache: false,
+						success: function(message) {
+							if ($isRememberUsername.prop("checked")) {
+								addCookie("memberUsername", $username.val(), {expires: 7 * 24 * 60 * 60});
+							} else {
+								removeCookie("memberUsername");
+							}
+							$submit.prop("disabled", false);
+							if (message.type == "success") {
+								[#if redirectUrl??]
+									location.href = "${redirectUrl}";
+								[#else]
+									location.href = "${base}/";
+								[/#if]
+							} else {
+								$.message(message);
+								[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+									$captcha.val("");
+									$captchaImage.attr("src", "${base}/common/captcha.jhtml?captchaId=${captchaId}&timestamp=" + (new Date()).valueOf());
+								[/#if]
+							}
+						}
+					});
+				}
+			});
+		}
+	});
+
+});
+</script>
+<div class="user-login-box" nctype="barLoginBox">
+	<i class="arrow"></i> <a href="javascript:void(0);" class="close-a" nctype="close-barLoginBox" title="关闭">X</a>
+	<form id="login_form" action="${base}/login/submit.jhtml" method="post">
+		<dl>
+			<dt>
+				<strong>
+					[#if setting.isEmailLogin]
+						${message("shop.login.usernameOrEmail")}
+					[#else]
+						${message("shop.login.username")}
+					[/#if]
+				</strong>
+			</dt>
+			<dd>
+				<input type="text" id="username" name="username" class="text" maxlength="${setting.usernameMaxLength}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>
+				<strong>${message("shop.login.password")}</strong> 
+				<a href="${base}/password/find.jhtml" target="_blank">${message("shop.login.findPassword")}</a>
+			</dt>
+			<dd>
+				<input type="password" id="password" name="password" class="text" maxlength="${setting.passwordMaxLength}" autocomplete="off" />
+			</dd>
+		</dl>
+		[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+		<dl>
+			<dt>
+				<strong>${message("shop.captcha.name")}</strong> 
+			</dt>
+			<dd>
+				<input type="text" id="captcha" name="captcha" class="text captcha" maxlength="4" autocomplete="off" /><img id="captchaImage" class="captchaImage" src="${base}/common/captcha.jhtml?captchaId=${captchaId}" title="${message("shop.captcha.imageTitle")}" />
+			</dd>
+		</dl>
+		[/#if]
+
+
+		<div class="bottom">
+			<input type="submit" class="submit" value="确认"> 
+			<input 	type="hidden" value="" name="ref_url">
+				 <a href="${base}/register.jhtml" target="_blank">注册新用户</a> 
+				 <a href="javascript:void(0);" onclick="ajax_form('weixin_form', '微信账号登录', '', 360);"
+				title="微信账号登录" class="mr20">微信</a> 
+				<a href="" title="新浪微博账号登录"
+				class="mr20">新浪微博</a> 
+				<a href="" title="QQ账号登录" class="mr20">QQ账号</a>
+		</div>
+	</form>
+</div>
+
+

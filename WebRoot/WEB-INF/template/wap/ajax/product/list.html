@@ -1,0 +1,98 @@
+{
+    "code": 200,
+    "hasmore": ${hasmore},
+    "page_total": ${page.totalPages},
+    "datas": {
+        "goods_list": [
+        	[#list page.content as product]
+        	[#if product_index==0]
+            {
+                "goods_id": "${product.id}",
+                "goods_marketprice": "${currency(product.marketPrice)}",
+                "contractlist": [],
+                "evaluation_good_star": "5",
+                "is_virtual": "0",
+                "is_fcode": "0",
+                "is_presell": "0",
+                "evaluation_count": "0",
+                "member_id": "${product.shop.member.id}",
+                "store_domain": null,
+                "store_id": "${product.shop.id}",
+                "goods_storage": "888",
+                "goods_image": "${product.image}",
+                "store_name": "${product.shop.name}",
+                "image": [
+                	[#list product.mediums as image]
+                	[#if image_index==0]
+                    "${image}"
+                    [#else]
+                    ,"${image}"
+                    [/#if]
+                    [/#list]
+                ],
+                "goods_name": "${product.name}",
+                "goods_jingle": null,
+                "gc_name": "${(product.productCategory.name)!} ${(product.productCategory.parent.name)!} ${(product.productCategory.parent.parent.name)!}",
+                "brand_name": "",
+                "brand_id": "",
+                "is_book": "0",
+                "attr_id": "444_449_454_471_481_486_498_513_515_523_526",
+                "area_id": "0",
+                "have_gift": "1",
+                "goods_click": "${product.hits}",
+                "goods_salenum": "${product.sales}",
+                "goods_barcode": null,
+                "sole_flag": false,
+                "group_flag": false,
+                "xianshi_flag": false,
+                "goods_price": "${currency(product.price)}",
+                "goods_image_url": "${product.image}"
+            }
+            [#else],
+             {
+                "goods_id": "${product.id}",
+                "goods_marketprice": "${currency(product.marketPrice)}",
+                "contractlist": [],
+                "evaluation_good_star": "5",
+                "is_virtual": "0",
+                "is_fcode": "0",
+                "is_presell": "0",
+                "evaluation_count": "0",
+                "member_id": "${product.shop.member.id}",
+                "store_domain": null,
+                "store_id": "${product.shop.id}",
+                "goods_storage": "888",
+                "goods_image": "${product.image}",
+                "store_name": "${product.shop.name}",
+                "image": [
+                	[#list product.mediums as image]
+                	[#if image_index==0]
+                    "${image}"
+                    [#else]
+                    ,"${image}"
+                    [/#if]
+                    [/#list]
+                ],
+                "goods_name": "${product.name}",
+                "goods_jingle": null,
+                "gc_name": "${(product.productCategory.name)!} ${(product.productCategory.parent.name)!} ${(product.productCategory.parent.parent.name)!}",
+                "brand_name": "",
+                "brand_id": "",
+                "is_book": "0",
+                "attr_id": "444_449_454_471_481_486_498_513_515_523_526",
+                "area_id": "0",
+                "have_gift": "1",
+                "goods_click": "${product.hits}",
+                "goods_salenum": "${product.sales}",
+                "goods_barcode": null,
+                "sole_flag": false,
+                "group_flag": false,
+                "xianshi_flag": false,
+                "goods_price": "${currency(product.price)}",
+                "goods_image_url": "${product.image}"
+            }   
+           	[/#if]
+            [/#list]
+        ]
+    }
+}

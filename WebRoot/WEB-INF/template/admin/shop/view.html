@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.shop.view")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.tools.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/input.js"></script>
+</head>
+<body>
+	<div class="path">
+		<a href="admin/common/index.jhtml">${message("admin.path.index")}</a> &raquo; ${message("admin.shop.view")}
+	</div>
+	<ul id="tab" class="tab">
+		<li>
+			<input type="button" value="${message("admin.shop.base")}" />
+		</li>
+		[#if shopAttributes?has_content]
+			<li>
+				<input type="button" value="${message("admin.shop.profile")}" />
+			</li>
+		[/#if]
+	</ul>
+	<table class="input tabContent">
+		<tr>
+			<th>
+				${message("Shop.name")}:
+			</th>
+			<td>
+				${shop.name}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.address")}:
+			</th>
+			<td>
+				${shop.address}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.phone")}:
+			</th>
+			<td>
+				${shop.phone}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.mobile")}:
+			</th>
+			<td>
+				${shop.mobile}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.shopRank")}:
+			</th>
+			<td>
+				${shop.shopRank.name}
+			</td>
+		</tr>
+		
+		<tr>
+			<th>
+				${message("Shop.balance")}:
+			</th>
+			<td>
+				${shop.balance}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.rate1")}:
+			</th>
+			<td>
+				${shop.rate1}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.rate2")}:
+			</th>
+			<td>
+				${shop.rate2}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.buyerRate")}:
+			</th>
+			<td>
+				${shop.buyerRate}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.buyerParentRate")}:
+			</th>
+			<td>
+				${shop.buyerParentRate}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.buyerParentParentRate")}:
+			</th>
+			<td>
+				${shop.buyerParentParentRate}
+			</td>
+		</tr>
+	
+		<tr>
+			<th>
+				${message("Shop.rate3")}:
+			</th>
+			<td>
+				${shop.rate3}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("Shop.days")}:
+			</th>
+			<td>
+				${shop.days}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("admin.common.setting")}:
+			</th>
+			<td>
+				[#if shop.isEnabled]
+					启用
+				[#else]
+					禁用
+				[/#if]
+					
+			</td>
+		</tr>
+		<tr>
+			<th>
+				${message("admin.common.createDate")}:
+			</th>
+			<td>
+				${shop.createDate?string("yyyy-MM-dd HH:mm:ss")}
+			</td>
+		</tr>
+		
+	</table>
+	[#if shopAttributes?has_content]
+		<table class="input tabContent">
+			[#list shopAttributes as shopAttribute]
+				<tr>
+					<th>
+						${shopAttribute.name}:
+					</th>
+					<td>
+						[#if shopAttribute.type == "text"]
+							${shop.getAttributeValue(shopAttribute)}
+						[#elseif shopAttribute.type == "select"]
+							${shop.getAttributeValue(shopAttribute)}
+						[#elseif shopAttribute.type == "checkbox"]
+							[#list shop.getAttributeValue(shopAttribute) as option]
+								${option}
+							[/#list]
+						[/#if]
+					</td>
+				</tr>
+			[/#list]
+		</table>
+	[/#if]
+	<table class="input">
+		<tr>
+			<th>
+				&nbsp;
+			</th>
+			<td>
+				<input type="button" class="button" value="${message("admin.common.back")}" onclick="location.href='list.jhtml'" />
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

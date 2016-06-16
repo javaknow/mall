@@ -1,0 +1,227 @@
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jsbn.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/prng4.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/rng.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/rsa.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/base64.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/common.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $loginForm = $("#loginForm");
+	var $username = $("#username");
+	var $password = $("#password");
+	var $captcha = $("#captcha");
+	var $captchaImage = $("#captchaImage");
+	var $submit = $(":submit");
+	
+	
+	// 更换验证码
+	$captchaImage.click(function() {
+		$captchaImage.attr("src", "common/captcha.jhtml?captchaId="+$("#captchaId").val()+"&timestamp=" + (new Date()).valueOf());
+	});
+	
+	
+	// 表单验证、记住用户名
+	$loginForm.validate({
+		rules: {
+			username: "required",
+			password: "required"
+			[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+				,captcha: "required"
+			[/#if]
+		},
+		submitHandler: function(form) {
+			$.ajax({
+				url: "${base}/common/public_key.jhtml",
+				type: "GET",
+				dataType: "json",
+				cache: false,
+				beforeSend: function() {
+					$submit.prop("disabled", true);
+				},
+				success: function(data) {
+					var rsaKey = new RSAKey();
+					rsaKey.setPublic(b64tohex(data.modulus), b64tohex(data.exponent));
+					var enPassword = hex2b64(rsaKey.encrypt($password.val()));
+					$.ajax({
+						url: $loginForm.attr("action"),
+						type: "POST",
+						data: {
+							username: $username.val(),
+							enPassword: enPassword
+							[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+								,captchaId: $("#captchaId").val(),
+								captcha: $captcha.val()
+							[/#if]
+						},
+						dataType: "json",
+						cache: false,
+						success: function(message) {
+							$submit.prop("disabled", false);
+							if (message.type == "success") {
+								$(".user-login-box").hide();
+								$(".user-login-box").removeClass("show");
+								location.reload(true);
+							} else {
+								$.message(message);
+								[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+									$captcha.val("");
+									$captchaImage.attr("src", "${base}/common/captcha.jhtml?captchaId=${captchaId}&timestamp=" + (new Date()).valueOf());
+								[/#if]
+							}
+						}
+					});
+				}
+			});
+		}
+	});
+
+});
+</script>
+<script type="text/javascript">
+$().ready(function() {
+	$(".avatar").mouseover(function(){
+		$this = $(this);
+		var username = getCookie("username");
+		if (username != null) {
+			$(".tit").text("我的账户");
+		} else {
+			$(".tit").text("会员登录");
+		}
+	});
+	
+	$(".avatar").click(function(){
+		$this = $(this);
+			$.ajax({
+				url : "${base}/getInfo.jhtml",
+				type : "POST",
+				dataType : "json",
+				cache : false,
+				success : function(data) {
+					if (data.message.type == "success") {//登陆成功
+						$(".user-login-box").hide();
+						$(".user-login-box").removeClass("show");
+						$("#login_member").text("Hi, "+data.username);
+						$("#login_memberRank").text(data.memberRankName);
+						$("#login_memberPoint").text(data.point);
+						$(".tit").text("我的账户");
+						if($(".user-info").hasClass("show")){
+							$(".user-info").hide();
+							$(".user-info").removeClass("show");
+						}else{
+							$(".user-info").show();
+							$(".user-info").addClass("show");
+						}
+					} else {//没有获取到登陆信息
+						$(".tit").text("会员登录");
+						$(".user-info").hide();
+						$(".user-info").removeClass("show");
+						if($(".user-login-box").hasClass("show")){
+							$(".user-login-box").hide();
+							$(".user-login-box").removeClass("show");
+						}else{
+							$(".user-login-box").show();
+							$(".user-login-box").addClass("show");
+							$("#captchaId").val(data.captchaId);
+							$captchaImage.attr("src", "common/captcha.jhtml?captchaId="+$("#captchaId").val()+"&timestamp=" + (new Date()).valueOf());
+						}
+					}
+				}
+			});
+	});
+});
+</script>
+
+<div class="user" nctype="a-barLoginBox">
+	<a href="javascript:void(0);">
+    	<div class="avatar"><img src="${base}/upload/image/default_user_portrait.gif"></div>
+       	<span class="tit">会员登录</span>
+    </a>
+</div>
+
+
+<div class="user-info" nctype="barUserInfo" style="display: none;">
+	<i class="arrow"></i>
+	<div class="avatar">
+		<img src="${base}/upload/image/default_user_portrait.gif">
+		<div class="frame"></div>
+	</div>
+	<dl>
+		<dt id="login_member"></dt>
+		<dd>
+			会员等级等级：<strong nctype="barMemberGrade" id="login_memberRank"></strong>
+		</dd>
+		<dd>
+			当前积分：<strong nctype="barMemberExp" id="login_memberPoint"></strong>
+		</dd>
+	</dl>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="user-login-box" nctype="barLoginBox" style="display:none;">
+	<i class="arrow"></i> <a href="javascript:void(0);" class="close-a" nctype="close-barLoginBox" title="关闭">X</a>
+	<form id="loginForm" action="${base}/login/submit.jhtml" method="post">
+		<dl>
+			<dt>
+				<strong>
+					[#if setting.isEmailLogin]
+						${message("shop.login.usernameOrEmail")}:
+					[#else]
+						${message("shop.login.username")}:
+					[/#if]
+				</strong>
+			</dt>
+			<dd>
+				<input type="text" id="username" name="username" class="text" maxlength="${setting.usernameMaxLength}" autocomplete="off" autofocus="autofocus"/>
+				<label></label>
+			</dd>
+		</dl>
+		<dl>
+			<dt>
+				<strong>${message("shop.login.password")}</strong><a href="${base}/password/find.jhtml">${message("shop.login.findPassword")}</a>
+			</dt>
+			<dd>
+				<input type="password" id="password" name="password" class="text" maxlength="${setting.passwordMaxLength}" autocomplete="off" />
+				<label></label>
+			</dd>
+		</dl>
+		[#if setting.captchaTypes?? && setting.captchaTypes?seq_contains("memberLogin")]
+		<dl>
+			<dt>
+				<strong>${message("shop.captcha.name")}</strong>
+				<a href="javascript:void(0)" class="ml5" onclick="javascript:document.getElementById('captchaImage').src='${base}/common/captcha.jhtml?captchaId=${captchaId}';">更换验证码</a>
+			</dt>
+			<dd>
+				
+				<input type="text" id="captchaId" name="captchaId" value=""/> 
+				<input type="text" id="captcha" name="captcha" class="text w130" maxlength="4" autocomplete="off" size="10" /> 
+				<img id="captchaImage" class="captchaImage" src="" title="${message("shop.captcha.imageTitle")}" />
+				<label></label>
+			</dd>
+		</dl>
+		[/#if]
+		<div class="bottom">
+			<input type="submit" class="submit" value="${message("shop.login.submit")}" />
+			<a href="#" target="_blank">注册新用户</a> 
+			<a href="javascript:void(0);" onclick="ajax_form('weixin_form', '微信账号登录', 'http://b2b2c.shopnctest.com/demo/member/index.php?act=connect_wx&op=index', 360);" title="微信账号登录" class="mr20">微信</a> 
+			<a href="#" title="新浪微博账号登录" class="mr20">新浪微博</a> 
+			<a href="#" title="QQ账号登录" class="mr20">QQ账号</a>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,78 @@
+<div id="favoritesGoods" class="double">
+	<div class="outline">
+		<div class="title">
+			<h3>商品收藏</h3>
+		</div>
+		[#if favoriteProducts!=null||favoriteProducts.size==0]
+		<dl class="null-tip">
+	      <dt></dt>
+	      <dd>
+	        <h4>您还没有收藏商品</h4>
+	        <h5>收藏的商品将显示最新的促销活动和降价情况</h5>
+	      </dd>
+	    </dl>
+		[#else]
+		<div class="ncm-favorites-goods">
+			<ul id="favoritesGoodsList" class="jcarousel-skin-tango">
+				[#list favoriteProducts as product]
+				<li>
+					<div class="ncm-goods-thumb-120">
+						<a href="${base}${product.path}" target="_blank">
+							<img src="${base}/upload/image/blank.gif" width="170" height="170" data-original="[#if product.thumbnail??]${product.thumbnail}[#else]${setting.defaultThumbnailProductImage}[/#if]" />
+						</a>
+						<div class="ncm-goods-price">
+							<em>${currency(product.price, true)}</em>
+						</div>
+					</div>
+					<div class="ncm-goods-name">
+						<a href="${base}${product.path}" title="${product.name}" target="_blank">
+							${abbreviate(product.name, 60)}
+						</a>
+					</div>
+				</li>
+				[/#list]
+			</ul>
+			<div class="more">
+				<a target="_blank" href="${base}/member/favorite/list.jhtml">查看收藏的所有商品</a>
+			</div>
+		</div>
+		[/#if]
+	</div>
+</div>
+<div id="favoritesStore" class="normal">
+	<div class="outline">
+		<div class="title">
+			<h3>店铺收藏</h3>
+		</div>
+		[#if favoriteShops==null]
+		<dl class="null-tip">
+	      <dt></dt>
+	      <dd>
+	        <h4>您还没有收藏店铺</h4>
+	        <h5>收藏店铺可获知店铺最新商品和促销活动</h5>
+	      </dd>
+	    </dl>
+		[#else]
+		<div class="ncm-favorites-store">
+			<ul id="favoritesStoreList" class="jcarousel-skin-tango">
+				<li>
+					<div class="ncm-store-pic">
+						<a href="http://hao.wx008.com/shop/index.php?act=show_store&op=index&store_id=1">
+							<img alt="" src="http://hao.wx008.com/data/upload/shop/common/default_store_avatar.gif">
+						</a>
+					</div>
+					<dl>
+						<dt class="ncm-goods-name">
+							<a href="http://hao.wx008.com/shop/index.php?act=show_store&op=index&store_id=1"title="色彩科技">色彩科技</a>
+						</dt>
+						<dd>新品6件</dd>
+					</dl>
+				</li>
+			</ul>
+			<div class="more">
+				<a target="_blank" href="index.php?act=member_favorites&op=fslist">查看收藏的所有店铺</a>
+			</div>
+		</div>
+		[/#if]
+	</div>
+</div>

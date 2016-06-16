@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<lx> 
+	<weChat name="appId" value="wxc284282dbf28ab83"/>  
+	<weChat name="encrypt_type" value=""/>  
+	<weChat name="msg_signature" value=""/>  
+	<weChat name="signature" value="4a9dc24bd62236753c7219a38acc7d90129c6c09"/>  
+	<weChat name="timestamp" value="1459430399"/>  
+	<weChat name="nonce" value="1984562433"/>  
+	<weChat name="echostr" value="4958885395740571647"/>  
+	<weChat name="token" value="igomall"/>  
+	<weChat name="sToken" value="igomall"/>  
+	<weChat name="sCorpID" value="wx2196e1148ee606f3"/>  
+	<weChat name="sEncodingAESKey" value="P54EZzRV7jPSaM9gWr_cMFUhlPTBEDvNiIsi599dJq7STLDQqhAW245lsPf0tgLG"/> 
+</lx>

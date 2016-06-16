@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1">
+<title>${article.title}</title>
+<link rel="stylesheet" type="text/css" href="${base}/resources/wap/css/base.css">
+<link rel="stylesheet" type="text/css" href="${base}/resources/wap/css/nctouch_products_detail.css">
+<link href="${base}/resources/wechat/css/style.css" rel="stylesheet" type="text/css" />
+<script src="${base}/resources/wechat/js/jquery-1.10.2.min.js"></script>
+<script src="${base}/resources/wechat/js/TouchSlide.1.1.js"></script>
+<script src="${base}/resources/wechat/js/jquery.SuperSlide.2.1.1.js"></script>
+<script src="${base}/resources/shop/js/common.js" charset="utf-8"></script>
+</head>
+<body>
+	<div class="phone_hd">
+		<a class="back" href="javascript:history.go(-1);"> 
+			<img src="${base}/resources/wechat/images/back.png" width="25" height="25" />
+		</a>${article.title}
+		<a class="menu home" href="${base}/wechat/index/index.jhtml">
+			<img src="${base}/resources/wechat/images/home.png" width="25" height="25" />
+		</a>
+	</div>
+	<div class="nctouch-main-layout" id="fixed-tab-pannel">
+		<div class="fixed-tab-pannel">
+			<div class="default">
+				<div class="content ke-post" style="padding:5px;">
+					${article.content}
+				</div>
+			</div>
+		</div>
+	</div>
+	<img src="/upload/image/qrCode/qrcode_for_430.jpg" />
+</body>
+</html>

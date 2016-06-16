@@ -1,0 +1,91 @@
+
+<div class="home-sale-layout wrapper">
+	[@promotion_list hasEnded = false count = 5]
+	<div class="left-layout">
+		<ul class="tabs-nav">
+			[#list promotions as promotion]
+				<li [#if promotion_index==0]class="tabs-selected"[/#if]><i class="arrow"></i>
+					<h3><a href="product/list.jhtml?promotionId=${promotion.id}" target="_blank">${promotion.name}</a></h3>
+				</li>
+			[/#list]
+		</ul>
+		
+		[#assign index = 0 /]
+		[#list promotions as promotion]
+		[#assign index = index+1 /]
+		[@product_list count=5 id = promotion.id]
+		<div class="tabs-panel sale-goods-list [#if index!=1]tabs-hide[/#if]">
+			<ul>
+				[#list products as product]
+				<li>
+					<dl>
+						<dt class="goods-name">
+							<a href="${base}${product.path}" target="_blank" title="${product.name}">
+								${abbreviate(product.name, 50)}
+							</a>
+						</dt>
+						<dd class="goods-thumb">
+							<a href="${base}${product.path}" target="_blank" title="${product.name}">
+								<img src="[#if product.image??]${product.image}[#else]${setting.defaultThumbnailProductImage}[/#if]" width="100%" />
+							</a>
+						</dd>
+						<dd class="goods-price">
+							${message("Product.price")}：<em>${currency(product.price, true, true)}</em>
+						</dd>
+					</dl>
+				</li>
+				[/#list]
+			</ul>
+		</div>
+		[/@product_list]
+		[/#list]
+	</div>
+	[/@promotion_list]
+	
+	[@promotion_list hasEnded = false count = 1 id = 2]
+	[#list promotions as promotion]
+	<div class="right-sidebar">
+		<div class="title">
+			<h3>${promotion.name}</h3>
+			<!-- <a href="" target="_blank">更多促销</a> -->
+		</div>
+		<div id="saleDiscount" class="sale-discount">
+			<ul>
+				[@product_list count=5 promotionId = promotion.id]
+				[#list products as product]
+				<li [#if promotion.beginDate??] beginTimeStamp="${promotion.beginDate?long}"[/#if][#if promotion.endDate??] endTimeStamp="${promotion.endDate?long}"[/#if]>
+					<dl>
+						<dt class="goods-name">${abbreviate(product.name, 24)}</dt>
+						<dd class="goods-thumb">
+							<a href="${base}${product.path}" title="${product.name}" target="_blank">
+								<img src="[#if product.image??]${product.image}[#else]${setting.defaultThumbnailProductImage}[/#if]" alt="${product.name}" >
+							</a>
+						</dd>
+						<dd class="goods-price"> ${currency(product.price, true)}
+						[#if setting.isShowMarketPrice]
+						<span class="original">${currency(product.marketPrice, true)}</span>
+						[/#if]
+						</dd>
+						<dd class="goods-price-discount">
+							<em>9.9折</em>
+						</dd>
+						[#if promotion.endDate??]
+						<dd class="time-remain" count_down="${promotion.endDate?long}">
+							<i></i><em time_id="d">0</em>天<em time_id="h">0</em>小时 <em time_id="m">0</em>分<em time_id="s">0</em>秒
+						</dd>
+						[#else]
+							<dd class="time-remain" count_down="14364949144030">
+							<i></i><em time_id="d">0</em>天<em time_id="h">0</em>小时 <em time_id="m">0</em>分<em time_id="s">0</em>秒
+						</dd>
+						[/#if]
+						<dd class="goods-buy-btn"></dd>
+					</dl>
+				</li>
+				[/#list]
+				[/@product_list]
+			</ul>
+		</div>
+	</div>
+	[/#list]
+	[/@promotion_list]
+</div>

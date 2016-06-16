@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.weChatmember.list")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/list.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+	var $syncButton = $("#syncButton");
+	[@flash_message /]
+	
+	$syncButton.click( function() {
+		var $this = $(this);
+		if ($this.hasClass("disabled")) {
+			return false;
+		}
+
+		$.dialog({
+			type: "warn",
+			content: "确定同步所有用户信息？",
+			ok: message("admin.dialog.ok"),
+			cancel: message("admin.dialog.cancel"),
+			onOk: function() {
+				$.ajax({
+					url: "syscInfo.jhtml",
+					type: "POST",
+					dataType: "json",
+					cache: false,
+					success: function(data) {
+						$.message(data.msg);
+						if (data.message.type == "success") {
+							window.setTimeout(function() {
+								window.location.reload(true);
+							}, 1000);
+						}
+					}
+				});
+			}
+		});
+	});
+
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="admin/common/index.jhtml">${message("admin.path.index")}</a> &raquo; ${message("admin.weChatmember.list")} <span>(${message("admin.page.total", page.total)})</span>
+	</div>
+	<form id="listForm" action="list.jhtml" method="get">
+		<div class="bar">
+			<div class="buttonWrap">
+				<a href="javascript:;" id="refreshButton" class="iconButton">
+					<span class="refreshIcon">&nbsp;</span>${message("admin.common.refresh")}
+				</a>
+				<a href="javascript:;" id="syncButton" class="iconButton">
+					<span class="refreshIcon">&nbsp;</span>同步数据
+				</a>
+				<div class="menuWrap">
+					<a href="javascript:;" id="pageSizeSelect" class="button">
+						${message("admin.page.pageSize")}<span class="arrow">&nbsp;</span>
+					</a>
+					<div class="popupMenu">
+						<ul id="pageSizeOption">
+							<li>
+								<a href="javascript:;"[#if page.pageSize == 10] class="current"[/#if] val="10">10</a>
+							</li>
+							<li>
+								<a href="javascript:;"[#if page.pageSize == 20] class="current"[/#if] val="20">20</a>
+							</li>
+							<li>
+								<a href="javascript:;"[#if page.pageSize == 50] class="current"[/#if] val="50">50</a>
+							</li>
+							<li>
+								<a href="javascript:;"[#if page.pageSize == 100] class="current"[/#if] val="100">100</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="menuWrap">
+				<div class="search">
+					<span id="searchPropertySelect" class="arrow">&nbsp;</span>
+					<input type="text" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
+					<button type="submit">&nbsp;</button>
+				</div>
+				<div class="popupMenu">
+					<ul id="searchPropertyOption">
+						<li>
+							<a href="javascript:;"[#if page.searchProperty == "openid"] class="current"[/#if] val="openid">${message("WeChatMember.openid")}</a>
+						</li>
+						<li>
+							<a href="javascript:;"[#if page.searchProperty == "nickname"] class="current"[/#if] val="nickname">${message("WeChatMember.nickname")}</a>
+						</li>
+						<li>
+							<a href="javascript:;"[#if page.searchProperty == "remark"] class="current"[/#if] val="remark">${message("WeChatMember.remark")}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<table id="listTable" class="list">
+			<tr>
+				<th class="check">
+					<input type="checkbox" id="selectAll"/>
+				</th>
+				<th>
+					<a href="javascript:;" class="sort" name="openid">${message("WeChatMember.openid")}</a>
+				</th>
+				<th>
+					<a href="javascript:;" class="sort" name="nickname">${message("WeChatMember.nickname")}</a>
+				</th>
+				<th>
+					<a href="javascript:;" class="sort" name="sex">${message("WeChatMember.sex")}</a>
+				</th>
+				<th>
+					地区
+				</th>
+				<th>
+					<a href="javascript:;" class="sort" name="subscribe_time">${message("WeChatMember.subscribe_time")}</a>
+				</th>
+				<th>
+					<a href="javascript:;" class="sort" name="headimgurl">${message("WeChatMember.headimgurl")}</a>
+				</th>
+				
+				<th>
+					<a href="javascript:;" class="sort" name="remark">${message("WeChatMember.remark")}</a>
+				</th>
+				<th>
+					<a href="javascript:;" class="sort" name="subscribe">${message("WeChatMember.subscribe")}</a>
+				</th>
+				<th>
+					<a href="javascript:;" class="sort" name="createDate">${message("admin.common.createDate")}</a>
+				</th>
+				<th>
+					<span>${message("admin.common.handle")}</span>
+				</th>
+			</tr>
+			[#list page.content as weChatMember]
+				<tr>
+					<td>
+						<input type="checkbox" name="ids" value="${weChatMember.id}" />
+					</td>
+					<td>
+						${weChatMember.openid}
+					</td>
+					<td>
+						${weChatMember.nickname}
+					</td>
+					<td>
+						[#if weChatMember.sex==1]
+							男
+						[#elseif weChatMember.sex==2]
+							女
+						[#else]
+							未知
+						[/#if]
+					</td>
+					<td>
+						${weChatMember.country}&nbsp;${weChatMember.province}&nbsp;${weChatMember.city}
+					</td>
+					<td>
+						${weChatMember.subscribe_time}
+					</td>
+					<td>
+						<img src="${weChatMember.headimgurl}" style="width:50px;padding: 5px;"/>
+					</td>
+					<td>
+						${weChatMember.remark}
+					</td>
+					<td>
+						[#if weChatMember.subscribe==0]
+							未关注
+						[#elseif weChatMember.subscribe==1]
+							已关注
+						[#else]
+							未知
+						[/#if]
+					</td>
+					<td>
+						<span title="${weChatMember.createDate?string("yyyy-MM-dd HH:mm:ss")}">${weChatMember.createDate?string("yyyy-MM-dd HH:mm:ss")}</span>
+					</td>
+					<td>
+						<a href="view.jhtml?id=${weChatMember.id}">[${message("admin.common.view")}]</a>
+						<a href="edit.jhtml?id=${weChatMember.id}">[${message("admin.common.edit")}]</a>
+					</td>
+				</tr>
+			[/#list]
+		</table>
+		[@pagination pageNumber = page.pageNumber totalPages = page.totalPages]
+			[#include "/admin/include/pagination.html"]
+		[/@pagination]
+	</form>
+</body>
+</html>

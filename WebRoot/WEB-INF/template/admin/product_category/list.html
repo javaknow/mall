@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.productCategory.list")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/list.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $delete = $("#listTable a.delete");
+	var $openA = $("#listTable a.openA");
+	var $closeA = $("#listTable a.closeA");
+	var $closeButton = $("#closeButton");
+	var $openButton = $("#openButton");
+	var $selectAll = $("#selectAll");
+	
+	[@flash_message /]
+
+	// 删除
+	$delete.click(function() {
+		var $this = $(this);
+		$.dialog({
+			type: "warn",
+			content: "${message("admin.dialog.deleteConfirm")}",
+			onOk: function() {
+				$.ajax({
+					url: "delete.jhtml",
+					type: "POST",
+					data: {id: $this.attr("val")},
+					dataType: "json",
+					cache: false,
+					success: function(message) {
+						$.message(message);
+						if (message.type == "success") {
+							$this.closest("tr").remove();
+						}
+					}
+				});
+			}
+		});
+		return false;
+	});
+
+	// 启用
+	$openA.click(function() {
+		var $this = $(this);
+		$.dialog({
+			type: "warn",
+			content: "确认启用？",
+			onOk: function() {
+				$.ajax({
+					url: "operate.jhtml",
+					type: "POST",
+					data: {id: $this.attr("val"),isEnabled:true},
+					dataType: "json",
+					cache: false,
+					success: function(message) {
+						$.message(message);
+						if (message.type == "success") {
+							window.location.reload(true);
+						}
+					}
+				});
+			}
+		});
+		return false;
+	});
+	// 禁用
+	$closeA.click(function() {
+		var $this = $(this);
+		$.dialog({
+			type: "warn",
+			content: "确认禁用？",
+			onOk: function() {
+				$.ajax({
+					url: "operate.jhtml",
+					type: "POST",
+					data: {id: $this.attr("val"),isEnabled:false},
+					dataType: "json",
+					cache: false,
+					success: function(message) {
+						$.message(message);
+						if (message.type == "success") {
+							window.location.reload(true);
+						}
+					}
+				});
+			}
+		});
+		return false;
+	});
+	
+	// 批量禁用
+	$closeButton.click( function() {
+		var $this = $(this);
+		if ($this.hasClass("disabled")) {
+			return false;
+		}
+		var $checkedIds = $("#listTable input[name='ids']:enabled:checked");
+		$.dialog({
+			type: "warn",
+			content: "确认批量禁用？",
+			ok: message("admin.dialog.ok"),
+			cancel: message("admin.dialog.cancel"),
+			onOk: function() {
+				$.ajax({
+					url: "close.jhtml",
+					type: "POST",
+					data: $checkedIds.serialize(),
+					dataType: "json",
+					cache: false,
+					success: function(message) {
+						$.message(message);
+						if (message.type == "success") {
+							window.setTimeout(function() {
+								window.location.reload(true);
+							}, 1000);
+						}
+						$selectAll.prop("checked", false);
+						$checkedIds.prop("checked", false);
+					}
+				});
+			}
+		});
+	});
+	
+	// 批量启用
+	$openButton.click( function() {
+		var $this = $(this);
+		if ($this.hasClass("disabled")) {
+			return false;
+		}
+		var $checkedIds = $("#listTable input[name='ids']:enabled:checked");
+		$.dialog({
+			type: "warn",
+			content: "确认批量启用？",
+			ok: message("admin.dialog.ok"),
+			cancel: message("admin.dialog.cancel"),
+			onOk: function() {
+				$.ajax({
+					url: "open.jhtml",
+					type: "POST",
+					data: $checkedIds.serialize(),
+					dataType: "json",
+					cache: false,
+					success: function(message) {
+						$.message(message);
+						if (message.type == "success") {
+							window.setTimeout(function() {
+								window.location.reload(true);
+							}, 1000);
+						}
+						$selectAll.prop("checked", false);
+						$checkedIds.prop("checked", false);
+					}
+				});
+			}
+		});
+	});
+	
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="admin/common/index.jhtml">${message("admin.path.index")}</a> &raquo; ${message("admin.productCategory.list")}<span>(${message("admin.page.total", productCategoryTree.size())})</span>
+	</div>
+	<div class="bar">
+		<a href="add.jhtml?productCategoryId=${productCategoryId}" class="iconButton">
+			<span class="addIcon">&nbsp;</span>${message("admin.common.add")}
+		</a>
+		<a href="javascript:;" id="closeButton" class="iconButton">
+			<span class="deleteIcon">&nbsp;</span>禁用
+		</a>
+		<a href="javascript:;" id="openButton" class="iconButton">
+			<span class="deleteIcon">&nbsp;</span>启用
+		</a>
+		<a href="javascript:;" id="refreshButton" class="iconButton">
+			<span class="refreshIcon">&nbsp;</span>${message("admin.common.refresh")}
+		</a>
+	</div>
+	<table id="listTable" class="list">
+		<tr>
+			<th class="check">
+				<input type="checkbox" id="selectAll" />
+			</th>
+			<th>
+				<span>${message("ProductCategory.name")}</span>
+			</th>
+			<th>
+				<span>${message("ProductCategory.seoTitle")}</span>
+			</th>
+			<th>
+				<span>${message("ProductCategory.seoKeywords")}</span>
+			</th>
+			<th>
+				<span>${message("ProductCategory.seoDescription")}</span>
+			</th>
+			<th>
+				<span>${message("admin.common.order")}</span>
+			</th>
+			<th>
+				<span>是否显示</span>
+			</th>
+			<th>
+				<span>${message("admin.common.handle")}</span>
+			</th>
+		</tr>
+		[#list productCategoryTree as productCategory]
+			<tr class="row" vlaue="${productCategory.id}" parent="${(productCategory.treePath)!"0"}">
+				<td>
+					<input type="checkbox" name="ids" value="${productCategory.id}" parent="${(productCategory.treePath)!"0"}"/>
+				</td>
+				<td>
+					<span style="margin-left: ${productCategory.grade * 20}px;" class="gradeCss${productCategory.grade}">
+						${productCategory.name}
+					</span>
+					[#if productCategory.children.size()>0]
+					<span style="font-size:12px;color:red">
+						(${message("admin.page.total", productCategory.children.size())})
+					</span>
+					[/#if]
+					[#if productCategory.products.size()>0]
+					<span style="font-size:12px;color:red">
+						(${message("admin.page.total", productCategory.products.size())})
+					</span>
+					[/#if]
+				</td>
+				<td>
+					${productCategory.seoTitle}
+				</td>
+				<td>
+					${productCategory.seoKeywords}
+				</td>
+				<td>
+					${productCategory.seoDescription}
+				</td>
+				<td>
+					${productCategory.order}
+				</td>
+				<td id="isEnabledTd">
+					[#if !productCategory.isEnabled]
+						<span class="red">否</span>
+					[#elseif productCategory.isEnabled]
+						<span class="green">是 </span>
+					[#else]
+						<span class="red">-</span>
+					[/#if]
+				</td>
+				<td>
+					<a href="add.jhtml?productCategoryId=${productCategory.id}">[${message("admin.common.add")}]</a>
+					<a href="${base}${productCategory.path}" target="_blank">[${message("admin.common.view")}]</a>
+					<a href="edit.jhtml?id=${productCategory.id}">[${message("admin.common.edit")}]</a>
+					[#if productCategory.children.size()==0]
+					<a href="javascript:;" class="delete" val="${productCategory.id}">[${message("admin.common.delete")}]</a>
+					[/#if]
+					[#if !productCategory.isEnabled]
+						<a href="javascript:;" class="openA" val="${productCategory.id}">[<span class="green">启用</span>]</a>
+					[#elseif productCategory.isEnabled]
+						<a href="javascript:;" class="closeA" val="${productCategory.id}">[<span class="red">禁用 </span>]</a>
+					[/#if]
+					
+				</td>
+			</tr>
+		[/#list]
+	</table>
+</body>
+</html>

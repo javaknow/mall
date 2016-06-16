@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("shop.member.memberBank.edit")}[#if systemShowPowered][/#if]</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+[#include "/shop/include1/css.html" /]
+<link href="${base}/resources/shop/css/common.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/shop/css/member.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.lSelect.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/shop/datePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $inputForm = $("#inputForm");
+	var $areaId = $("#areaId");
+	
+	[@flash_message /]
+	
+	// 地区选择
+	$areaId.lSelect({
+		url: "${base}/common/area.jhtml"
+	});
+	
+	// 表单验证
+	$inputForm.validate({
+		rules: {
+			bankType: {
+				required: true
+			},
+			bankAccount: {
+				required: true
+			},
+			bankTrueName: {
+				required: true
+			},
+			address: {
+				required: true
+			},
+			areaId: {
+				required: true
+			},
+			
+		}
+	});
+
+});
+</script>
+</head>
+<body>
+	[#assign current = "membrBankAdd" /]
+	[#include "/shop/include/header.html" /]
+	<div class="container member">
+		[#include "/shop/member/include/navigation.html" /]
+		<div class="span18 last">
+			<div class="input">
+				<div class="title">${message("shop.member.memberBank.edit")}</div>
+				<form id="inputForm" action="update.jhtml" method="post">
+					<input type="hidden" name="id" value="${memberBank.id}" />
+					<table class="input">
+						<tr id="bankIdTr">
+							<th>
+								<span class="requiredField">*</span>${message("MemberBank.bankType")}:
+							</th>
+							<td>
+								<input type="text" name="bankType" class="text" maxlength="200" value="${memberBank.bankType}"/>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<span class="requiredField">*</span>${message("MemberBank.bankAccount")}:
+							</th>
+							<td>
+								<input type="text" name="bankAccount" class="text" maxlength="200"  value="${memberBank.bankAccount}"/>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<span class="requiredField">*</span>${message("MemberBank.bankTrueName")}:
+							</th>
+							<td>
+								<input type="text" name="bankTrueName" class="text" maxlength="200"  value="${memberBank.bankTrueName}"/>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<span class="requiredField">*</span>${message("MemberBank.isDefault")}:
+							</th>
+							<td>
+								<label>
+									<input type="checkbox" name="isDefault" value="true" [#if memberBank.isDefault] checked="checked" [/#if]/>是
+									<input type="hidden" name="_isDefault" value="false" />
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<span class="requiredField">*</span>${message("MemberBank.area")}:
+							</th>
+							<td>
+								<input type="hidden" id="areaId" name="areaId" value="${(memberBank.area.id)!}"  treePath="${(memberBank.area.treePath)!}" />
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<span class="requiredField">*</span>${message("MemberBank.address")}:
+							</th>
+							<td>
+								<input type="text" name="address" class="text" maxlength="200"  value="${memberBank.address}"/>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								&nbsp;
+							</th>
+							<td>
+								<input type="submit" class="button" value="${message("shop.member.submit")}" />
+								<input type="button" class="button" value="删除" onclick="location.href='delete.jhtml?id=${memberBank.id}'" />
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+	[#include "/shop/include/footer.html" /]
+</body>
+</html>

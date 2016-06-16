@@ -1,0 +1,35 @@
+<div class="home-focus-layout">
+	[@ad_list id=1] 
+	[#if ads?has_content]
+	<ul id="fullScreenSlides" class="full-screen-slides">
+		[#list ads as ad]
+		<li style="background:  url('${ad.path}') no-repeat center top;">
+			[#if ad.url??] <a href="${ad.url}" target="_blank" title="${ad.title}"> </a>[/#if]
+		</li> 
+		[/#list]
+	</ul>
+	[/#if] 
+	[/@ad_list] 
+	[@ad_list id=2] 
+	[#if ads?has_content]
+	<div class="jfocus-trigeminy">
+		<ul>
+			[#list ads?chunk(4) as row]
+			<li>
+				[#list row as ad] 
+					[#if ad.hasBegun() && !ad.hasEnded() && ad.type == "image"] [#if ad.url??] 
+					<a href="${ad.url}" target="_blank" title="${ad.title}"> 
+						<img src="${ad.path}" width="${ad.adPosition.width}" height="${ad.adPosition.height}" alt="${ad.title}" title="${ad.title}" />
+					</a> 
+					[#else] 
+					<img src="${ad.path}" width="${ad.adPosition.width}" height="${ad.adPosition.height}" alt="${ad.title}" title="${ad.title}" /> 
+					[/#if] 
+				[/#if] 
+			[/#list]
+			</li> 
+			[/#list]
+		</ul>
+	</div>
+	[/#if] 
+	[/@ad_list]
+</div>

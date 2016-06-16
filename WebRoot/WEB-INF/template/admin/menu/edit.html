@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>${message("admin.menu.edit")}</title>
+<meta name="author" content="" />
+<meta name="copyright" content="" />
+<link href="${base}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${base}/resources/admin/js/input.js"></script>
+<style type="text/css">
+.brands label {
+	width: 150px;
+	display: block;
+	float: left;
+	padding-right: 6px;
+}
+</style>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $inputForm = $("#inputForm");
+	
+	[@flash_message /]
+
+	// 表单验证
+	$inputForm.validate({
+		rules: {
+			name: "required",
+			order: "digits"
+		}
+	});
+	
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="admin/common/index.jhtml">${message("admin.path.index")}</a> &raquo; ${message("admin.menu.edit")}
+	</div>
+	<form id="inputForm" action="update.jhtml" method="post">
+		<input type="hidden" name="id" value="${menu.id}" />
+		<table class="input">
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Menu.name")}:
+				</th>
+				<td>
+					<input type="text" id="name" name="name" class="text" value="${menu.name}" maxlength="200" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					${message("Menu.parent")}:
+				</th>
+				<td>
+					<select name="parentId">
+						<option value="">${message("admin.menu.root")}</option>
+						[#list menuTree as category]
+							[#if category != menu && !children?seq_contains(category)]
+								<option value="${category.id}"[#if category == menu.parent] selected="selected"[/#if]>
+									[#if category.grade != 0]
+										[#list 1..category.grade as i]
+											&nbsp;&nbsp;
+										[/#list]
+									[/#if]
+									${category.name}
+								</option>
+							[/#if]
+						[/#list]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					显示:
+				</th>
+				<td>
+					<label>
+						<input type="checkbox" name="isEnabled" value="true" [#if menu.isEnabled] checked="checked"[/#if]  />是
+						<input type="hidden" name="_isEnabled" value="false" />
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Menu.target")}:
+				</th>
+				<td>
+					<input type="text" id="target" name="target" class="text" maxlength="200" value="${menu.target}" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>${message("Menu.url")}:
+				</th>
+				<td>
+					<input type="text" id="url" name="url" class="text" maxlength="200" value="${menu.url}" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>
+					${message("admin.common.order")}:
+				</th>
+				<td>
+					<input type="text" name="order" class="text" value="${menu.order}" maxlength="9" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					显示:
+				</th>
+				<td>
+					<label>
+						<input type="checkbox" name="isEnabled" value="true" [#if menu.isEnabled]checked="checked"[/#if] />是
+						<input type="hidden" name="_isEnabled" value="false" />
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<td>
+					<input type="submit" class="button" value="${message("admin.common.submit")}" />
+					<input type="button" class="button" value="${message("admin.common.back")}" onclick="location.href='list.jhtml'" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
